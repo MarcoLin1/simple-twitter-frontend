@@ -1,13 +1,12 @@
-$orange: #FF6600;
-$black: #1C1C1C;
-$light-blue: #0099FF;
+$orange: #ff6600;
+$black: #1c1c1c;
+$light-blue: #0099ff;
 $tx-gray: #657786;
-$img-light-gray: #C4C4C4;
+$img-light-gray: #c4c4c4;
 $img-dark-gray: #999999;
-$bg-gray: #F5F8FA;
-$light-gray: #E6ECF0;
-
-
+$bg-gray: #f5f8fa;
+$light-gray: #e6ecf0;
+$heart-pink: #E0245E;
 
 %form-input-style {
   width: 100%;
@@ -53,4 +52,13 @@ $light-gray: #E6ECF0;
   background: $black;
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
+}
+.user-name {
+  color: $black;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.heart-checked {
+  background-color: #ff6500;
 }
