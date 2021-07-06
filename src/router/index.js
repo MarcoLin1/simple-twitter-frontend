@@ -5,8 +5,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'root',
-    component: () => import('../components/Post.vue')
+    name: 'root'
+
   }
 ]
 const router = new VueRouter({

@@ -5,22 +5,20 @@
       :key="post.id"
       class="post"
     >
-      <div class="post__avator" />
+      <div class="post__avator avator-img" />
       <div class="post__content ml-2">
         <div class="post__content__title mb-2">
-          <span
-            class="post__content__title__item user-name"
-          >
-            Apple
+          <span class="post__content__title__item user-name">
+            {{ post.name }}
           </span>
-          <span class="post__content__title__item">@apple</span>
+          <span class="post__content__title__item">{{ post.account }}</span>
           <span class="post__content__title__item">·</span>
-          <span class="post__content__title__item">3 小時</span>
+          <span class="post__content__title__item post__content__title__item__time">
+            {{ post.createdTime }}
+          </span>
         </div>
         <div class="post__content__discription">
-          Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-          cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum.
+          {{ post.discription }}
         </div>
         <div class="post__content__reaction d-flex ">
           <div class="post__content__reaction__item">
@@ -31,10 +29,12 @@
             <div
               v-if="!post.isLiked"
               class="post__content__reaction__item__heart"
+              @click="addLiked(post.id)"
             />
             <div
               v-else
               class="post__content__reaction__item__heart--liked"
+              @click="removeLiked(post.id)"
             />
             <span
               class="post__content__reaction__item__text"
@@ -58,37 +58,36 @@
   max-width: 600px;
   border: solid 1px $light-gray;
   padding: 15px;
-  &__avator {
-    border-radius: 50%;
-    background-color: $img-light-gray;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-  }
+  height: 124px;
   &__content {
-    cursor: pointer;
-
     &__title {
       color: $tx-gray;
       &__item {
-        margin-right: 4px;
+        cursor: pointer;
+        &:nth-child(2){
+          margin-right: 3px;
+        }
+        &__time {
+          font-size: 14px;
+          margin-left: -1px;
+        }
       }
     }
     &__discription {
       line-height: 20px;
-      font-size: 15px;
-      color: $black;
-      cursor: default;
+      @include text-style(15px, normal, $black);
     }
     &__reaction {
       color: $tx-gray;
       margin-top: 14px;
-      cursor: pointer;
+      height: 21px;
+
       img {
         width: 12px;
         height: 12px;
       }
       &__item {
+        cursor: pointer;
         margin-right: 50px;
         display: flex;
         justify-content: center;
@@ -130,20 +129,49 @@ export default {
       posts: [
         {
           id: '1',
+          account: '@apple',
+          name: 'Apple',
+          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          createdTime: '3 小時',
           isLiked: true
 
         },
         {
           id: '2',
+          account: '@apple',
+          name: 'Apple',
+          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          createdTime: '6月25日',
           isLiked: false
 
         },
         {
           id: '3',
+          account: '@apple',
+          name: 'Apple',
+          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          createdTime: '3 小時',
           isLiked: true
         }
       ]
     }
+  },
+  methods: {
+    addLiked (id) {
+      this.posts.filter((post) => {
+        if (post.id === id) {
+          post.isLiked = true
+        }
+      })
+    },
+    removeLiked (id) {
+      this.posts.filter((post) => {
+        if (post.id === id) {
+          post.isLiked = false
+        }
+      })
+    }
+
   }
 }
 </script>

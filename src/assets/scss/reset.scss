@@ -41,3 +41,22 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.btn,
+button,
+button:focus,
+input:focus,
+textarea:focus,
+select,
+select:focus,
+a:focus {
+  outline: 0px !important;
+}
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+button[disabled] {
+  pointer-events: none;
+}
