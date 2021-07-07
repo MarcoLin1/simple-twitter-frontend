@@ -8,7 +8,7 @@
         :user="user"
         :current-page="currentPage"
       />
-      <UsersList :user-followings-initial-tweets="userFollowingsInitialTweets" />
+      <UsersList />
     </div>
     <div class="user__followings__top__users__list__wrapper">
       <TopUsersList />
@@ -116,7 +116,7 @@ export default {
         tweetLength: '',
         isFollowed: false
       },
-      userFollowingsInitialTweets: [],
+      userFollowingsTweets: [],
       currentPage: 'UserFollowings'
     }
   },
@@ -128,13 +128,12 @@ export default {
     fetchUser () {
       this.user = {
         ...this.user,
-        ...dummyUser.users,
-        tweetLength: dummyUser.users.TweetCount
+        ...dummyUser.users
       }
     },
     fetchTweets () {
       const { tweets } = dummyData
-      this.userFollowingsInitialTweets = tweets
+      this.userFollowingsTweets = tweets
     }
   }
 }
@@ -144,7 +143,7 @@ export default {
 @import '../assets/scss/main.scss';
   .user__followings__container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
   .user__followings__main__wrapper {
     width: 600px;
