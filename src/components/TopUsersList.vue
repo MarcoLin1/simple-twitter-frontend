@@ -9,15 +9,17 @@
       class="user__list"
     >
       <div class="user__list__content">
-        <div class="user__list__content__avator avator-img" />
-        <div class="user__list__content__title">
-          <span class="user__list__content__title__name user-name">
-            {{ user.name }}
-          </span>
-          <span
-            class="user__list__content__title__account"
-          >{{ user.account }}</span>
-        </div>
+        <div class="user__list__content__avator avatar-img" />
+        <router-link to="/">
+          <div class="user__list__content__title">
+            <span class="user__list__content__title__name user-name">
+              {{ user.name }}
+            </span>
+            <span
+              class="user__list__content__title__account"
+            >{{ user.account }}</span>
+          </div>
+        </router-link>
       </div>
       <div class="user__list__follow-btn">
         <button
@@ -47,7 +49,9 @@
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-
+a{
+  text-decoration: none;
+}
 .container{
   width: 350px;
   border-radius: 14px;
@@ -57,6 +61,7 @@
 .title{
   @include text-style(18px, 700, $black);
   margin-bottom: 10px;
+  line-height: 26px;
 }
 .user__list{
   display: flex;
@@ -81,8 +86,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      line-height: 18px;
       margin-left: 10px;
-      line-height: 17px;
       &__account{
         @include text-style(15px, 700, $tx-gray, pointer);
       }

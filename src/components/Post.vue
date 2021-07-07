@@ -5,7 +5,7 @@
       :key="post.id"
       class="post"
     >
-      <div class="post__avator avator-img" />
+      <div class="post__avatar avatar-img" />
       <div class="post__content ml-2">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
@@ -22,7 +22,7 @@
         </div>
         <div class="post__content__reaction d-flex ">
           <div class="post__content__reaction__item">
-            <div class="post__content__reaction__item__message" />
+            <div class="post__content__reaction__item__message " />
             <span class="post__content__reaction__item__text">13</span>
           </div>
           <div class="post__content__reaction__item">
@@ -88,10 +88,14 @@
         margin-right: 50px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        width: 47px;
+
         &__text {
           font-size: 13px;
           line-height: 13px;
           margin-left: 12px;
+          line-height: 20px;
         }
         &__message,&__heart, &__heart--liked{
           width: 13px;
