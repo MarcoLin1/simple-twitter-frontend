@@ -5,7 +5,13 @@
       :key="post.id"
       class="post"
     >
-      <div class="post__avatar avatar-img" />
+      <div class="post__avatar">
+        <img
+          src=""
+          alt=""
+          class="avatar-img"
+        >
+      </div>
       <div class="post__content ml-2">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
