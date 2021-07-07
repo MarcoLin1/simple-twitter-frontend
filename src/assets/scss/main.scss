@@ -7,6 +7,11 @@ $img-dark-gray: #999999;
 $bg-gray: #f5f8fa;
 $light-gray: #e6ecf0;
 $heart-pink: #E0245E;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
+
 @mixin text-style($size, $weight, $color, $cursor: auto) {
   font-size: $size;
   font-weight: $weight;
@@ -72,6 +77,9 @@ $heart-pink: #E0245E;
   line-height: 15px;
   font-weight: 700;
 }
+* {
+  font-family: 'Noto Sans TC', sans-serif;;
+}
 
 //可共用 class
 .user-name {
@@ -79,18 +87,18 @@ $heart-pink: #E0245E;
 }
 
 // 正在追隨和追隨按鈕可用 class
-.following-btn, .to-follow-btn{
+.following-btn, .to-follow-btn,.btn-filled,.btn-border{
   @extend %follow-btn-style;
 }
 
-.to-follow-btn{
+.to-follow-btn,.btn-border{
   border: 1px solid $orange;
   background-color: transparent;
   color: $orange;
 }
 
 //大頭貼 class 可用
-.avator-img {
+.avatar-img {
   border-radius: 50%;
   background-color: $img-light-gray;
   width: 50px;
