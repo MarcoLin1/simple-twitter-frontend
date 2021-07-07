@@ -1,30 +1,33 @@
 <template>
   <div class="users__list__container">
     <div class="users__list__top__navbar__container">
-      <TopNavbar />
       <div class="users__list__item__wrapper">
         <div class="users__list__item">
-          <button
+          <!-- 記得改網址 -->
+          <router-link
+            to="/user/1/followings"
             type="button"
             class="users__list__item__button"
           >
             跟隨者
-          </button>
+          </router-link>
         </div>
         <div class="users__list__item">
-          <button
+          <!-- 記得改網址 -->
+          <router-link
+            to="/user/1/followers"
             type="button"
             class="users__list__item__button"
           >
             正在跟隨
-          </button>
+          </router-link>
         </div>
       </div>
     </div>
     <div class="users__list__main__container">
       <div
         v-for="tweet in tweets"
-        :key="tweet.TweetId"
+        :key="tweet.UserId"
         class="users__list__main__wrapper"
       >
         <div class="users__list__image__wrapper">
@@ -48,9 +51,10 @@
           </div>
           <div class="users__list__button__wrapper">
             <button
-              v-if="tweet.user.isFollowing"
+              v-if="tweet.isFollowing"
               type="submit"
               class="users__list__button__following"
+              @click.stop.prevent="removeFollowing(tweet.UserId)"
             >
               正在跟隨
             </button>
@@ -58,6 +62,7 @@
               v-else
               type="submit"
               class="users__list__button__unfollowing"
+              @click.stop.prevent="addFollowing(tweet.UserId)"
             >
               跟隨
             </button>
@@ -68,93 +73,6 @@
   </div>
 </template>
 
-<script>
-import TopNavbar from './../components/TopNavbar.vue'
-const dummyData = {
-  tweets: [
-    {
-      TweetId: 1,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2019',
-      replyCount: 1,
-      likeCount: 1,
-      isLike: true,
-      user: {
-        UserId: 1,
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://loremflickr.com/320/240/people?random',
-        isFollowing: true
-      }
-    },
-    {
-      TweetId: 2,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2020',
-      replyCount: 2,
-      likeCount: 2,
-      isLike: true,
-      user: {
-        UserId: 2,
-        name: 'pen',
-        account: 'pen',
-        avatar: 'https://loremflickr.com/320/240/people?random',
-        isFollowing: false
-      }
-    },
-    {
-      TweetId: 3,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2023',
-      replyCount: 3,
-      likeCount: 3,
-      isLike: true,
-      user: {
-        UserId: 3,
-        name: 'dog',
-        account: 'DG',
-        avatar: 'https://loremflickr.com/320/240/people?random',
-        isFollowing: false
-      }
-    },
-    {
-      TweetId: 4,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2016',
-      replyCount: 4,
-      likeCount: 4,
-      isLike: true,
-      user: {
-        UserId: 4,
-        name: 'google',
-        account: 'GG',
-        avatar: 'https://loremflickr.com/320/240/people?random',
-        isFollowing: true
-      }
-    }
-  ]
-}
-export default {
-  components: {
-    TopNavbar
-  },
-  data () {
-    return {
-      tweets: []
-    }
-  },
-  created () {
-    this.fetchData()
-  },
-  methods: {
-    fetchData () {
-      const { tweets } = dummyData
-      this.tweets = tweets
-    }
-  }
-}
-</script>
-
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
   %text-normal-style {
@@ -163,12 +81,10 @@ export default {
     font-weight: 700;
   }
   .users__list__container {
-    border: 1px solid $light-gray;
-    width: auto;
     height: 100vh;
+    min-width: 300px;
     max-width: 600px;
     margin: 0 auto;
-
     .users__list__item__wrapper {
       display: flex;
       width: 40%;
@@ -184,6 +100,7 @@ export default {
         background: none;
         padding-bottom: 14px;
         color: $tx-gray;
+        text-decoration: none;
       &:focus {
           border-bottom: 1px solid $orange;
           color: $orange;
@@ -240,7 +157,8 @@ export default {
         color: #ffffff;
         border: none;
         font-size: 15px;
-        padding: 8px 16px 8px 16px;
+        padding: 6px 16px 8px 16px;
+        font-weight: 700;
       }
       .users__list__button__unfollowing {
         width: 62px;
@@ -249,7 +167,102 @@ export default {
         border: 1px solid $orange;
         background: none;
         color: $orange;
+        font-weight: 700;
+        font-size: 15px;
       }
     }
   }
 </style>
+
+<script>
+const dummyData = {
+  tweets: [
+    {
+      UserId: 1,
+      description: 'It is very hard to overcome this question',
+      createdAt: '2019',
+      replyCount: 1,
+      likeCount: 1,
+      isLike: true,
+      isFollowing: true,
+      user: {
+        name: 'apple',
+        account: 'apple',
+        avatar: 'https://loremflickr.com/320/240/people?random'
+      }
+    },
+    {
+      UserId: 2,
+      description: 'It is very hard to overcome this question',
+      createdAt: '2020',
+      replyCount: 2,
+      likeCount: 2,
+      isLike: true,
+      isFollowing: false,
+      user: {
+        name: 'pen',
+        account: 'pen',
+        avatar: 'https://loremflickr.com/320/240/people?random'
+      }
+    },
+    {
+      UserId: 3,
+      description: 'It is very hard to overcome this question',
+      createdAt: '2023',
+      replyCount: 3,
+      likeCount: 3,
+      isLike: true,
+      isFollowing: false,
+      user: {
+        name: 'dog',
+        account: 'DG',
+        avatar: 'https://loremflickr.com/320/240/people?random'
+      }
+    },
+    {
+      UserId: 4,
+      description: 'It is very hard to overcome this question',
+      createdAt: '2016',
+      replyCount: 4,
+      likeCount: 4,
+      isLike: true,
+      isFollowing: true,
+      user: {
+        name: 'google',
+        account: 'GG',
+        avatar: 'https://loremflickr.com/320/240/people?random'
+      }
+    }
+  ]
+}
+export default {
+  data () {
+    return {
+      tweets: []
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      const { tweets } = dummyData
+      this.tweets = tweets
+    },
+    addFollowing (id) {
+      this.tweets.filter(user => {
+        if (user.UserId === id) {
+          user.isFollowing = true
+        }
+      })
+    },
+    removeFollowing (id) {
+      this.tweets.filter(user => {
+        if (user.UserId === id) {
+          user.isFollowing = false
+        }
+      })
+    }
+  }
+}
+</script>
