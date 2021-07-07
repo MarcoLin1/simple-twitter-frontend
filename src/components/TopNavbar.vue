@@ -1,15 +1,16 @@
 <template>
   <div class="top-navbar-container">
     <div
-      v-if="isTrue"
+      v-if="$route.path.slice(0, 5) !== '/user'"
       class="top-navbar-title"
     >
-      帳戶設定
+      {{ currentPage }}
     </div>
     <div
       v-else
       class="top-navbar-wrapper"
     >
+      <!-- 記得改連結 -->
       <router-link
         class="top-navbar-icon"
         to="/"
@@ -29,6 +30,11 @@
 
 <script>
 export default {
+  props: {
+    currentPage: {
+      type: String
+    }
+  },
   data () {
     return {
       isTrue: true
@@ -68,6 +74,7 @@ export default {
     .top-navbar-text {
       font-weight: 500;
       font-size: 13px;
+      margin-top: 5px;
       color: $tx-gray;
     }
   }
