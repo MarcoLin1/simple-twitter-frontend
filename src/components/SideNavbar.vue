@@ -35,11 +35,16 @@
         <button
           type="submit"
           class="side-navbar-button"
+          data-toggle="modal"
+          data-target="#new__post__modal"
         >
           推文
         </button>
       </div>
     </div>
+    <template>
+      <NewPostModal />
+    </template>
     <div class="bottom-item-container">
       <router-link
         class="side-navbar-logout-wrpper"
@@ -56,10 +61,11 @@
 
 <script>
 import Logo from './../assets/icon/logo.vue'
-
+import NewPostModal from './../components/NewPostModal.vue'
 export default {
   components: {
-    Logo: Logo
+    Logo,
+    NewPostModal
   }
 }
 </script>
