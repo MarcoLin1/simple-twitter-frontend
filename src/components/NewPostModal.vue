@@ -52,13 +52,23 @@
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .modal__content {
-    border-radius: 14px;
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
+  .new__post__modal__wrapper {
+    .modal__dialog {
+      margin: 3rem auto;
+      .modal__content {
+        width: 100%;
+        height: 100%;
+        max-width: 600px;
+        max-height: 300px;
+        margin: auto;
+        background: #ffffff;
+        border-radius: 14px;
+      }
+    }
     .modal__header {
+      display: flex;
       border-bottom: 1px solid $light-gray;
+      padding: 19px;
       .close {
         margin: 0;
         padding: 0;
@@ -69,11 +79,12 @@
     }
     .modal__body__wrapper {
       display: flex;
-    }
-    .modal__body__img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
+      margin: 19px 0 0 19px;
+      .modal__body__img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      }
     }
     .modal__body__input {
       border: none;
@@ -83,12 +94,16 @@
       padding: 10px 0 0 10px;
       letter-spacing: 1px;
       line-height: 1.3rem;
-      &:focus-visible {
+       &:focus-visible {
         outline: none;
       }
     }
     .modal__footer {
       border: none;
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 15px;
+      padding-bottom: 15px;
       .modal__footer__button {
         border-radius: 100px;
         background: $orange;
@@ -98,11 +113,6 @@
         cursor: pointer;
         color: #ffffff;
       }
-    }
-  }
-  @media screen and (min-width: 576px) {
-    .modal__dialog {
-      margin: 3rem auto;
     }
   }
 </style>
