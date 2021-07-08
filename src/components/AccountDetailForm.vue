@@ -1,6 +1,6 @@
 <template>
   <div class="account__detail__form__container">
-    <TopNavbar />
+    <!-- <TopNavbar /> -->
     <form
       action="POST"
       class="account__detail__form__wrapper"
@@ -70,10 +70,10 @@
 </template>
 
 <script>
-import TopNavbar from './TopNavbar.vue'
+// import TopNavbar from './TopNavbar.vue'
 export default {
   components: {
-    TopNavbar: TopNavbar
+    // TopNavbar: TopNavbar
   }
 }
 </script>

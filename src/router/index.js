@@ -8,6 +8,11 @@ const routes = [
     name: 'login',
     component: () => import('./../components/LoginForm.vue')
   },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('./../views/Register.vue')
+  },
   // 以下路由會包含 TopUsersList / TopNavbar / SideNavBar
   {
     path: '/user',
