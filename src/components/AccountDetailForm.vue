@@ -1,6 +1,5 @@
 <template>
   <div class="account__detail__form__container">
-    <TopNavbar />
     <form
       action="POST"
       class="account__detail__form__wrapper"
@@ -12,6 +11,7 @@
           </span>
           <input
             id="account"
+            required
             type="text"
             class="account__detail__account account__detail__form__control"
           >
@@ -22,6 +22,7 @@
           </span>
           <input
             id="name"
+            required
             type="text"
             class="account__detail__name account__detail__form__control"
           >
@@ -32,6 +33,7 @@
           </span>
           <input
             id="email"
+            required
             type="email"
             class="account__detail__email account__detail__form__control"
           >
@@ -42,6 +44,7 @@
           </span>
           <input
             id="password"
+            required
             type="password"
             class="account__detail__password account__detail__form__control"
           >
@@ -52,6 +55,7 @@
           </span>
           <input
             id="check__password"
+            required
             type="password"
             class="account__detail__check__password account__detail__form__control"
           >
@@ -70,10 +74,10 @@
 </template>
 
 <script>
-import TopNavbar from './TopNavbar.vue'
+
 export default {
-  components: {
-    TopNavbar: TopNavbar
+  data () {
+
   }
 }
 </script>
@@ -82,10 +86,10 @@ export default {
 @import '../assets/scss/main.scss';
 .account__detail__form__container {
   height: 100vh;
-  border-left: 1px solid $light-gray;
+
 }
 .account__detail__form__wrapper {
-  border-top: 1px solid $light-gray;
+
 }
 .account__detail__form__table {
   padding: 2rem 2rem 0 1rem;

@@ -196,11 +196,14 @@ export default {
     }
   }
   .side-navbar-button {
-    width: 100%;
-    max-width: 210px;
+    width: 210px;
     border-radius: 100px;
     background: $orange;
     color: #ffffff;
+  }
+  .bottom-item-container {
+    width: 210px;
+    justify-content: flex-start;
   }
 }
 </style>
