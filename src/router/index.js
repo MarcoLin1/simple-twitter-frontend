@@ -28,6 +28,11 @@ const routes = [
         path: '/detail/:id',
         name: 'detail-tweet',
         component: () => import('./../views/DetailTweet.vue')
+      },
+      {
+        path: '/mainpage',
+        name: 'mainpage',
+        component: () => import('./../views/MainPage.vue')
       }
     ]
   },
