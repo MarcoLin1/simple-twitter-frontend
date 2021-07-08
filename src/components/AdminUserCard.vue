@@ -64,7 +64,7 @@
 .left-container{
   padding: 15px;
   width: 1062px;
-  background-color: salmon;
+  //這邊應該是view來設定的，先暫時放這邊
   display: grid;
   grid-template-columns: repeat( 4, 1fr);
   grid-gap: 15px;
