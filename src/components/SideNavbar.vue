@@ -10,7 +10,7 @@
       >
         <div class="icon-wrapper icon-main-wrpper" />
         <div class="content">
-          首頁
+          {{ (user.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
         </div>
       </router-link>
       <router-link
@@ -19,20 +19,29 @@
       >
         <div class="icon-wrapper icon-user-wrpper" />
         <div class="content">
-          個人資料
+          {{ (user.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
         </div>
       </router-link>
       <router-link
         class="side-navbar-setting-wrapper"
         to="setting"
       >
-        <div class="icon-wrapper icon-setting-wrpper" />
-        <div class="content">
+        <div
+          v-if="$route.path.slice(0, 6) !== '/admin'"
+          class="icon-wrapper icon-setting-wrpper"
+        />
+        <div
+          v-if="$route.path.slice(0, 6) !== '/admin'"
+          class="content"
+        >
           設定
         </div>
       </router-link>
-      <div class="side-navbar-button-wrapper">
+      <div
+        class="side-navbar-button-wrapper"
+      >
         <button
+          v-if="$route.path.slice(0, 6) !== '/admin'"
           type="submit"
           class="side-navbar-button"
           data-toggle="modal"
@@ -62,11 +71,43 @@
 <script>
 import Logo from './../assets/icon/logo.vue'
 import NewPostModal from './../components/NewPostModal.vue'
+const dummyUser = {
+  users:
+    {
+      id: 1,
+      name: 'google',
+      email: 'root@example.com',
+      password: '$2a$10$K2x6pQHkzPEKzw86x8Tc0.bfW7QVdA2Ls4AXBFkFu7xHG3UgA4Mli',
+      isAdmin: true,
+      image: 'https://i.pravatar.cc/300',
+      createdAt: '2021-07-05T09:58:39.000Z',
+      updatedAt: '2021-07-05T10:31:19.000Z',
+      Followers: [],
+      FollowerCount: 0,
+      TweetCount: 15,
+      isFollowed: false
+    }
+}
 export default {
   components: {
     Logo,
     NewPostModal
+  },
+  data () {
+    return {
+      user: []
+    }
+  },
+  created () {
+    this.fetchUser()
+  },
+  methods: {
+    fetchUser () {
+      const { users } = dummyUser
+      this.user = users
+    }
   }
+
 }
 </script>
 
@@ -86,15 +127,18 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  align-items: center;
   width: 50px;
   margin: 0 auto;
 }
 .bottom-item-container {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
-.side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .side-navbar-logout-wrpper {
+.side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .side-navbar-logout-wrpper, .side-navbar-button-wrapper {
   width: 40px;
+  height: 40px;
   border-radius: 50%;
   text-decoration: none;
   &:hover {
@@ -169,7 +213,8 @@ export default {
     max-width: 330px;
   }
   .nav-item-container {
-    width: auto;
+    width: 210px;
+    align-items: normal;
   }
   .side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .side-navbar-logout-wrpper {
     display: flex;
