@@ -2,12 +2,11 @@
   <div id="app">
     <router-view />
     <div class="m-4">
-      <UserProfile />
-      <Post />
+      <Top />
+      <Messages />
     </div>
-
-    <TopUsersList />
     <SideNavBar />
+    <Post />
   </div>
 </template>
 
@@ -15,17 +14,17 @@
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import TopUsersList from './components/TopUsersList.vue'
-import UserProfile from './components/UserProfile.vue'
+import Messages from './components/Messages.vue'
 import SideNavBar from './components/SideNavbar.vue'
 import Post from './components/Post.vue'
+import Top from './components/TopUsersList.vue'
 
 export default {
   components: {
-    TopUsersList,
-    UserProfile,
-    SideNavBar,
-    Post
+    Messages,
+    Post,
+    Top,
+    SideNavBar
 
   }
 }
