@@ -1,53 +1,59 @@
 <template>
-  <div class="new__post__modal__wrapper">
-    <div
-      id="new__post__modal"
-      class="modal"
-      tabindex="-1"
-    >
-      <div class="modal__dialog">
-        <div class="modal__content">
-          <div class="modal__header">
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span
-                aria-hidden="true"
-              >&times;</span>
-            </button>
-          </div>
-          <div class="modal__body">
-            <div class="modal__body__wrapper">
-              <img
-                src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
-                alt=""
-                class="modal__body__img"
+  <form
+    action=""
+    @click.stop.prevent="handleSubmit"
+  >
+    <div class="new__post__modal__wrapper">
+      <div
+        id="new__post__modal"
+        class="modal"
+        tabindex="-1"
+      >
+        <div class="modal__dialog">
+          <div class="modal__content">
+            <div class="modal__header">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
               >
-              <textarea
-                rows="8"
-                cols="40"
-                type="text"
-                maxlength="140"
-                placeholder="有什麼新鮮事"
-                class="modal__body__input"
-              />
+                <span
+                  aria-hidden="true"
+                >&times;</span>
+              </button>
             </div>
-          </div>
-          <div class="modal__footer">
-            <button
-              type="submit"
-              class="modal__footer__button"
-            >
-              推文
-            </button>
+            <div class="modal__body">
+              <div class="modal__body__wrapper">
+                <img
+                  src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                  alt=""
+                  class="modal__body__img"
+                >
+                <textarea
+                  v-model="tweet"
+                  rows="8"
+                  cols="40"
+                  type="text"
+                  maxlength="140"
+                  placeholder="有什麼新鮮事"
+                  class="modal__body__input"
+                />
+              </div>
+            </div>
+            <div class="modal__footer">
+              <button
+                type="submit"
+                class="modal__footer__button"
+              >
+                推文
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <style lang="scss" scoped>
@@ -116,3 +122,20 @@
     }
   }
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      tweet: ''
+    }
+  },
+  methods: {
+    handleSubmit () {
+      if (!this.tweet) {
+        console.log('You can not submit blank value')
+      }
+    }
+  }
+}
+</script>

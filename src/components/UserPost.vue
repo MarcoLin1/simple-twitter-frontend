@@ -1,5 +1,37 @@
 <template>
-  <div>
+  <div class="post__container">
+    <div class="post__itwm__wrapper">
+      <div class="post__item">
+        <!-- 記得改網址 -->
+        <router-link
+          to="/user/1/tweets"
+          type="button"
+          class="post__item__button"
+        >
+          推文
+        </router-link>
+      </div>
+      <div class="post__item">
+        <!-- 記得改網址 -->
+        <router-link
+          to="/user/1/replies"
+          type="button"
+          class="post__item__button"
+        >
+          推文回覆
+        </router-link>
+      </div>
+      <div class="post__item">
+        <!-- 記得改網址 -->
+        <router-link
+          to="/user/1/likes"
+          type="button"
+          class="post__item__button"
+        >
+          喜歡的內容
+        </router-link>
+      </div>
+    </div>
     <div
       v-for="post in posts"
       :key="post.id"
@@ -53,11 +85,35 @@
 .liked{
   color: $heart-pink;
   }
+.post__itwm__wrapper {
+  display: flex;
+  width: 390px;
+  justify-content: space-around;
+  text-decoration: none;
+  .post__item {
+    text-decoration: none;
+    width: 130px;
+    text-align: center;
+    &:hover {
+      border-bottom: 1px solid $orange;
+    }
+    .post__item__button {
+      color: $tx-gray;
+      text-decoration: none;
+      padding: 16px 0 16px 0;
+      font-weight: 700;
+      &:hover {
+        color: $orange;
+      }
+    }
+  }
+}
+
 .post {
   display: grid;
   grid-template-columns: 50px 1fr;
   max-width: 600px;
-  border: solid 1px $light-gray;
+  border-top: solid 1px $light-gray;
   padding: 15px;
   height: 124px;
   &__content {
@@ -91,6 +147,7 @@
         align-items: center;
         justify-content: space-between;
         width: 47px;
+
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -111,6 +168,7 @@
             background: $light-blue;
             }
         }
+
         &__heart{
           mask-image: url('./../assets/icon/icon_like.svg');
           -webkit-mask-image:url('./../assets/icon/icon_like.svg');
@@ -126,6 +184,7 @@
             height: 18px;
           }
         }
+
       }
     }
   }
@@ -144,6 +203,7 @@ export default {
           discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
           createdTime: '3 小時',
           isLiked: true
+
         },
         {
           id: '2',
@@ -152,33 +212,10 @@ export default {
           discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
           createdTime: '6月25日',
           isLiked: false
+
         },
         {
           id: '3',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '6',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '4',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '5',
           account: '@apple',
           name: 'Apple',
           discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
@@ -203,6 +240,7 @@ export default {
         }
       })
     }
+
   }
 }
 </script>

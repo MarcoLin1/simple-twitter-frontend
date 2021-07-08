@@ -12,6 +12,7 @@
           id="account"
           type="text"
           class="login__account"
+          required
         >
       </div>
       <div class="login__form__group">
@@ -22,6 +23,7 @@
           id="password"
           type="password"
           class="login__password login__form__control"
+          required
         >
       </div>
       <div class="login__button">
