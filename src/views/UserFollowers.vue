@@ -1,25 +1,25 @@
 <template>
   <div class="user__followers__container">
-    <div class="user__followers__side__navbar__wrapper">
+    <!-- <div class="user__followers__side__navbar__wrapper">
       <SideNavbar />
-    </div>
+    </div> -->
     <div class="user__followers__main__wrapper">
-      <TopNavbar
+      <!-- <TopNavbar
         :user="user"
         :current-page="currentPage"
-      />
+      /> -->
       <UsersList />
     </div>
-    <div class="user__followers__top__users__list__wrapper">
+  <!-- <div class="user__followers__top__users__list__wrapper">
       <TopUsersList />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import SideNavbar from './../components/SideNavbar.vue'
-import TopNavbar from './../components/TopNavbar.vue'
-import TopUsersList from './../components/TopUsersList.vue'
+// import SideNavbar from './../components/SideNavbar.vue'
+// import TopNavbar from './../components/TopNavbar.vue'
+// import TopUsersList from './../components/TopUsersList.vue'
 import UsersList from './../components/UsersList.vue'
 const dummyData = {
   users:
@@ -41,9 +41,9 @@ const dummyData = {
 }
 export default {
   components: {
-    SideNavbar,
-    TopNavbar,
-    TopUsersList,
+    // SideNavbar,
+    // TopNavbar,
+    // TopUsersList,
     UsersList
   },
   data () {
@@ -76,12 +76,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .user__followers__container {
-    display: flex;
-    justify-content: space-evenly;
+  .user__followers__container{
+    margin-top: 26px;
   }
+  //   display: flex;
+  //   justify-content: space-evenly;
+  //
   .user__followers__main__wrapper {
     width: 600px;
-    border: 1px solid $light-gray;
+    // border: 1px solid $light-gray;
   }
 </style>

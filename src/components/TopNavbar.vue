@@ -32,7 +32,8 @@
 export default {
   props: {
     currentPage: {
-      type: String
+      type: String,
+      required: true
     }
   },
   data () {
@@ -45,6 +46,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+.top-navbar-container{
+  margin-bottom: 1px;
+}
 .top-navbar-title {
   font-weight: 700;
   font-size: 18px;
