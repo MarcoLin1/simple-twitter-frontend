@@ -1,48 +1,50 @@
 <template>
-  <div class="container mt-5">
-    <p class="title">
-      跟隨誰
-    </p>
-    <div
-      v-for="user in (showAll ? users :users.slice(0,6))"
-      :key="user.id"
-      class="user__list"
-    >
-      <div class="user__list__content">
-        <div class="user__list__content__avator avatar-img" />
-        <router-link to="/">
-          <div class="user__list__content__title">
-            <span class="user__list__content__title__name user-name">
-              {{ user.name }}
-            </span>
-            <span
-              class="user__list__content__title__account"
-            >{{ user.account }}</span>
-          </div>
-        </router-link>
+  <div class="user-list-container">
+    <div class="user-list-wrapper">
+      <p class="title">
+        跟隨誰
+      </p>
+      <div
+        v-for="user in (showAll ? users :users.slice(0,6))"
+        :key="user.id"
+        class="user__list"
+      >
+        <div class="user__list__content">
+          <div class="user__list__content__avator avatar-img" />
+          <router-link to="/">
+            <div class="user__list__content__title">
+              <span class="user__list__content__title__name user-name">
+                {{ user.name }}
+              </span>
+              <span
+                class="user__list__content__title__account"
+              >{{ user.account }}</span>
+            </div>
+          </router-link>
+        </div>
+        <div class="user__list__follow-btn">
+          <button
+            v-if="user.isFollowed"
+            class="following-btn"
+            @click="removeFollowing(user.id)"
+          >
+            正在跟隨
+          </button>
+          <button
+            v-else
+            class="to-follow-btn"
+            @click="addFollowing(user.id)"
+          >
+            跟隨
+          </button>
+        </div>
       </div>
-      <div class="user__list__follow-btn">
-        <button
-          v-if="user.isFollowed"
-          class="following-btn"
-          @click="removeFollowing(user.id)"
-        >
-          正在跟隨
-        </button>
-        <button
-          v-else
-          class="to-follow-btn"
-          @click="addFollowing(user.id)"
-        >
-          跟隨
-        </button>
+      <div
+        class="read-more"
+        @click="toggleShowAll"
+      >
+        {{ showAll ? '顯示更少' : '顯示更多' }}
       </div>
-    </div>
-    <div
-      class="read-more"
-      @click="toggleShowAll"
-    >
-      {{ showAll ? '顯示更少' : '顯示更多' }}
     </div>
   </div>
 </template>
@@ -52,7 +54,10 @@
 a{
   text-decoration: none;
 }
-.container{
+.user-list-container{
+  margin: 15px 30px;
+}
+.user-list-wrapper{
   width: 350px;
   border-radius: 14px;
   background-color: $bg-gray;
