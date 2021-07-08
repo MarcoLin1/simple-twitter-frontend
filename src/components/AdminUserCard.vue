@@ -207,7 +207,7 @@ const dummyUser = [
     followingCount: 333
   },
   {
-    id: 1,
+    id: 6,
     name: 'John Doe',
     account: 'heyjohne',
     avatar: 'https://i.imgur.com/27eBUkt.jpg',
@@ -237,7 +237,7 @@ const dummyUser = [
     followingCount: 333
   },
   {
-    id: 3,
+    id: 4,
     name: 'John Doe',
     account: 'heyjohne',
     avatar: 'https://i.imgur.com/27eBUkt.jpg',

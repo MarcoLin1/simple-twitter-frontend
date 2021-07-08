@@ -26,8 +26,24 @@ const routes = [
       }
     ]
   },
-  // 這邊還會有 admin 的
-
+  // 以下路由會包含 SideNavBar
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('./../views/Admin.vue'),
+    children: [
+      {
+        path: 'tweets',
+        name: 'admin-tweets',
+        component: () => import('./../components/AdminTweetsList.vue')
+      },
+      {
+        path: 'users',
+        name: 'admin-users',
+        component: () => import('./../components/AdminUserCard.vue')
+      }
+    ]
+  },
   // {
   //   path: '/user/1/followings',
   //   name: 'user-followings',

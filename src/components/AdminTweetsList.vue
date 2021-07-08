@@ -145,7 +145,6 @@ export default {
   }
   .admin__tweets__list__main__wrapper {
     width: 100%;
-    border-left: 1px solid $light-gray;
   }
   .admin__tweets__list__body__wrapper {
     border-top: 1px solid $light-gray;

@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <div class="m-4">
-      <AdminUserCard />
-    </div>
+    <div class="m-4" />
   </div>
 </template>
 
