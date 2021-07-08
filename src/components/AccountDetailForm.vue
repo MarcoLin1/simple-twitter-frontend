@@ -3,6 +3,7 @@
     <form
       action="POST"
       class="account__detail__form__wrapper"
+      @click.stop.prevent="handleSubmit"
     >
       <div class="account__detail__form__table">
         <div class="account__detail__form__group">
@@ -11,6 +12,7 @@
           </span>
           <input
             id="account"
+            v-model="user.account"
             required
             type="text"
             class="account__detail__account account__detail__form__control"
@@ -22,6 +24,7 @@
           </span>
           <input
             id="name"
+            v-model="user.name"
             required
             type="text"
             class="account__detail__name account__detail__form__control"
@@ -33,6 +36,7 @@
           </span>
           <input
             id="email"
+            v-model="user.email"
             required
             type="email"
             class="account__detail__email account__detail__form__control"
@@ -44,6 +48,7 @@
           </span>
           <input
             id="password"
+            v-model="user.password"
             required
             type="password"
             class="account__detail__password account__detail__form__control"
@@ -55,6 +60,7 @@
           </span>
           <input
             id="check__password"
+            v-model="user.checkPassword"
             required
             type="password"
             class="account__detail__check__password account__detail__form__control"
@@ -64,8 +70,9 @@
           <button
             type="submit"
             class="account__detail__save__button"
+            :disabled="isProcessing"
           >
-            儲存
+            {{ isProcessing ? '處理中':'儲存' }}
           </button>
         </div>
       </div>
@@ -74,10 +81,50 @@
 </template>
 
 <script>
-
+const dummyUser = {
+  user:
+    {
+      id: 1,
+      name: 'google',
+      account: 'apple',
+      email: 'root@example.com',
+      password: 12345678,
+      isAdmin: true,
+      image: 'https://i.pravatar.cc/300',
+      createdAt: '2021-07-05T09:58:39.000Z',
+      updatedAt: '2021-07-05T10:31:19.000Z',
+      Followers: [],
+      FollowerCount: 0,
+      TweetCount: 15,
+      isFollowed: false
+    }
+}
 export default {
   data () {
-
+    return {
+      user: {
+        id: -1,
+        name: '',
+        account: '',
+        password: '',
+        checkPassword: ''
+      },
+      isProcessing: false
+    }
+  },
+  created () {
+    this.fetchUser()
+  },
+  methods: {
+    fetchUser () {
+      const { user } = dummyUser
+      this.user = user
+    },
+    handleSubmit () {
+      if (!this.user.name && !this.user.name && !this.user.email) {
+        console.log('Please check your input again')
+      }
+    }
   }
 }
 </script>
@@ -86,9 +133,6 @@ export default {
 @import '../assets/scss/main.scss';
 .account__detail__form__container {
   height: 100vh;
-
-}
-.account__detail__form__wrapper {
 
 }
 .account__detail__form__table {
