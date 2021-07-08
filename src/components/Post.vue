@@ -53,7 +53,6 @@
 .liked{
   color: $heart-pink;
   }
-
 .post {
   display: grid;
   grid-template-columns: 50px 1fr;
@@ -92,7 +91,6 @@
         align-items: center;
         justify-content: space-between;
         width: 47px;
-
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -113,7 +111,6 @@
             background: $light-blue;
             }
         }
-
         &__heart{
           mask-image: url('./../assets/icon/icon_like.svg');
           -webkit-mask-image:url('./../assets/icon/icon_like.svg');
@@ -129,7 +126,6 @@
             height: 18px;
           }
         }
-
       }
     }
   }
@@ -148,7 +144,6 @@ export default {
           discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
           createdTime: '3 小時',
           isLiked: true
-
         },
         {
           id: '2',
@@ -157,7 +152,6 @@ export default {
           discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
           createdTime: '6月25日',
           isLiked: false
-
         },
         {
           id: '3',
@@ -185,7 +179,6 @@ export default {
         }
       })
     }
-
   }
 }
 </script>

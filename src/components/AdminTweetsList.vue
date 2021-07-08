@@ -1,10 +1,9 @@
 <template>
   <div class="admin__tweets__list__container">
-    <div class="admin__tweets__list__side__navbar__wrapper" />
     <div
       class="admin__tweets__list__main__wrapper"
     >
-      <TopNavbar />
+      <TopNavbar :current-page="currentPage" />
       <div
         v-for="tweet in tweets"
         :key="tweet.TweetId"
@@ -118,7 +117,8 @@ export default {
   data () {
     return {
       tweets: [],
-      user: []
+      user: [],
+      currentPage: '推文清單'
     }
   },
   created () {
@@ -129,7 +129,6 @@ export default {
       const { tweets } = dummyData
       this.tweets = tweets
       this.user = tweets.user
-      console.log(tweets.TweetId)
     },
     deleteTweet (TweetId) {
       this.tweets = this.tweets.filter(tweet => tweet.TweetId !== TweetId)
@@ -142,9 +141,7 @@ export default {
 @import '../assets/scss/main.scss';
   .admin__tweets__list__container {
     display: flex;
-  }
-  .admin__tweets__list__side__navbar__wrapper {
-    width: 30%;
+    height: 100vh;
   }
   .admin__tweets__list__main__wrapper {
     width: 100%;

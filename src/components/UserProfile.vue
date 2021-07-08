@@ -1,5 +1,8 @@
 <template>
   <div class="middle-container">
+    <template>
+      <UserEditModal />
+    </template>
     <div class="profile__cover">
       <img
         :src="user.cover"
@@ -13,13 +16,18 @@
         class="avatar-img"
       >
     </div>
-    <div
+    <router-link
       class="profile__edit-btn"
+      to="/user/1/tweets"
     >
-      <button class="btn-border">
+      <button
+        class="btn-border"
+        data-toggle="modal"
+        data-target="#user__edit__modal"
+      >
         編輯個人資料
       </button>
-    </div>
+    </router-link>
 
     <div class="profile__detail">
       <div class="profile__detail__name">
@@ -120,6 +128,7 @@ a:hover{
 }
 </style>
 <script>
+import UserEditModal from './../components/UserEditModal.vue'
 const dummyUser =
     {
       id: 1,
@@ -132,6 +141,9 @@ const dummyUser =
       followingCount: 333
     }
 export default {
+  components: {
+    UserEditModal
+  },
   data () {
     return {
       user: {}
