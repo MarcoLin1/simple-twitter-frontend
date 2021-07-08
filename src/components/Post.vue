@@ -6,11 +6,7 @@
       class="post"
     >
       <div class="post__avatar">
-        <img
-          src=""
-          alt=""
-          class="avatar-img"
-        >
+        <div class="avatar-img" />
       </div>
       <div class="post__content ml-2">
         <div class="post__content__title mb-2">
