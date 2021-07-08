@@ -23,21 +23,15 @@ const routes = [
         path: '1/followers',
         name: 'user-followers',
         component: () => import('./../views/UserFollowers.vue')
+      },
+      {
+        path: '/detail/:id',
+        name: 'detail-tweet',
+        component: () => import('./../views/DetailTweet.vue')
       }
     ]
   },
-  // 這邊還會有 admin 的
 
-  // {
-  //   path: '/user/1/followings',
-  //   name: 'user-followings',
-  //   component: () => import('./../views/UserFollowings.vue')
-  // },
-  // {
-  //   path: '/user/1/followers',
-  //   name: 'user-followers',
-  //   component: () => import('./../views/UserFollowers.vue')
-  // },
   {
     path: '/',
     name: 'root'

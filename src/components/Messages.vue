@@ -115,6 +115,27 @@ const dummyData = {
         account: 'apple',
         avatar: 'https://i.imgur.com/27eBUkt.jpg'
       }
+    },
+    {
+      createdAt: '2021-03-30T16:24:55.443Z',
+      ReplyId: 4,
+      comment: 'Good Job!',
+      user: {
+        UserId: 1,
+        name: 'apple',
+        account: 'apple',
+        avatar: 'https://i.imgur.com/27eBUkt.jpg'
+      }
+    },{
+      createdAt: '2021-03-30T16:24:55.443Z',
+      ReplyId: 5,
+      comment: 'Good Job!',
+      user: {
+        UserId: 1,
+        name: 'apple',
+        account: 'apple',
+        avatar: 'https://i.imgur.com/27eBUkt.jpg'
+      }
     }
   ]
 }

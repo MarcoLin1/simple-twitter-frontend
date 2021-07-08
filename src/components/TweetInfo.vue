@@ -71,12 +71,14 @@
       .tweet__info__image {
         width: 50px;
         height: 50px;
+        object-fit: cover;
         border-radius: 50%;
       }
     }
   }
   .tweet__info__name, .tweet__info__account {
     font-size: 15px;
+    line-height: 21px;
   }
   .tweet__info__name {
     font-weight: 700;

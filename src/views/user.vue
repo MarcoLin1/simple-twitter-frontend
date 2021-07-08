@@ -32,7 +32,5 @@ export default {
   display: grid;
   grid-template-columns: 380px 600px 467px;
 }
-.middle-content{
-  border: 1px solid $light-gray;
-}
+
 </style>

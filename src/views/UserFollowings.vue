@@ -146,6 +146,6 @@ export default {
   }
   .user__followings__main__wrapper {
     width: 600px;
-    // border: 1px solid $light-gray;
+    border: 1px solid $light-gray;
   }
 </style>
