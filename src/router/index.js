@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 Vue.use(VueRouter)
 const routes = [
   {
@@ -64,6 +63,16 @@ const routes = [
         path: '2/tweets',
         name: 'user-tweets',
         component: () => import('./../views/UserTweets.vue')
+      },
+      {
+        path: '/detail/:id',
+        name: 'detail-tweet',
+        component: () => import('./../views/DetailTweet.vue')
+      },
+      {
+        path: '/mainpage',
+        name: 'mainpage',
+        component: () => import('./../views/MainPage.vue')
       }
 
     ]
