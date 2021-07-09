@@ -1,8 +1,9 @@
 <template>
   <div
     id="user__edit__modal"
-    class="user__edit__modal__container  modal"
-    tabindex="-1"
+    class="user__edit__modal__container modal"
+    role="dialog"
+    aria-labelledby="user__edit__modal"
   >
     <form
       action=""
@@ -12,11 +13,11 @@
         <div class="user__edit__modal__header__wrapper">
           <button
             class="user__edit__modal__close close"
-            data-dismiss="modal"
             aria-label="Close"
           >
             <span
               aria-hidden="true"
+              data-dismiss="modal"
             >&times;</span>
           </button>
           <div class="user__edit__modal__title">
@@ -38,12 +39,35 @@
           class="user__edit__modal__cover"
           alt=""
         >
+        <input
+          id="user__edit__modal__cover__file"
+          accept="image"
+          type="file"
+          class="user__edit__modal__icon user__edit__modal__cover__photo"
+        >
+        <button
+          class="user__edit__modal__cover__close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span
+            aria-hidden="true"
+            data-bs-dismiss="modal"
+          >&times;</span>
+        </button>
+        <div class="user__edit__modal__icon user__edit__modal__cover__delete" />
       </div>
       <div class="user__edit__modal__avatar__wrapper">
         <img
           :src="user.avatar"
           class="user__edit__modal__avatar"
           alt=""
+        >
+        <input
+          id="user__edit__modal__cover__file"
+          accept="image"
+          type="file"
+          class="user__edit__modal__icon user__edit__modal__avatar__photo"
         >
       </div>
       <div class="user__edit__modal__form__group">
@@ -85,8 +109,13 @@
   height: 654px;
   margin: 0 auto;
   border-radius: 14px;
-  position: relative;
+  transform: translate3d(63%, 20px, 200px);
+  transition: transform 0.3s ease-out;
   background: #ffffff;
+  padding-right: 0px !important;
+}
+.show {
+  padding-right: 100px;
 }
 .user__edit__modal__header {
   display: flex;
@@ -131,6 +160,25 @@
   width: 100%;
   .user__edit__modal__cover {
     height: 200px;
+    opacity: 0.6;
+  }
+  .user__edit__modal__cover__photo {
+    mask-image: url('./../assets/icon/icon_photo.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
+    @extend %icon-style;
+    position: absolute;
+    top: 135px;
+    left: 20%;
+    background: #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .user__edit__modal__cover__close {
+    position: absolute;
+    top: 135px;
+    right: 40%;
+    color: #ffffff;
+    font-size: 1.2rem;
   }
 }
 .user__edit__modal__avatar__wrapper {
@@ -144,6 +192,18 @@
     top: 195px;
     left: 15px;
     border: 5px solid white;
+    opacity: 0.8;
+  }
+  .user__edit__modal__avatar__photo {
+    mask-image: url('./../assets/icon/icon_photo.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
+    @extend %icon-style;
+    position: absolute;
+    left: -80px;
+    top: 240px;
+    background: #ffffff;
+    color: #ffffff;
+    cursor: pointer;
   }
 }
 .user__edit__modal__form__group {
