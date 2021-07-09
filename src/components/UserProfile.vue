@@ -1,6 +1,9 @@
 <template>
   <div class="middle-container">
     <template>
+      <TopNavbar />
+    </template>
+    <template>
       <UserEditModal />
     </template>
     <div class="profile__cover">
@@ -16,18 +19,54 @@
         class="avatar-img"
       >
     </div>
-    <router-link
+    <div
       class="profile__edit-btn"
-      to="/user/1/tweets"
     >
+      <!-- 當現在頁面的user 不是 currentUser，就顯示icon -->
+      <div
+        v-if="(currentUser.id !== user.id)"
+        class="profile__icon__wrapper"
+      >
+        <div class="profile__icon profile__icon__email" />
+      </div>
+      <div
+        v-if="(currentUser.id !== user.id) && (!currentUser.isSubscribe)"
+        class="profile__icon__wrapper"
+        @click="addSubscribe"
+      >
+        <div class="profile__icon profile__icon__subscribe" />
+      </div>
+      <div
+        v-if="(currentUser.id !== user.id) && (currentUser.isSubscribe)"
+        class="profile__icon__wrapper profile__icon__wrapper__checked"
+        @click="removeSubscribe"
+      >
+        <div class="profile__icon profile__icon__subscribe__checked" />
+      </div>
+      <!-- 當現在頁面的user 等於 currentUser，就顯示編輯個人資料按鈕，否則反之 -->
       <button
+        v-if="currentUser.id === user.id"
         class="btn-border"
         data-toggle="modal"
         data-target="#user__edit__modal"
       >
         編輯個人資料
       </button>
-    </router-link>
+      <button
+        v-if="(currentUser.id !== user.id) && (currentUser.isFollowing)"
+        class="btn-border btn__following"
+        @click="removeFollowing"
+      >
+        正在跟隨
+      </button>
+      <button
+        v-if="(currentUser.id !== user.id) && (!currentUser.isFollowing)"
+        class="btn-border btn__unFollowing"
+        @click="addFollowing"
+      >
+        跟隨
+      </button>
+    </div>
 
     <div class="profile__detail">
       <div class="profile__detail__name">
@@ -82,6 +121,10 @@ a:hover{
     .btn-border{
       height: 40px;
     }
+    .btn__following {
+      background: $orange;
+      color: #ffffff;
+    }
 
   }
   &__avatar{
@@ -90,7 +133,7 @@ a:hover{
       width: 140px;
       height: 140px;
       border: 5px solid white;
-      top:130px;
+      top:175px;
       left: 14px;
     }
   }
@@ -126,9 +169,45 @@ a:hover{
   }
 
 }
+.profile__icon__wrapper {
+  border: 1px solid $orange;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  .profile__icon__email, .profile__icon__subscribe, .profile__icon__subscribe__checked {
+    @extend %icon-style;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  .profile__icon__email {
+    mask-image: url('./../assets/icon/icon_email.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_email.svg');
+    background: $orange;
+  }
+  .profile__icon__subscribe {
+    mask-image: url('./../assets/icon/icon_subscribe.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_subscribe.svg');
+    background: $orange;
+  }
+  .profile__icon__subscribe__checked {
+    mask-image: url('./../assets/icon/icon_subscribe_checked.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_subscribe_checked.svg');
+    background: #ffffff;
+  }
+}
+.profile__icon__wrapper__checked {
+  background: $orange;
+}
 </style>
+
 <script>
 import UserEditModal from './../components/UserEditModal.vue'
+import TopNavbar from './../components/TopNavbar.vue'
 const dummyUser =
     {
       id: 1,
@@ -140,13 +219,28 @@ const dummyUser =
       followerCount: 12,
       followingCount: 333
     }
+const currentUser =
+    {
+      id: 2,
+      name: 'Joy',
+      account: 'hellojoy',
+      avatar: 'https://i.imgur.com/27eBUkt.jpg',
+      cover: 'https://i.imgur.com/ZDk9KqZ.png',
+      introduction: 'No you minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
+      followerCount: 12,
+      followingCount: 333,
+      isSubscribe: true,
+      isFollowing: true
+    }
 export default {
   components: {
-    UserEditModal
+    UserEditModal,
+    TopNavbar
   },
   data () {
     return {
-      user: {}
+      user: {},
+      currentUser: []
     }
   },
   created () {
@@ -155,6 +249,31 @@ export default {
   methods: {
     fetchUser () {
       this.user = { ...dummyUser }
+      this.currentUser = { ...currentUser }
+    },
+    addSubscribe () {
+      this.currentUser = {
+        ...this.currentUser,
+        isSubscribe: true
+      }
+    },
+    removeSubscribe () {
+      this.currentUser = {
+        ...this.currentUser,
+        isSubscribe: false
+      }
+    },
+    addFollowing () {
+      this.currentUser = {
+        ...this.currentUser,
+        isFollowing: true
+      }
+    },
+    removeFollowing () {
+      this.currentUser = {
+        ...this.currentUser,
+        isFollowing: false
+      }
     }
   }
 }
