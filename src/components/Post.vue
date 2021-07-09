@@ -12,7 +12,7 @@
       >
         <div class="avatar-img" />
       </div>
-      <div class="post__content ml-2">
+      <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
             {{ post.name }}
@@ -30,7 +30,11 @@
           v-if="!noreaction"
           class="post__content__reaction d-flex "
         >
-          <div class="post__content__reaction__item">
+          <div
+            class="post__content__reaction__item"
+            data-toggle="modal"
+            data-target="#reply__post__modal"
+          >
             <div class="post__content__reaction__item__message " />
             <span class="post__content__reaction__item__text">13</span>
           </div>
@@ -51,6 +55,9 @@
             >76</span>
           </div>
         </div>
+        <template>
+          <ReplyPostModal />
+        </template>
       </div>
     </div>
   </div>
@@ -68,9 +75,9 @@
   padding: 15px;
   &.noborder{
     border: 0px;
-    // background-color: salmon;
   }
   &__content {
+    margin-left: 10px;
     &__title {
       color: $tx-gray;
       &__item {
@@ -143,7 +150,11 @@
 </style>
 
 <script>
+import ReplyPostModal from './../components/ReplyPostModal.vue'
 export default {
+  components: {
+    ReplyPostModal
+  },
   props: {
     noborder: {
       type: Boolean,
@@ -161,7 +172,7 @@ export default {
           id: '1',
           account: '@apple',
           name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
           createdTime: '3 小時',
           isLiked: true
         }

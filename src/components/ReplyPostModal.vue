@@ -25,12 +25,14 @@
             </div>
             <div class="modal__body">
               <div class="modal__body__wrapper">
-                <Post
-                  :noborder="noborder"
-                  :noreaction="noreaction"
-                />
+                <div class="modal__body__wrapper__post">
+                  <PurePost />
+                </div>
                 <div class="modal__body__wrapper">
-                  <span>回覆給<span class="modal__body__wrapper__account">@apple</span></span>
+                  <div class="modal__body__wrapper__replyto">
+                    <span>回覆給 </span>
+                    <span class="modal__body__wrapper__account">@apple</span>
+                  </div>
                 </div>
                 <div class="modal__body__wrapper__reply">
                   <img
@@ -55,7 +57,7 @@
                 type="submit"
                 class="modal__footer__button"
               >
-                推文dfs
+                回覆
               </button>
             </div>
           </div>
@@ -101,11 +103,33 @@
         height: 50px;
         border-radius: 50%;
       }
-      span{
-        @include text-style(13px 500, $tx-gray)
+      .modal__body__wrapper__post{
+         position: relative;
+        &::before{
+          position: absolute;
+          content: '';
+          width: 2px;
+          height: 70%;
+          background-color: $line-gray;
+          top:calc(15px + 50px + 10px);
+          left: 40px;
+        }
       }
+      .modal__body__wrapper__replyto{
+        margin-left: 75px;
+
+        span{
+          @include text-style(13px, 500, $tx-gray);
+          &:last-child{
+            color: $orange;
+          }
+        }
+
+      }
+
       .modal__body__wrapper__reply{
         display: flex;
+        margin-top: 23px;
         padding: 15px;
       }
     }
@@ -114,7 +138,7 @@
       margin-left: 10px;
       color: #9197A3;
       resize: none;
-      padding: 10px 0 0 10px;
+      padding: 10px 0 0 0;
       letter-spacing: 1px;
       line-height: 1.3rem;
        &:focus-visible {
@@ -141,10 +165,10 @@
 </style>
 
 <script>
-import Post from './../components/Post.vue'
+import PurePost from './../components/PurePost.vue'
 export default {
   components: {
-    Post
+    PurePost
   },
   data () {
     return {

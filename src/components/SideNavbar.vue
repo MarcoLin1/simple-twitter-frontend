@@ -45,7 +45,7 @@
           type="submit"
           class="side-navbar-button"
           data-toggle="modal"
-          data-target="#reply__post__modal"
+          data-target="#new__post__modal"
         >
           推文
         </button>
@@ -53,7 +53,6 @@
     </div>
     <template>
       <NewPostModal />
-      <ReplyPostModal />
     </template>
     <div class="bottom-item-container">
       <router-link
@@ -72,7 +71,6 @@
 <script>
 import Logo from './../assets/icon/logo.vue'
 import NewPostModal from './../components/NewPostModal.vue'
-import ReplyPostModal from './../components/ReplyPostModal.vue'
 const dummyUser = {
   users:
     {
@@ -93,8 +91,7 @@ const dummyUser = {
 export default {
   components: {
     Logo,
-    NewPostModal,
-    ReplyPostModal
+    NewPostModal
   },
   data () {
     return {
