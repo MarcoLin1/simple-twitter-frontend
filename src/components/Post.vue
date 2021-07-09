@@ -4,8 +4,12 @@
       v-for="post in posts"
       :key="post.id"
       class="post"
+      :class="{ noborder: noborder }"
     >
-      <div class="post__avatar">
+      <div
+        class="
+      post__avatar"
+      >
         <div class="avatar-img" />
       </div>
       <div class="post__content ml-2">
@@ -22,7 +26,10 @@
         <div class="post__content__discription">
           {{ post.discription }}
         </div>
-        <div class="post__content__reaction d-flex ">
+        <div
+          v-if="!noreaction"
+          class="post__content__reaction d-flex "
+        >
           <div class="post__content__reaction__item">
             <div class="post__content__reaction__item__message " />
             <span class="post__content__reaction__item__text">13</span>
@@ -59,7 +66,10 @@
   max-width: 600px;
   border: solid 1px $light-gray;
   padding: 15px;
-  height: 124px;
+  &.noborder{
+    border: 0px;
+    // background-color: salmon;
+  }
   &__content {
     &__title {
       color: $tx-gray;
@@ -134,6 +144,16 @@
 
 <script>
 export default {
+  props: {
+    noborder: {
+      type: Boolean,
+      default: false
+    },
+    noreaction: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       posts: [
@@ -144,49 +164,53 @@ export default {
           discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
           createdTime: '3 小時',
           isLiked: true
-        },
-        {
-          id: '2',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '6月25日',
-          isLiked: false
-        },
-        {
-          id: '3',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '6',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '4',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '5',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
         }
+        // },
+        // {
+        //   id: '2',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '6月25日',
+        //   isLiked: false
+        // },
+        // {
+        //   id: '3',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // },
+        // {
+        //   id: '6',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // },
+        // {
+        //   id: '4',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // },
+        // {
+        //   id: '5',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // }
       ]
     }
+  },
+  created () {
+    console.log(this.border)
   },
   methods: {
     addLiked (id) {

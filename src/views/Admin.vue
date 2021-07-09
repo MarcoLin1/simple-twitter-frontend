@@ -25,11 +25,13 @@ export default {
   display: flex;
 }
 .admin__left__wrapper {
-  flex: 0 1 22%;
+  flex: 0 1 25%;
+  display: flex;
+  justify-content: center;
 }
 .admin__right__wrapper {
   width: 100%;
-  flex: 0 1 78%;
+  flex: 0 1 75%;
   border-left: 1px solid $light-gray;
 }
 </style>

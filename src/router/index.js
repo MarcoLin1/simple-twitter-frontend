@@ -19,6 +19,11 @@ const routes = [
     name: 'signup',
     component: () => import('./../views/Register.vue')
   },
+  {
+    path: '/reply',
+    name: 'reply',
+    component: () => import('./../components/ReplyPostModal.vue')
+  },
   // 以下路由會包含 TopUsersList / SideNavBar
   {
     path: '/user',
@@ -45,6 +50,7 @@ const routes = [
         name: 'mainpage',
         component: () => import('./../views/MainPage.vue')
       }
+
     ]
   },
   // 以下路由會包含 SideNavBar

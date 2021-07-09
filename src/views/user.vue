@@ -29,15 +29,17 @@ export default {
   display: flex;
   justify-content: start;
   .left-content{
-    flex:0 1 22%;
+    flex:0 1 25%;
+    display: flex;
+    justify-content: center;
   }
   .middle-content{
     display: flex;
     width: 100%;
-    flex:0 1 600px;
+    flex:0 1 40%;
   }
   .right-content{
-    flex:0 1 30%;
+    flex:0 1 35%;
   }
 }
 
