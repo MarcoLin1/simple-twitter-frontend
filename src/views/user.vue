@@ -1,10 +1,9 @@
 <template>
   <div class="main-container">
-    <div class="left__content">
+    <div class="left-content">
       <SideNavbar />
     </div>
     <div class="middle-content">
-      <TopNavbar />
       <router-view />
     </div>
     <div class="right-content">
@@ -14,14 +13,12 @@
 </template>
 
 <script>
-import TopNavbar from './../components/TopNavbar.vue'
 import SideNavbar from './../components/SideNavbar.vue'
 import TopUsersList from './../components/TopUsersList.vue'
 export default {
   components: {
     SideNavbar,
-    TopUsersList,
-    TopNavbar
+    TopUsersList
   }
 }
 </script>
@@ -29,8 +26,19 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .main-container{
-  display: grid;
-  grid-template-columns: 380px 600px 467px;
+  display: flex;
+  justify-content: start;
+  .left-content{
+    flex:0 1 23%;
+  }
+  .middle-content{
+    display: flex;
+    width: 100%;
+    flex:0 1 600px;
+  }
+  .right-content{
+    flex:0 1 30%;
+  }
 }
 
 </style>

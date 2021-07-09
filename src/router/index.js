@@ -19,7 +19,7 @@ const routes = [
     name: 'signup',
     component: () => import('./../views/Register.vue')
   },
-  // 以下路由會包含 TopUsersList / TopNavbar / SideNavBar
+  // 以下路由會包含 TopUsersList / SideNavBar
   {
     path: '/user',
     name: 'user',
@@ -56,7 +56,7 @@ const routes = [
       {
         path: 'tweets',
         name: 'admin-tweets',
-        component: () => import('./../components/AdminTweetsList.vue')
+        component: () => import('./../views/AdminTweets.vue')
       },
       {
         path: 'users',

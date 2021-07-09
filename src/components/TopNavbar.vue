@@ -1,12 +1,15 @@
 <template>
   <div class="top-navbar-container">
-    <!-- <div
+    <div
       v-if="$route.path.slice(0, 5) !== '/user'"
       class="top-navbar-title"
     >
       {{ currentPage }}
-    </div> -->
-    <div class="top-navbar-wrapper">
+    </div>
+    <div
+      v-else
+      class="top-navbar-wrapper"
+    >
       <!-- 記得改連結 -->
       <router-link
         class="top-navbar-icon"
@@ -26,33 +29,34 @@
 </template>
 
 <script>
-// export default {
-//   props: {
-//     currentPage: {
-//       type: String,
-//       required: true
-//     }
-//   },
-//   data () {
-//     return {
-//       isTrue: true
-//     }
-//   }
-// }
+export default {
+  props: {
+    currentPage: {
+      type: String,
+      required: true
+    }
+  },
+  data () {
+    return {
+      isTrue: true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .top-navbar-container{
-  margin-bottom: 1px;
-  border-left: 1px solid $light-gray;
-  border-right: 1px solid $light-gray;
+  // // margin-bottom: 1px;
+  // border-left: 1px solid $light-gray;
+  // border-right: 1px solid $light-gray;
 }
 .top-navbar-title {
   font-weight: 700;
   font-size: 18px;
   text-align: left;
   padding: 13px 0 14px 16px;
+  margin-left: -1px;
 }
 .top-navbar-wrapper {
   display: flex;
