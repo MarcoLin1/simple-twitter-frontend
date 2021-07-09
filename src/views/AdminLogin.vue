@@ -10,10 +10,6 @@ export default {
   components: {
     LoginForm
 
-  },
-  created () {
-    console.log(this.$route.path)
-    console.log('1223')
   }
 }
 </script>

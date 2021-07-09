@@ -4,8 +4,9 @@
       <Logo />
     </div>
     <div class="login__title mt-4 mb-4">
-      登入Alphitter
+      {{ $route.path.slice(0, 6) === '/admin' ? '後台登入':'登入Alphitter' }}
     </div>
+
     <div class="login__form__table">
       <div class="login__form__group">
         <span class="login__form__group__title">
@@ -60,6 +61,7 @@ export default {
   components: {
     Logo
   }
+
 }
 </script>
 <style lang="scss" scoped>

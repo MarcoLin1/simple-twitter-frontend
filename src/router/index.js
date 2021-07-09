@@ -4,9 +4,15 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: () => import('./../views/AdminLogin.vue')
+  },
+
+  {
     path: '/login',
     name: 'login',
-    component: () => import('./../components/LoginForm.vue')
+    component: () => import('./../views/Login.vue')
   },
   {
     path: '/signup',
