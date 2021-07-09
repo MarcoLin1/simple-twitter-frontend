@@ -46,11 +46,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-.top-navbar-container{
-  // // margin-bottom: 1px;
-  // border-left: 1px solid $light-gray;
-  // border-right: 1px solid $light-gray;
-}
+// .top-navbar-container
+//   // // margin-bottom: 1px;
+//   // border-left: 1px solid $light-gray;
+//   // border-right: 1px solid $light-gray;
+//
 .top-navbar-title {
   font-weight: 700;
   font-size: 18px;
