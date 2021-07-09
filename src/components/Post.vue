@@ -4,11 +4,15 @@
       v-for="post in posts"
       :key="post.id"
       class="post"
+      :class="{ noborder: noborder }"
     >
-      <div class="post__avatar">
+      <div
+        class="
+      post__avatar"
+      >
         <div class="avatar-img" />
       </div>
-      <div class="post__content ml-2">
+      <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
             {{ post.name }}
@@ -22,8 +26,15 @@
         <div class="post__content__discription">
           {{ post.discription }}
         </div>
-        <div class="post__content__reaction d-flex ">
-          <div class="post__content__reaction__item">
+        <div
+          v-if="!noreaction"
+          class="post__content__reaction d-flex "
+        >
+          <div
+            class="post__content__reaction__item"
+            data-toggle="modal"
+            data-target="#reply__post__modal"
+          >
             <div class="post__content__reaction__item__message " />
             <span class="post__content__reaction__item__text">13</span>
           </div>
@@ -44,6 +55,9 @@
             >76</span>
           </div>
         </div>
+        <template>
+          <ReplyPostModal />
+        </template>
       </div>
     </div>
   </div>
@@ -59,8 +73,11 @@
   max-width: 600px;
   border: solid 1px $light-gray;
   padding: 15px;
-  height: 124px;
+  &.noborder{
+    border: 0px;
+  }
   &__content {
+    margin-left: 10px;
     &__title {
       color: $tx-gray;
       &__item {
@@ -91,6 +108,18 @@
         align-items: center;
         justify-content: space-between;
         width: 47px;
+        &:first-child:hover{
+          color: $light-blue;
+          div{
+            background: $light-blue;
+          }
+        }
+        &:last-child:hover{
+          color: $heart-pink;
+          div{
+            background: $heart-pink;
+          }
+        }
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -107,17 +136,12 @@
           mask-image: url('./../assets/icon/icon_message.svg');
           -webkit-mask-image:url('./../assets/icon/icon_message.svg');
           background: $tx-gray;
-          &:hover {
-            background: $light-blue;
-            }
         }
         &__heart{
           mask-image: url('./../assets/icon/icon_like.svg');
           -webkit-mask-image:url('./../assets/icon/icon_like.svg');
           background: $tx-gray;
-          &:hover {
-            background: $heart-pink;
-          }
+
           &--liked{
             mask-image: url('./../assets/icon/icon_isliked.svg');
             -webkit-mask-image:url('./../assets/icon/icon_isliked.svg');
@@ -133,7 +157,21 @@
 </style>
 
 <script>
+import ReplyPostModal from './../components/ReplyPostModal.vue'
 export default {
+  components: {
+    ReplyPostModal
+  },
+  props: {
+    noborder: {
+      type: Boolean,
+      default: false
+    },
+    noreaction: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       posts: [
@@ -141,28 +179,56 @@ export default {
           id: '1',
           account: '@apple',
           name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        },
-        {
-          id: '2',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '6月25日',
-          isLiked: false
-        },
-        {
-          id: '3',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
           createdTime: '3 小時',
           isLiked: true
         }
+        // },
+        // {
+        //   id: '2',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '6月25日',
+        //   isLiked: false
+        // },
+        // {
+        //   id: '3',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // },
+        // {
+        //   id: '6',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // },
+        // {
+        //   id: '4',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // },
+        // {
+        //   id: '5',
+        //   account: '@apple',
+        //   name: 'Apple',
+        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+        //   createdTime: '3 小時',
+        //   isLiked: true
+        // }
       ]
     }
+  },
+  created () {
+    console.log(this.border)
   },
   methods: {
     addLiked (id) {

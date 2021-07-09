@@ -1,8 +1,12 @@
 <template>
   <form action="POST">
-    <div class="login__title mt-5 mb-4">
-      登入Alphitter
+    <div class="logo-wrapper">
+      <Logo />
     </div>
+    <div class="login__title mt-4 mb-4">
+      {{ $route.path.slice(0, 6) === '/admin' ? '後台登入':'登入Alphitter' }}
+    </div>
+
     <div class="login__form__table">
       <div class="login__form__group">
         <span class="login__form__group__title">
@@ -51,9 +55,23 @@
     </div>
   </form>
 </template>
+<script>
+import Logo from './../assets/icon/logo.vue'
+export default {
+  components: {
+    Logo
+  }
 
+}
+</script>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+.logo-wrapper{
+  width: 100%;
+  margin: 65px 0 48px 0 ;
+  display: flex;
+  justify-content: center;
+}
 .login__title {
   font-weight: bold;
   text-align: center;

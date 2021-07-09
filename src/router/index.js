@@ -1,12 +1,27 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 Vue.use(VueRouter)
 const routes = [
   {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: () => import('./../views/AdminLogin.vue')
+  },
+
+  {
     path: '/login',
     name: 'login',
-    component: () => import('./../components/LoginForm.vue')
+    component: () => import('./../views/Login.vue')
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('./../views/Register.vue')
+  },
+  {
+    path: '/reply',
+    name: 'reply',
+    component: () => import('./../components/ReplyPostModal.vue')
   },
   {
     path: '/setting',
@@ -48,7 +63,18 @@ const routes = [
         path: '2/tweets',
         name: 'user-tweets',
         component: () => import('./../views/UserTweets.vue')
+      },
+      {
+        path: '/detail/:id',
+        name: 'detail-tweet',
+        component: () => import('./../views/DetailTweet.vue')
+      },
+      {
+        path: '/mainpage',
+        name: 'mainpage',
+        component: () => import('./../views/MainPage.vue')
       }
+
     ]
   },
   // 以下路由會包含 SideNavBar
@@ -60,25 +86,15 @@ const routes = [
       {
         path: 'tweets',
         name: 'admin-tweets',
-        component: () => import('./../components/AdminTweetsList.vue')
+        component: () => import('./../views/AdminTweets.vue')
       },
       {
         path: 'users',
         name: 'admin-users',
-        component: () => import('./../components/AdminUserCard.vue')
+        component: () => import('./../views/AdminUsers.vue')
       }
     ]
   },
-  // {
-  //   path: '/user/1/followings',
-  //   name: 'user-followings',
-  //   component: () => import('./../views/UserFollowings.vue')
-  // },
-  // {
-  //   path: '/user/1/followers',
-  //   name: 'user-followers',
-  //   component: () => import('./../views/UserFollowers.vue')
-  // },
   {
     path: '/',
     name: 'root'
