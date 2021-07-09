@@ -116,7 +116,7 @@ export default {
 .side-navbar-container {
   width: 100%;
   max-width: 150px;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
