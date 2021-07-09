@@ -104,13 +104,29 @@
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+
+%user__edit__icon__style {
+  @extend %icon-style;
+  position: absolute;
+  background: #ffffff;
+  color: #ffffff;
+  cursor: pointer;
+}
+%user__edit__input__style {
+  padding-top: 30px;
+  padding-left: 10px;
+  border-radius: 4px;
+  border: none;
+  background: $bg-gray;
+  width: 100%;
+}
+
 .user__edit__modal__container {
   width:600px;
   height: 654px;
   margin: 0 auto;
   border-radius: 14px;
-  transform: translate3d(63%, 20px, 200px);
-  transition: transform 0.3s ease-out;
+  transform: translate(60%, 20px);
   background: #ffffff;
   padding-right: 0px !important;
 }
@@ -165,13 +181,9 @@
   .user__edit__modal__cover__photo {
     mask-image: url('./../assets/icon/icon_photo.svg');
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
-    @extend %icon-style;
-    position: absolute;
+    @extend %user__edit__icon__style;
     top: 135px;
     left: 20%;
-    background: #ffffff;
-    color: #ffffff;
-    cursor: pointer;
   }
   .user__edit__modal__cover__close {
     position: absolute;
@@ -197,13 +209,9 @@
   .user__edit__modal__avatar__photo {
     mask-image: url('./../assets/icon/icon_photo.svg');
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
-    @extend %icon-style;
-    position: absolute;
+    @extend %user__edit__icon__style;
     left: -80px;
     top: 240px;
-    background: #ffffff;
-    color: #ffffff;
-    cursor: pointer;
   }
 }
 .user__edit__modal__form__group {
@@ -215,15 +223,10 @@
   }
   .user__edit__modal__input {
     position: relative;
-    border: none;
-    width: 100%;
-    height: 50px;
-    background: #f5f8fa;
+    @extend %user__edit__input__style;
     border-bottom: 2px solid $tx-gray;
-    border-radius: 4px;
+    height: 50px;
     font-size: 1rem;
-    padding-top: 30px;
-    padding-left: 10px;
     &:focus {
       outline: none;
       box-shadow: 3px 3px 10px 0px #657786;
@@ -236,13 +239,8 @@
   margin: 20px auto 0 auto;
   position: relative;
   .user__edit__modal__intro {
-    width: 100%;
-    border: none;
-    background: #f5f8fa;
+    @extend %user__edit__input__style;
     border-bottom: 2px solid $tx-gray;
-    border-radius: 4px;
-    padding-top: 30px;
-    padding-left: 10px;
     line-height: 1.5rem;
     resize: none;
     &:focus {
