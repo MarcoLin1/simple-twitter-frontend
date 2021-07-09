@@ -24,7 +24,7 @@
       </router-link>
       <router-link
         class="side-navbar-setting-wrapper"
-        to="setting"
+        to="/setting"
       >
         <div
           v-if="$route.path.slice(0, 6) !== '/admin'"

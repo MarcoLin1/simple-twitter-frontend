@@ -8,7 +8,12 @@ const routes = [
     name: 'login',
     component: () => import('./../components/LoginForm.vue')
   },
-  // 以下路由會包含 TopUsersList / TopNavbar / SideNavBar
+  {
+    path: '/setting',
+    name: 'setting',
+    component: () => import('./../views/Setting.vue')
+  },
+  // 以下路由會包含 TopUsersList / SideNavBar
   {
     path: '/user',
     name: 'user',

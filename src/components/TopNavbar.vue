@@ -11,13 +11,13 @@
       class="top-navbar-wrapper"
     >
       <!-- 記得改連結 -->
-      <router-link
+      <div
         class="top-navbar-icon"
-        to="/"
+        @click="$router.go(-1)"
       >
         <span>
           &larr;</span>
-      </router-link>
+      </div>
       <div class="top-navbar-name">
         John Doe
         <div class="top-navbar-text">
@@ -57,7 +57,7 @@ export default {
 }
 .top-navbar-wrapper {
   display: flex;
-  margin-bottom: 7px;
+  margin-bottom: 20px;
   padding-top: 10px;
   .top-navbar-icon {
     display: flex;
