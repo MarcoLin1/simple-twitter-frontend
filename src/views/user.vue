@@ -29,7 +29,7 @@ export default {
   display: flex;
   justify-content: start;
   .left-content{
-    flex:0 1 23%;
+    flex:0 1 22%;
   }
   .middle-content{
     display: flex;
