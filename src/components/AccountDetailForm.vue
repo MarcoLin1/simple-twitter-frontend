@@ -158,6 +158,7 @@ export default {
 }
 .account__detail__form__control {
   @extend %form-input-style;
+  padding-bottom: 10px;
   &:focus {
     outline: none;
     box-shadow: 3px 3px 10px 0px $tx-gray;
