@@ -27,7 +27,7 @@ export default {
 @import '../assets/scss/main.scss';
 .main-container{
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   .left-content{
     flex:0 1 25%;
     display: flex;

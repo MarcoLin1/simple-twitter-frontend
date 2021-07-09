@@ -1,6 +1,7 @@
 <template>
   <div class="admin__tweets__list__container">
     <div
+      v-if="$route.path.slice(0, 5) !== '/admin'"
       class="admin__tweets__list__main__wrapper"
     >
       <TopNavbar :current-page="currentPage" />
@@ -13,7 +14,7 @@
           <img
             :src="tweet.user.avatar"
             alt=""
-            class="admin__wteets__list__image"
+            class="admin__tweets__list__image"
           >
         </div>
         <div class="admin__tweets__list__content__wrapper">
@@ -154,7 +155,7 @@ export default {
     .admin__tweets__list__image__wrapper {
       margin-right: 10px;
       margin-left: 15px;
-      .admin__wteets__list__image {
+      .admin__tweets__list__image {
         width: 50px;
         height: 50px;
         border-radius: 50%;
