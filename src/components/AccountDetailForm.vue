@@ -120,10 +120,16 @@ export default {
       const { user } = dummyUser
       this.user = user
     },
-    handleSubmit () {
+    handleSubmit (e) {
       if (!this.user.name && !this.user.name && !this.user.email) {
         console.log('Please check your input again')
       }
+      this.isProcessing = true
+
+      // 將form資料轉成formData傳至後端
+      const form = e.target
+      const formData = new FormData(form)
+      console.log(formData)
     }
   }
 }
