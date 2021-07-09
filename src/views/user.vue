@@ -30,12 +30,11 @@ export default {
   grid-template-columns: 100px 1fr 50px 2fr 50px 1fr 100px;
   grid-template-areas: " . left . middle . right .";
 }
-.left__content {
+.left-content {
   grid-area: left;
 }
 .middle-content{
   grid-area: middle;
-  border: 1px solid $light-gray;
   height: auto;
   width: 600px;
 }

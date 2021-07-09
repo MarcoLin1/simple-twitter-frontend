@@ -93,7 +93,7 @@
   color: $heart-pink;
   }
 .post__container{
-  border: solid 1px $light-gray;
+  // border: solid 1px $light-gray;
   width: 600px;
 }
 .post__itwm__wrapper {

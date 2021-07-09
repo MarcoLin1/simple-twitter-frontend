@@ -108,6 +108,18 @@
         align-items: center;
         justify-content: space-between;
         width: 47px;
+        &:first-child:hover{
+          color: $light-blue;
+          div{
+            background: $light-blue;
+          }
+        }
+        &:last-child:hover{
+          color: $heart-pink;
+          div{
+            background: $heart-pink;
+          }
+        }
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -124,17 +136,12 @@
           mask-image: url('./../assets/icon/icon_message.svg');
           -webkit-mask-image:url('./../assets/icon/icon_message.svg');
           background: $tx-gray;
-          &:hover {
-            background: $light-blue;
-            }
         }
         &__heart{
           mask-image: url('./../assets/icon/icon_like.svg');
           -webkit-mask-image:url('./../assets/icon/icon_like.svg');
           background: $tx-gray;
-          &:hover {
-            background: $heart-pink;
-          }
+
           &--liked{
             mask-image: url('./../assets/icon/icon_isliked.svg');
             -webkit-mask-image:url('./../assets/icon/icon_isliked.svg');
