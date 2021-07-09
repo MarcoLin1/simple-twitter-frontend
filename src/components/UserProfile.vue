@@ -1,7 +1,7 @@
 <template>
   <div class="middle-container">
     <template>
-      <TopNavbar />
+      <TopNavbar :current-page="currentPage" />
     </template>
     <template>
       <UserEditModal />
@@ -240,7 +240,8 @@ export default {
   data () {
     return {
       user: {},
-      currentUser: []
+      currentUser: [],
+      currentPage: 'userProfile'
     }
   },
   created () {

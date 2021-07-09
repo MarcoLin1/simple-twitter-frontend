@@ -8,6 +8,7 @@
     <form
       action=""
       class="modal__dialog modal__content"
+      @submit.stop.prevent="handleSubmit"
     >
       <div class="user__edit__modal__header">
         <div class="user__edit__modal__header__wrapper">
@@ -26,7 +27,7 @@
         </div>
         <div class="user__edit__modal__button__wrapper">
           <button
-            type="button"
+            type="submit"
             class="user__edit__modal__button"
           >
             儲存
@@ -44,6 +45,7 @@
           accept="image"
           type="file"
           class="user__edit__modal__icon user__edit__modal__cover__photo"
+          @change="handleCoverChange"
         >
         <button
           class="user__edit__modal__cover__close"
@@ -64,10 +66,11 @@
           alt=""
         >
         <input
-          id="user__edit__modal__cover__file"
+          id="user__edit__modal__avatar__file"
           accept="image"
           type="file"
           class="user__edit__modal__icon user__edit__modal__avatar__photo"
+          @change="handleAvatarChange"
         >
       </div>
       <div class="user__edit__modal__form__group">
@@ -75,12 +78,15 @@
           名稱
         </span>
         <input
+          v-model="user.name"
           type="text"
           class="user__edit__modal__input"
+          maxlength="50"
+          required
         >
       </div>
       <div class="user__edit__modal__number">
-        8 / 50
+        {{ user.name.length }} / 50
       </div>
       <div class="user__edit__modal__intro__wrapper">
         <span class="user__edit__modal__intro__title">
@@ -88,15 +94,17 @@
         </span>
         <textarea
           id=""
+          v-model="user.introduction"
           name=""
           cols="40"
           rows="6"
           type="text"
           class="user__edit__modal__intro"
+          maxlength="160"
         />
       </div>
       <div class="user__edit__modal__number">
-        0 / 160
+        {{ user.introduction.length }} / 160
       </div>
     </form>
   </div>
@@ -176,6 +184,7 @@
   width: 100%;
   .user__edit__modal__cover {
     height: 200px;
+    width: 600px;
     opacity: 0.6;
   }
   .user__edit__modal__cover__photo {
@@ -286,6 +295,30 @@ export default {
   methods: {
     fetchUser () {
       this.user = dummyUser
+    },
+    handleAvatarChange (e) {
+      const files = e.target.files
+      if (files.length === 0) {
+        this.user.avatar = ''
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.user.avatar = imageURL
+      }
+    },
+    handleCoverChange (e) {
+      const files = e.target.files
+      if (files.length === 0) {
+        this.user.cover = ''
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.user.cover = imageURL
+      }
+    },
+    // 處理name, introducation, avatar, cover的資料轉成formData傳給後端
+    handleSubmit (e) {
+      if (!this.user.name) {
+        console.log('please fill in your name')
+      }
     }
   }
 }
