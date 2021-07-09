@@ -11,13 +11,13 @@
       class="top-navbar-wrapper"
     >
       <!-- 記得改連結 -->
-      <router-link
+      <div
         class="top-navbar-icon"
-        to="/"
+        @click="$router.go(-1)"
       >
         <span>
           &larr;</span>
-      </router-link>
+      </div>
       <div class="top-navbar-name">
         John Doe
         <div class="top-navbar-text">

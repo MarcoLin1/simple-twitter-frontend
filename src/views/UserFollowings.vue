@@ -1,25 +1,17 @@
 <template>
   <div class="user__followings__container">
-    <!-- <div class="user__followings__side__navbar__wrapper">
-      <SideNavbar />
-    </div> -->
+    <TopNavbar
+      :user="user"
+      :current-page="currentPage"
+    />
     <div class="user__followings__main__wrapper">
-      <!-- <TopNavbar
-        :user="user"
-        :current-page="currentPage"
-      /> -->
       <UsersList />
     </div>
-    <!-- <div class="user__followings__top__users__list__wrapper">
-      <TopUsersList />
-    </div> -->
   </div>
 </template>
 
 <script>
-// import SideNavbar from './../components/SideNavbar.vue'
-// import TopNavbar from './../components/TopNavbar.vue'
-// import TopUsersList from './../components/TopUsersList.vue'
+import TopNavbar from './../components/TopNavbar.vue'
 import UsersList from './../components/UsersList.vue'
 const dummyData = {
   tweets: [
@@ -100,9 +92,7 @@ const dummyUser = {
 }
 export default {
   components: {
-    // SideNavbar,
-    // TopNavbar,
-    // TopUsersList,
+    TopNavbar,
     UsersList
   },
   data () {
@@ -141,11 +131,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .user__followings__container {
-    margin-top: 26px;
-  }
   .user__followings__main__wrapper {
     width: 600px;
-    border: 1px solid $light-gray;
+    margin-top: 26px;
   }
 </style>

@@ -26,21 +26,21 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .main-container{
-  display: flex;
-  justify-content: flex-start;
-  .left-content{
-    flex:0 1 25%;
-    display: flex;
-    justify-content: center;
-  }
-  .middle-content{
-    display: flex;
-    width: 100%;
-    flex:0 1 40%;
-  }
-  .right-content{
-    flex:0 1 35%;
-  }
+  display: grid;
+  grid-template-columns: 100px 1fr 50px 2fr 50px 1fr 100px;
+  grid-template-areas: " . left . middle . right .";
+}
+.left__content {
+  grid-area: left;
+}
+.middle-content{
+  grid-area: middle;
+  border: 1px solid $light-gray;
+  height: auto;
+  width: 600px;
+}
+.right-content {
+  grid-area: right;
 }
 
 </style>

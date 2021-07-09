@@ -24,6 +24,11 @@ const routes = [
     name: 'reply',
     component: () => import('./../components/ReplyPostModal.vue')
   },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: () => import('./../views/Setting.vue')
+  },
   // 以下路由會包含 TopUsersList / SideNavBar
   {
     path: '/user',
@@ -41,14 +46,24 @@ const routes = [
         component: () => import('./../views/UserFollowers.vue')
       },
       {
-        path: '/detail/:id',
-        name: 'detail-tweet',
-        component: () => import('./../views/DetailTweet.vue')
+        path: '1/tweets',
+        name: 'user-tweets',
+        component: () => import('./../views/UserTweets.vue')
       },
       {
-        path: '/mainpage',
-        name: 'mainpage',
-        component: () => import('./../views/MainPage.vue')
+        path: '1/likes',
+        name: 'user-likes',
+        component: () => import('./../views/UserLikes.vue')
+      },
+      {
+        path: '1/replies',
+        name: 'user-replies',
+        component: () => import('./../views/UserReplies.vue')
+      },
+      {
+        path: '2/tweets',
+        name: 'user-tweets',
+        component: () => import('./../views/UserTweets.vue')
       }
 
     ]

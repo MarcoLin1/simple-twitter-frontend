@@ -24,7 +24,7 @@
       </router-link>
       <router-link
         class="side-navbar-setting-wrapper"
-        to="setting"
+        to="/setting"
       >
         <div
           v-if="$route.path.slice(0, 6) !== '/admin'"
@@ -116,7 +116,7 @@ export default {
 .side-navbar-container {
   width: 100%;
   max-width: 150px;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
