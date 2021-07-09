@@ -37,8 +37,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
   .tweet__form__wrapper {
-    width: auto;
-    max-width: 600px;
+    width: 600px;
     height: auto;
     margin: 0 auto;
     border: 1px solid $light-gray;

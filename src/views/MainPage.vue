@@ -4,19 +4,19 @@
       <TopNavbar :current-page="'首頁'" />
     </div>
     <TweetForm />
-    <Post />
+    <UserPost />
   </div>
 </template>
 <script>
 import TweetForm from './../components/TweetForm.vue'
-import Post from './../components/Post.vue'
+import UserPost from './../components/UserPost.vue'
 import TopNavbar from './../components/TopNavbar.vue'
 
 export default {
   components: {
     TopNavbar,
     TweetForm,
-    Post
+    UserPost
 
   }
 }

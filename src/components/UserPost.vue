@@ -55,7 +55,11 @@
           {{ post.discription }}
         </div>
         <div class="post__content__reaction d-flex ">
-          <div class="post__content__reaction__item">
+          <div
+            class="post__content__reaction__item "
+            data-toggle="modal"
+            data-target="#reply__post__modal"
+          >
             <div class="post__content__reaction__item__message " />
             <span class="post__content__reaction__item__text">13</span>
           </div>
@@ -75,6 +79,9 @@
               :class="{liked:post.isLiked}"
             >76</span>
           </div>
+          <template>
+            <ReplyPostModal />
+          </template>
         </div>
       </div>
     </div>
@@ -85,6 +92,10 @@
 .liked{
   color: $heart-pink;
   }
+.post__container{
+  border: solid 1px $light-gray;
+  width: 600px;
+}
 .post__itwm__wrapper {
   display: flex;
   width: 390px;
@@ -192,7 +203,12 @@
 </style>
 
 <script>
+import ReplyPostModal from './../components/ReplyPostModal.vue'
+
 export default {
+  components: {
+    ReplyPostModal
+  },
   data () {
     return {
       posts: [
