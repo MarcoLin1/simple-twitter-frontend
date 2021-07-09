@@ -4,7 +4,7 @@
       <SideNavbar />
     </div>
     <div class="middle-content">
-      <TopNavbar />
+      <!-- <TopNavbar /> -->
       <router-view />
     </div>
     <div class="right-content">
@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import TopNavbar from './../components/TopNavbar.vue'
+// import TopNavbar from './../components/TopNavbar.vue'
 import SideNavbar from './../components/SideNavbar.vue'
 import TopUsersList from './../components/TopUsersList.vue'
 export default {
   components: {
     SideNavbar,
-    TopUsersList,
-    TopNavbar
+    TopUsersList
+    // TopNavbar
   }
 }
 </script>

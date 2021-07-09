@@ -23,6 +23,26 @@ const routes = [
         path: '1/followers',
         name: 'user-followers',
         component: () => import('./../views/UserFollowers.vue')
+      },
+      {
+        path: '1/tweets',
+        name: 'user-tweets',
+        component: () => import('./../views/UserTweets.vue')
+      },
+      {
+        path: '1/likes',
+        name: 'user-likes',
+        component: () => import('./../views/UserLikes.vue')
+      },
+      {
+        path: '1/replies',
+        name: 'user-replies',
+        component: () => import('./../views/UserReplies.vue')
+      },
+      {
+        path: '2/tweets',
+        name: 'user-tweets',
+        component: () => import('./../views/UserTweets.vue')
       }
     ]
   },

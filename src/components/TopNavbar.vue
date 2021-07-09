@@ -57,7 +57,7 @@ export default {
 }
 .top-navbar-wrapper {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 7px;
   padding-top: 10px;
   .top-navbar-icon {
     display: flex;
