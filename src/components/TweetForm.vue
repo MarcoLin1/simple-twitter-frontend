@@ -40,7 +40,7 @@ export default {
     width: 600px;
     height: auto;
     margin: 0 auto;
-    border: 1px solid $light-gray;
+    border-top: 1px solid $light-gray;
     border-bottom: 10px solid $light-gray;
     padding: 10px 15px 10px 15px;
   }

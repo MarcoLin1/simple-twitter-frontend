@@ -29,14 +29,15 @@ export default {
   display: grid;
   grid-template-columns: 100px 1fr 50px 2fr 50px 1fr 100px;
   grid-template-areas: " . left . middle . right .";
+
 }
 .left-content {
   grid-area: left;
 }
 .middle-content{
   grid-area: middle;
-  height: auto;
   width: 600px;
+    border: 1px solid $light-gray;
 }
 .right-content {
   grid-area: right;

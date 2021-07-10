@@ -1,46 +1,52 @@
 <template>
   <div class="post__container">
-    <div class="post__itwm__wrapper">
-      <div class="post__item">
-        <!-- 記得改網址 -->
-        <router-link
-          to="/user/1/tweets"
-          type="button"
-          class="post__item__button"
-        >
-          推文
-        </router-link>
+    <!-- 切換選單 -->
+    <template v-if="$route.path.slice(0, 10) !== '/mainpage'">
+      <div class="post__item__wrapper">
+        <div class="post__item">
+          <!-- 記得改網址 -->
+          <router-link
+            to="/user/1/tweets"
+            type="button"
+            class="post__item__button"
+          >
+            推文
+          </router-link>
+        </div>
+        <div class="post__item">
+          <!-- 記得改網址 -->
+          <router-link
+            to="/user/1/replies"
+            type="button"
+            class="post__item__button"
+          >
+            推文回覆
+          </router-link>
+        </div>
+        <div class="post__item">
+          <!-- 記得改網址 -->
+          <router-link
+            to="/user/1/likes"
+            type="button"
+            class="post__item__button"
+          >
+            喜歡的內容
+          </router-link>
+        </div>
       </div>
-      <div class="post__item">
-        <!-- 記得改網址 -->
-        <router-link
-          to="/user/1/replies"
-          type="button"
-          class="post__item__button"
-        >
-          推文回覆
-        </router-link>
-      </div>
-      <div class="post__item">
-        <!-- 記得改網址 -->
-        <router-link
-          to="/user/1/likes"
-          type="button"
-          class="post__item__button"
-        >
-          喜歡的內容
-        </router-link>
-      </div>
-    </div>
+    </template>
     <div
       v-for="post in posts"
       :key="post.id"
       class="post"
     >
-      <div class="post__avatar">
+      <div
+        class="
+      post__avatar"
+      >
         <div class="avatar-img" />
       </div>
-      <div class="post__content ml-2">
+      <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
             {{ post.name }}
@@ -54,9 +60,12 @@
         <div class="post__content__discription">
           {{ post.discription }}
         </div>
-        <div class="post__content__reaction d-flex ">
+        <div
+          v-if="!noreaction"
+          class="post__content__reaction d-flex "
+        >
           <div
-            class="post__content__reaction__item "
+            class="post__content__reaction__item"
             data-toggle="modal"
             data-target="#reply__post__modal"
           >
@@ -74,15 +83,16 @@
               class="post__content__reaction__item__heart--liked"
               @click="removeLiked(post.id)"
             />
+
             <span
               class="post__content__reaction__item__text"
               :class="{liked:post.isLiked}"
             >76</span>
           </div>
-          <template>
-            <ReplyPostModal />
-          </template>
         </div>
+        <template>
+          <ReplyPostModal />
+        </template>
       </div>
     </div>
   </div>
@@ -93,10 +103,9 @@
   color: $heart-pink;
   }
 .post__container{
-  // border: solid 1px $light-gray;
   width: 600px;
 }
-.post__itwm__wrapper {
+.post__item__wrapper {
   display: flex;
   width: 390px;
   justify-content: space-around;
@@ -124,10 +133,15 @@
   display: grid;
   grid-template-columns: 50px 1fr;
   max-width: 600px;
-  border-top: solid 1px $light-gray;
+  border-bottom: solid 1px $light-gray;
+  border-top: 1px solid $light-gray;
+  margin-bottom: -1px;
   padding: 15px;
-  height: 124px;
+  &.noborder{
+    border: 0px;
+  }
   &__content {
+    margin-left: 10px;
     &__title {
       color: $tx-gray;
       &__item {
@@ -158,7 +172,18 @@
         align-items: center;
         justify-content: space-between;
         width: 47px;
-
+        &:first-child:hover{
+          color: $light-blue;
+          div{
+            background: $light-blue;
+          }
+        }
+        &:last-child:hover{
+          color: $heart-pink;
+          div{
+            background: $heart-pink;
+          }
+        }
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -175,18 +200,12 @@
           mask-image: url('./../assets/icon/icon_message.svg');
           -webkit-mask-image:url('./../assets/icon/icon_message.svg');
           background: $tx-gray;
-          &:hover {
-            background: $light-blue;
-            }
         }
-
         &__heart{
           mask-image: url('./../assets/icon/icon_like.svg');
           -webkit-mask-image:url('./../assets/icon/icon_like.svg');
           background: $tx-gray;
-          &:hover {
-            background: $heart-pink;
-          }
+
           &--liked{
             mask-image: url('./../assets/icon/icon_isliked.svg');
             -webkit-mask-image:url('./../assets/icon/icon_isliked.svg');
@@ -195,7 +214,6 @@
             height: 18px;
           }
         }
-
       }
     }
   }

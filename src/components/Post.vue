@@ -164,14 +164,7 @@ export default {
     ReplyPostModal
   },
   props: {
-    noborder: {
-      type: Boolean,
-      default: false
-    },
-    noreaction: {
-      type: Boolean,
-      default: false
-    }
+
   },
   data () {
     return {
