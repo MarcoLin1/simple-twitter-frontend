@@ -49,6 +49,7 @@
               class="post__content__reaction__item__heart--liked"
               @click="removeLiked(post.id)"
             />
+
             <span
               class="post__content__reaction__item__text"
               :class="{liked:post.isLiked}"
