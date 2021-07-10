@@ -66,7 +66,7 @@ const routes = [
       },
       {
         path: '/mainpage',
-        name: 'mainpage',
+        name: 'main-page',
         component: () => import('./../views/MainPage.vue')
       }
 

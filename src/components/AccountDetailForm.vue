@@ -3,7 +3,7 @@
     <form
       action="POST"
       class="account__detail__form__wrapper"
-      @click.stop.prevent="handleSubmit"
+      @submit.stop.prevent="handleSubmit"
     >
       <div class="account__detail__form__table">
         <div class="account__detail__form__group">
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+import { Toast } from './../utils/helper'
+import userAPI from './../apis/users'
 const dummyUser = {
   user:
     {
@@ -120,16 +122,35 @@ export default {
       const { user } = dummyUser
       this.user = user
     },
-    handleSubmit (e) {
-      if (!this.user.name && !this.user.name && !this.user.email) {
-        console.log('Please check your input again')
-      }
-      this.isProcessing = true
+    async handleSubmit (e) {
+      try {
+        if (!this.user.name || !this.user.name || !this.user.email || !this.user.password || !this.user.checkPassword) {
+          Toast.fire({
+            icon: 'error',
+            title: '資料請確實填寫'
+          })
+          return
+        }
+        this.isProcessing = true
 
-      // 將form資料轉成formData傳至後端
-      const form = e.target
-      const formData = new FormData(form)
-      console.log(formData)
+        // 將form資料轉成formData傳至後端
+        const form = e.target
+        const formData = new FormData(form)
+        const { data } = await userAPI.update({ userId: this.user.id, formData })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        } else {
+          this.$router.push({ name: 'main-page' })
+        }
+      } catch (e) {
+        this.isProcessing = false
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料修改失敗，請稍候再試'
+        })
+      }
     }
   }
 }
