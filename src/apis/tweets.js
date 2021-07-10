@@ -4,16 +4,16 @@ export default {
   create ({ description }) {
     return apiHelper.post('/tweets', { description })
   },
-  reply ({ id, comment }) {
-    return apiHelper.post(`/tweets/${id}/replies`, { comment })
+  reply ({ tweetId, comment }) {
+    return apiHelper.post(`/tweets/${tweetId}/replies`, { comment })
   },
-  getReplies ({ id }) {
-    return apiHelper.get(`/tweets/${id}/replies`)
+  getReplies ({ tweetId }) {
+    return apiHelper.get(`/tweets/${tweetId}/replies`)
   },
   getTweets () {
     return apiHelper.get('/tweets')
   },
-  getATweet ({ id }) {
-    return apiHelper.get(`/tweets/${id}`)
+  getATweet ({ tweetId }) {
+    return apiHelper.get(`/tweets/${tweetId}`)
   }
 }

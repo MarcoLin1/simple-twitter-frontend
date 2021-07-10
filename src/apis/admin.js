@@ -7,8 +7,8 @@ export default {
     }
   },
   tweet: {
-    delete ({ id }) {
-      return apiHelper.delete(`/admin/tweets/${id}`)
+    delete ({ tweetId }) {
+      return apiHelper.delete(`/admin/tweets/${tweetId}`)
     }
   }
 }
