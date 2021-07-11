@@ -1,63 +1,76 @@
 <template>
   <div class="user__followers__container">
     <TopNavbar
-      :user="user"
       :current-page="currentPage"
     />
     <div class="user__followers__main__wrapper">
-      <UsersList />
+      <UserFollowerList :initial-followers="followers" />
     </div>
   </div>
 </template>
 
 <script>
 import TopNavbar from './../components/TopNavbar.vue'
-import UsersList from './../components/UsersList.vue'
-const dummyData = {
-  users:
-    {
-      id: 1,
-      name: 'root',
-      email: 'root@example.com',
-      password: '$2a$10$K2x6pQHkzPEKzw86x8Tc0.bfW7QVdA2Ls4AXBFkFu7xHG3UgA4Mli',
-      isAdmin: true,
-      image: 'https://i.pravatar.cc/300',
-      createdAt: '2021-07-05T09:58:39.000Z',
-      updatedAt: '2021-07-05T10:31:19.000Z',
-      Followers: [],
-      FollowerCount: 0,
-      TweetCount: 15,
-      isFollowed: false
-    },
-  isAuthenticated: true
-}
+import UserFollowerList from './../components/UserFollowerList.vue'
+import userAPI from './../apis/users'
+import { Toast } from './../utils/helper'
+// const dummyData = {
+//   users:
+//     {
+//       id: 1,
+//       name: 'root',
+//       email: 'root@example.com',
+//       password: '$2a$10$K2x6pQHkzPEKzw86x8Tc0.bfW7QVdA2Ls4AXBFkFu7xHG3UgA4Mli',
+//       isAdmin: true,
+//       image: 'https://i.pravatar.cc/300',
+//       createdAt: '2021-07-05T09:58:39.000Z',
+//       updatedAt: '2021-07-05T10:31:19.000Z',
+//       Followers: [],
+//       FollowerCount: 0,
+//       TweetCount: 15,
+//       isFollowed: false
+//     },
+//   isAuthenticated: true
+// }
 export default {
+  name: 'UserFollowers',
   components: {
     TopNavbar,
-    UsersList
+    UserFollowerList
   },
   data () {
     return {
-      user: {
+      followers: {
         id: -1,
         name: '',
-        email: '',
-        image: '',
-        isAdmin: '',
-        tweetLength: '',
-        isFollowed: false
+        account: '',
+        avatar: '',
+        introduction: '',
+        isFollowing: false
       },
       currentPage: 'UserFollowers'
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchFollowers(id)
+    next()
+  },
   created () {
-    this.fetchUser()
+    const { id } = this.$route.params
+    this.fetchFollowers(id)
   },
   methods: {
-    fetchUser () {
-      this.user = {
-        ...this.user,
-        ...dummyData.users
+    async fetchFollowers (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowers({ userId })
+        this.followers = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料讀取失敗，請稍候再試'
+        })
       }
     }
   }

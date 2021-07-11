@@ -24,15 +24,17 @@
         </div>
       </div>
     </div>
-    <div class="users__list__main__container">
+    <div
+      class="users__list__main__container"
+    >
       <div
-        v-for="tweet in tweets"
-        :key="tweet.UserId"
+        v-for="follower in followers"
+        :key="follower.Followers.id"
         class="users__list__main__wrapper"
       >
         <div class="users__list__image__wrapper">
           <img
-            :src="tweet.user.avatar"
+            :src="follower.Followers.avatar"
             alt=""
             class="users__list__image"
           >
@@ -40,21 +42,21 @@
         <div class="users__list__content__wrapper">
           <div class="users__list__name__wrapper">
             <div class="users__list__name">
-              {{ tweet.user.name }}
+              {{ follower.Followers.name }}
             </div>
             <div class="users__list__account">
-              @{{ tweet.user.account }}
+              @{{ follower.Followers.account }}
             </div>
           </div>
           <div class="users__list__text__wrapper">
-            {{ tweet.description }}
+            {{ follower.Followers.introduction }}
           </div>
           <div class="users__list__button__wrapper">
             <button
-              v-if="tweet.isFollowing"
+              v-if="follower.Followers.isFollowing"
               type="submit"
               class="users__list__button__following"
-              @click.stop.prevent="removeFollowing(tweet.UserId)"
+              @click.stop.prevent="removeFollowing(follower.Followers.id)"
             >
               正在跟隨
             </button>
@@ -62,7 +64,7 @@
               v-else
               type="submit"
               class="users__list__button__unfollowing"
-              @click.stop.prevent="addFollowing(tweet.UserId)"
+              @click.stop.prevent="addFollowing(follower.Followers.id)"
             >
               跟隨
             </button>
@@ -175,93 +177,81 @@
 </style>
 
 <script>
-const dummyData = {
-  tweets: [
-    {
-      UserId: 1,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2019',
-      replyCount: 1,
-      likeCount: 1,
-      isLike: true,
-      isFollowing: true,
-      user: {
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 2,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2020',
-      replyCount: 2,
-      likeCount: 2,
-      isLike: true,
-      isFollowing: false,
-      user: {
-        name: 'pen',
-        account: 'pen',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 3,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2023',
-      replyCount: 3,
-      likeCount: 3,
-      isLike: true,
-      isFollowing: false,
-      user: {
-        name: 'dog',
-        account: 'DG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 4,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2016',
-      replyCount: 4,
-      likeCount: 4,
-      isLike: true,
-      isFollowing: true,
-      user: {
-        name: 'google',
-        account: 'GG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    }
-  ]
-}
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
+
 export default {
+  props: {
+    initialFollowers: {
+      type: [Object, Array],
+      require: true
+    }
+  },
   data () {
     return {
-      tweets: []
+      followers: []
     }
   },
-  created () {
-    this.fetchData()
+  watch: {
+    initialFollowers (newValue) {
+      this.followers = [
+        ...this.followers,
+        ...newValue
+      ]
+      console.log(newValue)
+    }
   },
   methods: {
-    fetchData () {
-      const { tweets } = dummyData
-      this.tweets = tweets
-    },
-    addFollowing (id) {
-      this.tweets.filter(user => {
-        if (user.UserId === id) {
-          user.isFollowing = true
+    async addFollowing (id) {
+      try {
+        const { data } = await userAPI.addFollowShip({ id })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      })
+        // this.followings.filter(item => {
+        //   if (item.Followings.id === userId) {
+        //     item.Followings.isFollowing = true
+        //   }
+        // })
+        this.followers = this.followers.map(user => {
+          if (user.Followers.id !== id) {
+            return user
+          } else {
+            return {
+              ...user,
+              Followers: {
+                ...user.Followers,
+                isFollowing: true
+              }
+            }
+          }
+        })
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '加入失敗'
+        })
+      }
     },
-    removeFollowing (id) {
-      this.tweets.filter(user => {
-        if (user.UserId === id) {
-          user.isFollowing = false
+    async removeFollowing (userId) {
+      try {
+        const { data } = await userAPI.removeFollowShip({ userId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      })
+        this.followers.filter(item => {
+          if (item.Followers.id === userId) {
+            item.Followers.isFollowing = false
+          }
+        })
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '移除失敗'
+        })
+      }
     }
   }
 }

@@ -29,10 +29,10 @@ export default {
     return apiHelper.put(`/users/${userId}`, formData)
   },
   addFollowShip ({ userId }) {
-    return apiHelper.post(`followships/${userId}`, null)
+    return apiHelper.post('/followship', userId)
   },
-  removeFollowShip ({ userId }) {
-    return apiHelper.delete(`/followships/${userId}`)
+  removeFollowShip ({ followingId }) {
+    return apiHelper.delete(`/followships/${followingId}`)
   },
   addLike ({ tweetId }) {
     return apiHelper.post(`/tweets/${tweetId}/like`, null)
