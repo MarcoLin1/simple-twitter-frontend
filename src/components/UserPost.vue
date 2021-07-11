@@ -49,19 +49,18 @@
       <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
-            {{ post.name }}
+            {{ post.user.name }}
           </span>
-          <span class="post__content__title__item">{{ post.account }}</span>
+          <span class="post__content__title__item">{{ post.user.account }}</span>
           <span class="post__content__title__item">·</span>
           <span class="post__content__title__item post__content__title__item__time">
-            {{ post.createdTime }}
+            {{ post.createdAt }}
           </span>
         </div>
         <div class="post__content__discription">
-          {{ post.discription }}
+          {{ post.description }}
         </div>
         <div
-          v-if="!noreaction"
           class="post__content__reaction d-flex "
         >
           <div
@@ -97,6 +96,51 @@
     </div>
   </div>
 </template>
+<script>
+import ReplyPostModal from './../components/ReplyPostModal.vue'
+
+export default {
+  components: {
+    ReplyPostModal
+  },
+  props: {
+    initialTweets: {
+      type: Array,
+      required: true
+    }
+  },
+  data () {
+    return {
+      posts: this.initialTweets
+    }
+  },
+  watch: {
+    initialTweets (newValue) {
+      this.posts = {
+        ...this.posts,
+        ...newValue
+      }
+    }
+  },
+  methods: {
+    addLiked (id) {
+      this.posts.filter((post) => {
+        if (post.id === id) {
+          post.isLiked = true
+        }
+      })
+    },
+    removeLiked (id) {
+      this.posts.filter((post) => {
+        if (post.id === id) {
+          post.isLiked = false
+        }
+      })
+    }
+
+  }
+}
+</script>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .liked{
@@ -219,62 +263,3 @@
   }
 }
 </style>
-
-<script>
-import ReplyPostModal from './../components/ReplyPostModal.vue'
-
-export default {
-  components: {
-    ReplyPostModal
-  },
-  data () {
-    return {
-      posts: [
-        {
-          id: '1',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-
-        },
-        {
-          id: '2',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '6月25日',
-          isLiked: false
-
-        },
-        {
-          id: '3',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        }
-      ]
-    }
-  },
-  methods: {
-    addLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = true
-        }
-      })
-    },
-    removeLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = false
-        }
-      })
-    }
-
-  }
-}
-</script>

@@ -32,7 +32,7 @@
       >
         <div class="users__list__image__wrapper">
           <img
-            :src="tweet.user.avatar"
+            src=""
             alt=""
             class="users__list__image"
           >
@@ -40,10 +40,10 @@
         <div class="users__list__content__wrapper">
           <div class="users__list__name__wrapper">
             <div class="users__list__name">
-              {{ tweet.user.name }}
+              {{ tweet.Followers.name }}
             </div>
             <div class="users__list__account">
-              @{{ tweet.user.account }}
+              @{{ tweet.Followers.account }}
             </div>
           </div>
           <div class="users__list__text__wrapper">
@@ -51,10 +51,10 @@
           </div>
           <div class="users__list__button__wrapper">
             <button
-              v-if="tweet.isFollowing"
+              v-if="tweet.Followers.isFollowing"
               type="submit"
               class="users__list__button__following"
-              @click.stop.prevent="removeFollowing(tweet.UserId)"
+              @click.stop.prevent="removeFollowing(tweet.Followers.id)"
             >
               正在跟隨
             </button>
@@ -62,7 +62,7 @@
               v-else
               type="submit"
               class="users__list__button__unfollowing"
-              @click.stop.prevent="addFollowing(tweet.UserId)"
+              @click.stop.prevent="addFollowing(tweet.Followers.id)"
             >
               跟隨
             </button>
@@ -179,66 +179,8 @@
 </style>
 
 <script>
-const dummyData = {
-  tweets: [
-    {
-      UserId: 1,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2019',
-      replyCount: 1,
-      likeCount: 1,
-      isLike: true,
-      isFollowing: true,
-      user: {
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 2,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2020',
-      replyCount: 2,
-      likeCount: 2,
-      isLike: true,
-      isFollowing: false,
-      user: {
-        name: 'pen',
-        account: 'pen',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 3,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2023',
-      replyCount: 3,
-      likeCount: 3,
-      isLike: true,
-      isFollowing: false,
-      user: {
-        name: 'dog',
-        account: 'DG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 4,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2016',
-      replyCount: 4,
-      likeCount: 4,
-      isLike: true,
-      isFollowing: true,
-      user: {
-        name: 'google',
-        account: 'GG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    }
-  ]
-}
+import usersAPI from './../apis/users'
+
 export default {
   data () {
     return {
@@ -249,23 +191,69 @@ export default {
     this.fetchData()
   },
   methods: {
-    fetchData () {
-      const { tweets } = dummyData
-      this.tweets = tweets
+    async fetchData () {
+      const userId = '1'
+      const { data } = await usersAPI.getUserFollowers({ userId })
+      console.log('fetchdata', data)
+      this.tweets = data
     },
-    addFollowing (id) {
-      this.tweets.filter(user => {
-        if (user.UserId === id) {
-          user.isFollowing = true
+    async addFollowing (userId) {
+      // this.tweets.filter(user => {
+      //   if (user.UserId === id) {
+      //     user.isFollowing = true
+      //   }
+      // })
+      try {
+        const { data } = await usersAPI.addFollowShip({ userId })
+
+        console.log('data', data)
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      })
+
+        this.tweets = this.map((user) => {
+          if (user.Followers.id !== userId) {
+            return user
+          } else {
+            return {
+              ...user,
+              Followers: {
+                ...user.Followers,
+                isFollowing: true
+              }
+
+            }
+          }
+        })
+      } catch (error) {
+        console.log('add error', error)
+      }
     },
-    removeFollowing (id) {
-      this.tweets.filter(user => {
-        if (user.UserId === id) {
-          user.isFollowing = false
+    async removeFollowing (userId) {
+      try {
+        const { data } = await usersAPI.removeFollowShip({ userId })
+        console.log('followingdata', data)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      })
+        console.log(this.tweets)
+        this.tweets = this.tweets.map((user) => {
+          if (user.Followers.id !== userId) {
+            return user
+          } else {
+            return {
+              ...user,
+              Followers: {
+                ...user.Followers,
+                isFollowing: false
+              }
+            }
+          }
+        })
+      } catch (error) {
+        console.log('error')
+      }
     }
   }
 }

@@ -1,5 +1,8 @@
 <template>
-  <form action="POST">
+  <form
+    action="POST"
+    @submit.prevent.stop="handleSubmit"
+  >
     <div class="logo-wrapper">
       <Logo />
     </div>
@@ -9,22 +12,32 @@
 
     <div class="login__form__table">
       <div class="login__form__group">
-        <span class="login__form__group__title">
+        <label
+          for="account"
+          class="login__form__group__title"
+        >
           帳號
-        </span>
+        </label>
         <input
           id="account"
+          v-model="account"
+          name="account"
           type="text"
           class="login__account"
           required
         >
       </div>
       <div class="login__form__group">
-        <span class="login__form__group__title">
+        <label
+          for="password"
+          class="login__form__group__title"
+        >
           密碼
-        </span>
+        </label>
         <input
           id="password"
+          v-model="password"
+          name="password"
           type="password"
           class="login__password login__form__control"
           required
@@ -60,6 +73,19 @@ import Logo from './../assets/icon/logo.vue'
 export default {
   components: {
     Logo
+  },
+  data () {
+    return {
+      account: '',
+      password: ''
+    }
+  },
+
+  methods: {
+    handleSubmit () {
+      const loginData = { account: this.account, password: this.password }
+      this.$emit('after-submit', loginData)
+    }
   }
 
 }
