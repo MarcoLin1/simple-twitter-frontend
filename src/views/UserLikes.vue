@@ -1,33 +1,82 @@
 <template>
   <div class="user__likes__container">
-    <!-- <div class="user__likes__side__navbar__wrapper">
-      <SideNavbar />
-    </div> -->
     <div class="user__likes__main__wrapper">
-      <!-- <TopNavbar /> -->
       <UserProfile />
-      <UserPost />
+      <UserPostButton />
+      <UserLikesPost
+        v-for="post in userLikes"
+        :key="post.id"
+        :initial-post="post"
+      />
     </div>
-    <!-- <div class="user__likes__top__users__list__wrapper">
-      <TopUsersList />
-    </div> -->
   </div>
 </template>
 
 <script>
-// import SideNavbar from './../components/SideNavbar.vue'
-// import TopNavbar from './../components/TopNavbar.vue'
-// import TopUsersList from './../components/TopUsersList.vue'
 import UserProfile from './../components/UserProfile.vue'
-import UserPost from './../components/UserPost.vue'
+import UserLikesPost from './../components/UserLikesPost.vue'
+import UserPostButton from './../components/UserPostButton.vue'
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
+// import {Toast} from './../utils/helper'
 export default {
+  name: 'UserLikes',
   components: {
-    // SideNavbar,
-    // TopNavbar,
-    // TopUsersList,
     UserProfile,
-    UserPost
+    UserLikesPost,
+    UserPostButton
+  },
+  data () {
+    return {
+      userLikes: [],
+      posts: [
+        {
+          id: '1',
+          account: '@apple',
+          name: 'Apple',
+          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          createdTime: '3 小時',
+          isLiked: true
+        },
+        {
+          id: '2',
+          account: '@apple',
+          name: 'Apple',
+          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          createdTime: '6月25日',
+          isLiked: false
+        },
+        {
+          id: '3',
+          account: '@apple',
+          name: 'Apple',
+          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+          createdTime: '3 小時',
+          isLiked: true
+        }
+      ]
+    }
+  },
+  created () {
+    const { id } = this.$route.params
+    this.fetchUserLikes(id)
+  },
+  methods: {
+    async fetchUserLikes (userId) {
+      try {
+        const { data } = await userAPI.getUserLikes({ userId })
+        this.userLikes = data
+        console.log(data)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '喜歡的內容讀取失敗，請稍候再試'
+        })
+      }
+    }
   }
+
 }
 </script>
 
@@ -40,6 +89,5 @@ export default {
   .user__likes__main__wrapper {
     width: 100%;
     max-width: 600px;
-    border: solid 1px $light-gray;
   }
 </style>
