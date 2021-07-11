@@ -1,103 +1,29 @@
 <template>
   <div class="user__followings__container">
     <TopNavbar
-      :user="user"
       :current-page="currentPage"
     />
     <div class="user__followings__main__wrapper">
-      <UsersList />
+      <UserFollowingList :initial-followings="followings" />
     </div>
   </div>
 </template>
 
 <script>
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
 import TopNavbar from './../components/TopNavbar.vue'
-import UsersList from './../components/UsersList.vue'
-const dummyData = {
-  tweets: [
-    {
-      UserId: 1,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2019',
-      replyCount: 1,
-      likeCount: 1,
-      isLike: true,
-      isFollowing: true,
-      user: {
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 2,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2020',
-      replyCount: 2,
-      likeCount: 2,
-      isLike: true,
-      isFollowing: false,
-      user: {
-        name: 'pen',
-        account: 'pen',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 3,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2023',
-      replyCount: 3,
-      likeCount: 3,
-      isLike: true,
-      isFollowing: false,
-      user: {
-        name: 'dog',
-        account: 'DG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      UserId: 4,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2016',
-      replyCount: 4,
-      likeCount: 4,
-      isLike: true,
-      isFollowing: true,
-      user: {
-        name: 'google',
-        account: 'GG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    }
-  ]
-}
-const dummyUser = {
-  users:
-    {
-      id: 1,
-      name: 'google',
-      email: 'root@example.com',
-      password: '$2a$10$K2x6pQHkzPEKzw86x8Tc0.bfW7QVdA2Ls4AXBFkFu7xHG3UgA4Mli',
-      isAdmin: true,
-      image: 'https://i.pravatar.cc/300',
-      createdAt: '2021-07-05T09:58:39.000Z',
-      updatedAt: '2021-07-05T10:31:19.000Z',
-      Followers: [],
-      FollowerCount: 0,
-      TweetCount: 15,
-      isFollowed: false
-    }
-}
+import UserFollowingList from './../components/UserFollowingList.vue'
+
 export default {
+  name: 'UserFollowings',
   components: {
     TopNavbar,
-    UsersList
+    UserFollowingList
   },
   data () {
     return {
-      user: {
+      followings: {
         id: -1,
         name: '',
         email: '',
@@ -106,25 +32,38 @@ export default {
         tweetLength: '',
         isFollowed: false
       },
-      userFollowingsTweets: [],
       currentPage: 'UserFollowings'
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchUser(id)
+    next()
+  },
   created () {
     this.fetchUser()
-    this.fetchTweets()
   },
   methods: {
-    fetchUser () {
-      this.user = {
-        ...this.user,
-        ...dummyUser.users
+    async fetchUser (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowing({ userId })
+        this.followings = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料讀取失敗，請稍候再試'
+        })
       }
-    },
-    fetchTweets () {
-      const { tweets } = dummyData
-      this.userFollowingsTweets = tweets
+      // this.user = {
+      //   ...this.user,
+      //   ...dummyUser.users
+      // }
     }
+    // fetchTweets () {
+    //   const { tweets } = dummyData
+    //   this.userFollowingsTweets = tweets
+    // }
   }
 }
 </script>

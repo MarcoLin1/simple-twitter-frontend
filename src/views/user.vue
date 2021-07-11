@@ -37,6 +37,7 @@ export default {
   grid-area: middle;
   height: auto;
   width: 600px;
+  border: solid 1px $light-gray;
 }
 .right-content {
   grid-area: right;
