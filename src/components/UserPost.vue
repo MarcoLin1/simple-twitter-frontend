@@ -35,23 +35,23 @@
         </div>
       </div>
     </template>
-    <div
-      v-for="post in posts"
-      :key="post.id"
-      class="post"
-    >
+    <div class="post">
       <div
         class="
       post__avatar"
       >
-        <div class="avatar-img" />
+        <img
+          class="avatar-img"
+          :src="post.User.avatar"
+          alt=""
+        >
       </div>
       <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
-            {{ post.user.name }}
+            {{ post.User.name }}
           </span>
-          <span class="post__content__title__item">{{ post.user.account }}</span>
+          <span class="post__content__title__item">@{{ post.User.account }}</span>
           <span class="post__content__title__item">·</span>
           <span class="post__content__title__item post__content__title__item__time">
             {{ post.createdAt }}
@@ -73,7 +73,7 @@
           </div>
           <div class="post__content__reaction__item">
             <div
-              v-if="!post.isLiked"
+              v-if="!post.isLike"
               class="post__content__reaction__item__heart"
               @click="addLiked(post.id)"
             />
@@ -85,7 +85,7 @@
 
             <span
               class="post__content__reaction__item__text"
-              :class="{liked:post.isLiked}"
+              :class="{liked:post.isLike}"
             >76</span>
           </div>
         </div>
@@ -97,47 +97,80 @@
   </div>
 </template>
 <script>
+import { Toast } from '../utils/helper'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
-
+import userAPI from './../apis/users'
 export default {
   components: {
     ReplyPostModal
   },
   props: {
-    initialTweets: {
-      type: Array,
+    initialTweet: {
+      type: Object,
       required: true
     }
   },
   data () {
     return {
-      posts: this.initialTweets
+      post: this.initialTweet,
+      currentUser: {
+        name: 'JoJo',
+        account: 'jojo',
+        id: 10
+      }
     }
   },
   watch: {
     initialTweets (newValue) {
-      this.posts = {
-        ...this.posts,
+      this.post = {
+        ...this.post,
         ...newValue
       }
     }
   },
   methods: {
-    addLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = true
+    async addLiked (tweetId) {
+      try {
+        const { data } = await userAPI.addLike({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      })
+        // 還差取得currentUser的api判斷
+        if (this.currentUser.id !== tweetId) {
+          this.post = {
+            ...this.post,
+            isLike: true
+          }
+        }
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '喜歡貼文失敗，請稍候再試'
+        })
+      }
     },
-    removeLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = false
+    async removeLiked (tweetId) {
+      try {
+        const { data } = await userAPI.removeLike({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      })
+        // 還差取得currentUser的api判斷
+        if (this.currentUser.id !== tweetId) {
+          this.post = {
+            ...this.post,
+            isLike: false
+          }
+        }
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '取消喜歡失敗，請稍候再試'
+        })
+      }
     }
-
   }
 }
 </script>

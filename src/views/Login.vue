@@ -18,7 +18,7 @@ export default {
     async handelAfterSubmit (loginData) {
       try {
         console.log('data')
-        const { data } = await authorizationAPI.login({ loginData })
+        const { data } = await authorizationAPI.login(loginData)
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
@@ -26,7 +26,7 @@ export default {
         localStorage.setItem('token', data.token)
         this.$router.push('/mainpage')
       } catch (error) {
-        console.log('erroe', error)
+        console.log('error', error)
       }
     }
   }

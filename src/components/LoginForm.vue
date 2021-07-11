@@ -47,6 +47,7 @@
         <button
           type="submit"
           class="login__button"
+          :disabled="isProcessing"
         >
           登入
         </button>
@@ -69,6 +70,7 @@
   </form>
 </template>
 <script>
+import { Toast } from '../utils/helper'
 import Logo from './../assets/icon/logo.vue'
 export default {
   components: {
@@ -77,12 +79,22 @@ export default {
   data () {
     return {
       account: '',
-      password: ''
+      password: '',
+      isProcessing: false
     }
   },
 
   methods: {
     handleSubmit () {
+      this.isProcessing = true
+      if (!this.account.trim() || !this.password.trim()) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請填入 email 和 password'
+        })
+        this.isProcessing = false
+        return
+      }
       const loginData = { account: this.account, password: this.password }
       this.$emit('after-submit', loginData)
     }
@@ -105,6 +117,9 @@ export default {
 }
 .login__form__group {
   @extend %form-group-style;
+  input{
+    padding-bottom: 10px;
+  }
 }
 .login__form__group__title {
   @extend %form-group-title-style;
