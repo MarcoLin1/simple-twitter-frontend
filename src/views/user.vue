@@ -4,6 +4,11 @@
       <SideNavbar />
     </div>
     <div class="middle-content">
+      <TopNavbar
+        :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+        :user-data="userData"
+        :user-tweets-length="userTweetsLength"
+      />
       <router-view />
     </div>
     <div class="right-content">
@@ -15,19 +20,25 @@
 <script>
 import SideNavbar from './../components/SideNavbar.vue'
 import TopUsersList from './../components/TopUsersList.vue'
+import TopNavbar from './../components/TopNavbar.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
 export default {
   components: {
     SideNavbar,
-    TopUsersList
+    TopUsersList,
+    TopNavbar
   },
   data () {
     return {
-      topUsers: []
+      topUsers: [],
+      userData: [],
+      userTweetsLength: ''
     }
   },
   created () {
+    const { id } = this.$route.params
+    this.fetchUserData(id)
     this.fetchTopUser()
   },
   methods: {
@@ -40,6 +51,19 @@ export default {
         Toast.fire({
           icon: 'error',
           title: 'TopUser讀取失敗'
+        })
+      }
+    },
+    async fetchUserData (userId) {
+      try {
+        const { data } = await userAPI.getUserTweets({ userId })
+        this.userData = data[0]
+        this.userTweetsLength = data.length
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: 'user data讀取失敗'
         })
       }
     }
