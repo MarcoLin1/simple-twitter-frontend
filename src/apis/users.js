@@ -2,7 +2,7 @@ import { apiHelper } from '../utils/helper'
 
 export default {
   getCurrentUser () {
-    return apiHelper.get('/get_current_user')
+    return apiHelper.get('/users/current_user')
   },
   getTopUsers () {
     return apiHelper.get('/users/top')
@@ -28,8 +28,8 @@ export default {
   update ({ userId, formData }) {
     return apiHelper.put(`/users/${userId}`, formData)
   },
-  addFollowShip ({ userId }) {
-    return apiHelper.post('/followships', { userId })
+  addFollowShip ({ id }) {
+    return apiHelper.post('/followships', { id })
   },
   removeFollowShip ({ userId }) {
     return apiHelper.delete(`/followships/${userId}`)
