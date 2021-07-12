@@ -24,7 +24,7 @@
         </div>
         <div class="user__list__follow-btn">
           <button
-            v-if="user.isFollowed"
+            v-if="user.isFollowing"
             class="following-btn"
             @click="removeFollowing(user.id)"
           >
@@ -117,72 +117,26 @@ a{
 }
 </style>
 <script>
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
 export default {
+  props: {
+    topUsers: {
+      type: Array,
+      required: true
+    }
+  },
   data () {
     return {
       showAll: false,
-      users: [
-        {
-          id: 1,
-          name: 'Pizza Hut',
-          account: '@pizzahut',
-          isFollowed: true
-        },
-        {
-          id: 2,
-          name: 'McDonald\'s',
-          account: '@McDonalds',
-          isFollowed: true
-        },
-        {
-          id: 3,
-          name: 'Bank of America',
-          account: '@BankOfAmerica',
-          isFollowed: false
-        },
-        {
-          id: 4,
-          name: 'Pizza Hut',
-          account: '@pizzahut',
-          isFollowed: true
-        },
-        {
-          id: 5,
-          name: 'McDonald\'s',
-          account: '@McDonalds',
-          isFollowed: true
-        },
-        {
-          id: 6,
-          name: 'Bank of America',
-          account: '@BankOfAmerica',
-          isFollowed: false
-        },
-        {
-          id: 7,
-          name: 'Bank of America',
-          account: '@BankOfAmerica',
-          isFollowed: false
-        },
-        {
-          id: 8,
-          name: 'McDonald\'s',
-          account: '@McDonalds',
-          isFollowed: true
-        },
-        {
-          id: 9,
-          name: 'Bank of America',
-          account: '@BankOfAmerica',
-          isFollowed: false
-        },
-        {
-          id: 10,
-          name: 'Bank of America',
-          account: '@BankOfAmerica',
-          isFollowed: false
-        }
-
+      users: this.topUsers
+    }
+  },
+  watch: {
+    topUsers (newValue) {
+      this.users = [
+        ...this.users,
+        ...newValue
       ]
     }
   },
@@ -190,17 +144,43 @@ export default {
     toggleShowAll () {
       this.showAll = !this.showAll
     },
-    addFollowing (id) {
+    async addFollowing (id) {
+      try {
+        const { data } = await userAPI.addFollowShip({ id })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        console.log(data)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '新增追蹤失敗'
+        })
+      }
       this.users.filter((user) => {
         if (user.id === id) {
-          user.isFollowed = true
+          user.isFollowing = true
         }
       })
     },
-    removeFollowing (id) {
+    async removeFollowing (id) {
+      try {
+        const { data } = await userAPI.removeFollowShip({ id })
+        if (data !== 'success') {
+          throw new Error(data.message)
+        }
+        console.log(data)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '取消追蹤失敗'
+        })
+      }
       this.users.filter((user) => {
         if (user.id === id) {
-          user.isFollowed = false
+          user.isFollowing = false
         }
       })
     }
