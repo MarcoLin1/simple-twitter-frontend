@@ -1,8 +1,5 @@
 <template>
   <div class="user__followers__container">
-    <TopNavbar
-      :current-page="currentPage"
-    />
     <div class="user__followers__main__wrapper">
       <UserFollowerList :initial-followers="followers" />
     </div>
@@ -10,7 +7,6 @@
 </template>
 
 <script>
-import TopNavbar from './../components/TopNavbar.vue'
 import UserFollowerList from './../components/UserFollowerList.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
@@ -18,7 +14,6 @@ import { Toast } from './../utils/helper'
 export default {
   name: 'UserFollowers',
   components: {
-    TopNavbar,
     UserFollowerList
   },
   data () {

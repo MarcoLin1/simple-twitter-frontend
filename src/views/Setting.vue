@@ -3,7 +3,11 @@
     <SideNavbar />
     <div class="setting__form__wrapper">
       <div class="setting__top__navbar__wrapper">
-        <TopNavbar :current-page="currentPage" />
+        <TopNavbar
+          :current-page="currentPage"
+          :user-data="userData"
+          :user-tweets-length="userTweetsLength"
+        />
       </div>
       <AccountDetailForm />
     </div>
@@ -22,7 +26,9 @@ export default {
   },
   data () {
     return {
-      currentPage: '帳戶設定'
+      currentPage: '帳戶設定',
+      userData: [],
+      userTweetsLength: ''
     }
   }
 }
