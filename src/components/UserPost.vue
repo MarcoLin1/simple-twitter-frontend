@@ -1,102 +1,156 @@
 <template>
   <div class="post__container">
-    <div class="post__itwm__wrapper">
-      <div class="post__item">
-        <!-- 記得改網址 -->
-        <router-link
-          to="/user/1/tweets"
-          type="button"
-          class="post__item__button"
+    <!-- 切換選單 -->
+    <div class="post">
+      <div
+        class="
+      post__avatar"
+      >
+        <img
+          class="avatar-img"
+          :src="post.User.avatar"
+          alt=""
         >
-          推文
-        </router-link>
       </div>
-      <div class="post__item">
-        <!-- 記得改網址 -->
-        <router-link
-          to="/user/1/replies"
-          type="button"
-          class="post__item__button"
-        >
-          推文回覆
-        </router-link>
-      </div>
-      <div class="post__item">
-        <!-- 記得改網址 -->
-        <router-link
-          to="/user/1/likes"
-          type="button"
-          class="post__item__button"
-        >
-          喜歡的內容
-        </router-link>
-      </div>
-    </div>
-    <div
-      v-for="post in posts"
-      :key="post.id"
-      class="post"
-    >
-      <div class="post__avatar">
-        <div class="avatar-img" />
-      </div>
-      <div class="post__content ml-2">
+      <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
-            {{ post.name }}
+            {{ post.User.name }}
           </span>
-          <span class="post__content__title__item">{{ post.account }}</span>
+          <span class="post__content__title__item">@{{ post.User.account }}</span>
           <span class="post__content__title__item">·</span>
           <span class="post__content__title__item post__content__title__item__time">
-            {{ post.createdTime }}
+            {{ post.createdAt }}
           </span>
         </div>
         <div class="post__content__discription">
-          {{ post.discription }}
+          {{ post.description }}
         </div>
-        <div class="post__content__reaction d-flex ">
+        <div
+          class="post__content__reaction d-flex "
+        >
           <div
-            class="post__content__reaction__item "
+            class="post__content__reaction__item"
             data-toggle="modal"
             data-target="#reply__post__modal"
           >
             <div class="post__content__reaction__item__message " />
-            <span class="post__content__reaction__item__text">13</span>
+            <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
           </div>
           <div class="post__content__reaction__item">
             <div
-              v-if="!post.isLiked"
+              v-if="!post.isLike"
               class="post__content__reaction__item__heart"
-              @click="addLiked(post.id)"
+              @click="addLiked(post.TweetId)"
             />
             <div
               v-else
               class="post__content__reaction__item__heart--liked"
-              @click="removeLiked(post.id)"
+              @click="removeLiked(post.TweetId)"
             />
+
             <span
               class="post__content__reaction__item__text"
-              :class="{liked:post.isLiked}"
-            >76</span>
+              :class="{liked:post.isLike}"
+            >{{ post.likeCount }}</span>
           </div>
-          <template>
-            <ReplyPostModal />
-          </template>
         </div>
+        <template>
+          <ReplyPostModal />
+        </template>
       </div>
     </div>
   </div>
 </template>
+<script>
+import { Toast } from '../utils/helper'
+import ReplyPostModal from './../components/ReplyPostModal.vue'
+import userAPI from './../apis/users'
+export default {
+  components: {
+    ReplyPostModal
+  },
+  props: {
+    initialTweet: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      post: this.initialTweet,
+      currentUser: {
+        name: 'JoJo',
+        account: 'jojo',
+        id: 10
+      }
+    }
+  },
+  watch: {
+    initialTweet (newValue) {
+      this.post = {
+        ...this.post,
+        ...newValue
+      }
+      console.log('UserPost的newValue:', newValue)
+    }
+  },
+  methods: {
+    async addLiked (tweetId) {
+      try {
+        const { data } = await userAPI.addLike({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        console.log(data)
+        // 還差取得currentUser的api判斷
+        if (this.currentUser.id !== tweetId) {
+          this.post = {
+            ...this.post,
+            isLike: true
+          }
+        }
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '喜歡貼文失敗，請稍候再試'
+        })
+      }
+    },
+    async removeLiked (tweetId) {
+      try {
+        const { data } = await userAPI.removeLike({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        // 還差取得currentUser的api判斷
+        if (this.currentUser.id !== tweetId) {
+          this.post = {
+            ...this.post,
+            isLike: false
+          }
+        }
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '取消喜歡失敗，請稍候再試'
+        })
+      }
+    }
+  }
+}
+</script>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .liked{
   color: $heart-pink;
   }
 .post__container{
-  // border: solid 1px $light-gray;
   width: 600px;
 }
-.post__itwm__wrapper {
+.post__item__wrapper {
   display: flex;
   width: 390px;
   justify-content: space-around;
@@ -124,10 +178,15 @@
   display: grid;
   grid-template-columns: 50px 1fr;
   max-width: 600px;
-  border-top: solid 1px $light-gray;
+  border-bottom: solid 1px $light-gray;
+  border-top: 1px solid $light-gray;
+  margin-bottom: -1px;
   padding: 15px;
-  height: 124px;
+  &.noborder{
+    border: 0px;
+  }
   &__content {
+    margin-left: 10px;
     &__title {
       color: $tx-gray;
       &__item {
@@ -158,7 +217,18 @@
         align-items: center;
         justify-content: space-between;
         width: 47px;
-
+        &:first-child:hover{
+          color: $light-blue;
+          div{
+            background: $light-blue;
+          }
+        }
+        &:last-child:hover{
+          color: $heart-pink;
+          div{
+            background: $heart-pink;
+          }
+        }
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -175,18 +245,12 @@
           mask-image: url('./../assets/icon/icon_message.svg');
           -webkit-mask-image:url('./../assets/icon/icon_message.svg');
           background: $tx-gray;
-          &:hover {
-            background: $light-blue;
-            }
         }
-
         &__heart{
           mask-image: url('./../assets/icon/icon_like.svg');
           -webkit-mask-image:url('./../assets/icon/icon_like.svg');
           background: $tx-gray;
-          &:hover {
-            background: $heart-pink;
-          }
+
           &--liked{
             mask-image: url('./../assets/icon/icon_isliked.svg');
             -webkit-mask-image:url('./../assets/icon/icon_isliked.svg');
@@ -195,68 +259,8 @@
             height: 18px;
           }
         }
-
       }
     }
   }
 }
 </style>
-
-<script>
-import ReplyPostModal from './../components/ReplyPostModal.vue'
-
-export default {
-  components: {
-    ReplyPostModal
-  },
-  data () {
-    return {
-      posts: [
-        {
-          id: '1',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-
-        },
-        {
-          id: '2',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '6月25日',
-          isLiked: false
-
-        },
-        {
-          id: '3',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-          createdTime: '3 小時',
-          isLiked: true
-        }
-      ]
-    }
-  },
-  methods: {
-    addLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = true
-        }
-      })
-    },
-    removeLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = false
-        }
-      })
-    }
-
-  }
-}
-</script>
