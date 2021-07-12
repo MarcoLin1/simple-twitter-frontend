@@ -36,8 +36,8 @@ export default {
 }
 .middle-content{
   grid-area: middle;
-  width: 600px;
-    border: 1px solid $light-gray;
+  width: 602px;
+  border: 1px solid $light-gray;
 }
 .right-content {
   grid-area: right;

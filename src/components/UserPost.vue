@@ -69,24 +69,24 @@
             data-target="#reply__post__modal"
           >
             <div class="post__content__reaction__item__message " />
-            <span class="post__content__reaction__item__text">13</span>
+            <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
           </div>
           <div class="post__content__reaction__item">
             <div
               v-if="!post.isLike"
               class="post__content__reaction__item__heart"
-              @click="addLiked(post.id)"
+              @click="addLiked(post.TweetId)"
             />
             <div
               v-else
               class="post__content__reaction__item__heart--liked"
-              @click="removeLiked(post.id)"
+              @click="removeLiked(post.TweetId)"
             />
 
             <span
               class="post__content__reaction__item__text"
               :class="{liked:post.isLike}"
-            >76</span>
+            >{{ post.likeCount }}</span>
           </div>
         </div>
         <template>
@@ -135,6 +135,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        console.log(data)
         // 還差取得currentUser的api判斷
         if (this.currentUser.id !== tweetId) {
           this.post = {

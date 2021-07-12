@@ -46,7 +46,7 @@
   display: grid;
   grid-template-columns: 50px 1fr;
   width: 600px;
-  border: solid 1px $light-gray;
+  border-top: solid 1px $light-gray;
   padding: 15px;
   margin-top: -1px;
   &__content {
@@ -84,7 +84,7 @@ import { fromNowFilter } from './../utils/mixins'
 const dummyData = {
   replies: [
     {
-      createdAt: '2021-07-3T16:24:55.443Z',
+      createdAt: '2021-07-03T16:24:55.443Z',
       ReplyId: 1,
       comment: 'Good Job!',
       user: {

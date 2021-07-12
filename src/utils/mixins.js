@@ -14,3 +14,12 @@ export const emptyImageFilter = {
     }
   }
 }
+
+export const localTimeFilter = {
+  filters: {
+    localTime (datatime) {
+      const time = moment(datatime).locale('zh-tw')
+      return (time.format('a h:mm') + '·' + time.format('ll'))
+    }
+  }
+}

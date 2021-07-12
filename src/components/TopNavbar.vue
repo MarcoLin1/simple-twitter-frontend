@@ -1,13 +1,7 @@
 <template>
   <div class="top-navbar-container">
     <div
-      v-if="$route.path.slice(0, 5) !== '/user'"
-      class="top-navbar-title"
-    >
-      {{ currentPage }}
-    </div>
-    <div
-      v-else
+      v-if="$route.path.slice(0, 5) === '/user' || $route.path.slice(0, 7) === '/detail'"
       class="top-navbar-wrapper"
     >
       <!-- 記得改連結 -->
@@ -24,6 +18,12 @@
           25推文
         </div>
       </div>
+    </div>
+    <div
+      v-else
+      class="top-navbar-title"
+    >
+      {{ currentPage }}
     </div>
   </div>
 </template>
