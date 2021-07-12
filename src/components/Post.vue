@@ -6,10 +6,7 @@
       class="post"
       :class="{ noborder: noborder }"
     >
-      <div
-        class="
-      post__avatar"
-      >
+      <div class=" post__avatar">
         <div class="avatar-img" />
       </div>
       <div class="post__content">

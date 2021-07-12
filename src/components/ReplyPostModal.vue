@@ -1,7 +1,6 @@
 <template>
   <form
     action=""
-    @click.stop.prevent="handleSubmit"
   >
     <div class="new__post__modal__wrapper">
       <div
@@ -17,6 +16,7 @@
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
+                @click="$router.go(-1)"
               >
                 <span
                   aria-hidden="true"
@@ -26,7 +26,7 @@
             <div class="modal__body">
               <div class="modal__body__wrapper">
                 <div class="modal__body__wrapper__post">
-                  <PurePost />
+                  <PurePost :initial-tweet="tweet" />
                 </div>
                 <div class="modal__body__wrapper">
                   <div class="modal__body__wrapper__replyto">
@@ -41,7 +41,7 @@
                     class="modal__body__img"
                   >
                   <textarea
-                    v-model="tweet"
+                    v-model="comment"
                     rows="8"
                     cols="40"
                     type="text"
@@ -56,6 +56,8 @@
               <button
                 type="submit"
                 class="modal__footer__button"
+                data-dismiss="close"
+                @click.stop.prevent="handleSubmit"
               >
                 回覆
               </button>
@@ -109,7 +111,7 @@
           position: absolute;
           content: '';
           width: 2px;
-          height: 70%;
+          height: 60%;
           background-color: $line-gray;
           top:calc(15px + 50px + 10px);
           left: 40px;
@@ -165,22 +167,45 @@
 </style>
 
 <script>
+import { Toast } from '../utils/helper'
 import PurePost from './../components/PurePost.vue'
+import tweetAPI from './../apis/tweets'
 export default {
   components: {
     PurePost
   },
   data () {
     return {
-      tweet: '',
-      noreaction: true,
-      noborder: true
+      comment: '',
+      tweet: {}
     }
   },
+  created () {
+    const { id: tweetId } = this.$route.params
+    this.fetchTweet(tweetId)
+  },
   methods: {
-    handleSubmit () {
-      if (!this.tweet) {
-        console.log('You can not submit blank value')
+    async fetchTweet (tweetId) {
+      const { data } = await tweetAPI.getATweet({ tweetId })
+      this.tweet = data
+    },
+    async handleSubmit () {
+      const { id: tweetId } = this.$route.params
+      console.log(tweetId)
+      try {
+        if (!this.comment) {
+          console.log('You can not submit blank value')
+        }
+        const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
+        console.log(data)
+        this.$router.back()
+        this.$emit('after-submit', false)
+      } catch (error) {
+        console.log('error', error)
+        Toast.fire({
+          icon: 'error',
+          title: '目前無法新增留言，請稍後再試'
+        })
       }
     }
   }

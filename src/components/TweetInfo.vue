@@ -6,7 +6,7 @@
         <div class="tweet__info__image_wrapper">
           <img
             :src="tweet.User.avatar"
-            alt=""
+            alt="使用者的大頭貼"
             class="tweet__info__image"
           >
         </div>
@@ -40,13 +40,15 @@
         </div>
       </div>
       <div class="tweet__info__icon__wrapper">
-        <div class="tweet__info__icon__message__wrapper">
-          <div
-            class="tweet__info__icon__message"
-            data-toggle="modal"
-            data-target="#reply__post__modal"
-          />
-        </div>
+        <router-link :to="{name:'reply-post-modal', params:{id:tweet.id}}">
+          <div class="tweet__info__icon__message__wrapper">
+            <div
+              class="tweet__info__icon__message"
+              data-toggle="modal"
+              data-target="#reply__post__modal"
+            />
+          </div>
+        </router-link>
         <div class="tweet__info__icon__like__wrapper">
           <div
             v-if="!tweet.isLike"
@@ -59,8 +61,13 @@
             @click.prevent.stop="removeLiked(tweet.id)"
           />
         </div>
-        <template>
-          <ReplyPostModal />
+        <template
+          v-if="isshow"
+        >
+          <ReplyPostModal
+            :initial-tweet="initialTweet"
+            @after-submit="handleAfterSubmit"
+          />
         </template>
       </div>
     </div>
@@ -86,6 +93,7 @@ export default {
   },
   data () {
     return {
+      isshow: true,
       currentPage: '推文',
       tweet: this.initialTweet
     }
@@ -99,6 +107,10 @@ export default {
     }
   },
   methods: {
+    handleAfterSubmit (status) {
+      this.isshow = status
+      console.log(status)
+    },
     async addLiked (tweetId) {
       try {
         const { data } = await userAPI.addLike({ tweetId })
@@ -125,7 +137,8 @@ export default {
         console.log(data)
 
         this.tweet.isLike = false
-        this.tweet.likeCount = this.tweet.likeCount - 1
+        // likeCount 不能有負值
+        this.tweet.likeCount = this.tweet.likeCount > 0 ? this.tweet.likeCount -= 1 : 0
       } catch (e) {
         console.log(e)
         Toast.fire({

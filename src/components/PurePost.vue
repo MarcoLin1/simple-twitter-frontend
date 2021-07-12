@@ -1,26 +1,26 @@
 <template>
   <div>
-    <div
-      v-for="post in posts"
-      :key="post.id"
-      class="post"
-    >
+    <div class="post">
       <div class=" post__avatar">
-        <div class="avatar-img" />
+        <img
+          class="avatar-img"
+          :src="initialTweet.User.avatar"
+          alt=""
+        >
       </div>
       <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
-            {{ post.name }}
+            {{ initialTweet.User.name }}
           </span>
-          <span class="post__content__title__item">{{ post.account }}</span>
+          <span class="post__content__title__item">{{ initialTweet.User.account }}</span>
           <span class="post__content__title__item">·</span>
           <span class="post__content__title__item post__content__title__item__time">
-            {{ post.createdTime }}
+            {{ initialTweet.createdAt | fromNow }}
           </span>
         </div>
         <div class="post__content__discription">
-          {{ post.discription }}
+          {{ initialTweet.description }}
         </div>
       </div>
     </div>
@@ -61,39 +61,14 @@
 </style>
 
 <script>
-export default {
+import { fromNowFilter } from './../utils/mixins'
 
-  data () {
-    return {
-      posts: [
-        {
-          id: '1',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-          createdTime: '3 小時',
-          isLiked: true
-        }
-      ]
-    }
-  },
-  created () {
-    console.log(this.border)
-  },
-  methods: {
-    addLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = true
-        }
-      })
-    },
-    removeLiked (id) {
-      this.posts.filter((post) => {
-        if (post.id === id) {
-          post.isLiked = false
-        }
-      })
+export default {
+  mixins: [fromNowFilter],
+  props: {
+    initialTweet: {
+      type: Object,
+      required: true
     }
   }
 }

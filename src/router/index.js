@@ -34,6 +34,7 @@ const routes = [
     name: 'user',
     component: () => import('./../views/user.vue'),
     children: [
+
       {
         path: ':id/followings',
         name: 'user-followings',
@@ -62,7 +63,13 @@ const routes = [
       {
         path: '/detail/:id',
         name: 'detail-tweet',
-        component: () => import('./../views/DetailTweet.vue')
+        component: () => import('./../views/DetailTweet.vue'),
+        children: [
+          {
+            path: '/user/replied/:id',
+            name: 'reply-post-modal',
+            component: () => import('./../components/ReplyPostModal.vue')
+          }]
       },
       {
         path: '/mainpage',
