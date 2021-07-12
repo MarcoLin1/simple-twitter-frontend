@@ -1,7 +1,7 @@
 <template>
   <div class="middle-container">
     <template>
-      <TopNavbar :current-page="currentPage" />
+      <!-- <TopNavbar :current-page="currentPage" /> -->
     </template>
     <template>
       <UserEditModal />
@@ -53,16 +53,16 @@
         編輯個人資料
       </button>
       <button
-        v-if="(currentUser.id !== user.id) && (currentUser.isFollowing)"
+        v-if="(currentUser.id !== user.id) && (isFollowing)"
         class="btn-border btn__following"
-        @click="removeFollowing"
+        @click.stop.prevent="removeFollowing(user.id)"
       >
         正在跟隨
       </button>
       <button
-        v-if="(currentUser.id !== user.id) && (!currentUser.isFollowing)"
+        v-if="(currentUser.id !== user.id) && (!isFollowing)"
         class="btn-border btn__unFollowing"
-        @click="addFollowing"
+        @click.stop.prevent="addFollowing(user.id)"
       >
         跟隨
       </button>
@@ -111,7 +111,7 @@ a:hover{
     width: 100%;
     img{
       width: 598px;
-      height: auto;
+      height: 200px;
     }
   }
   &__edit-btn{
@@ -133,7 +133,7 @@ a:hover{
       width: 140px;
       height: 140px;
       border: 5px solid white;
-      top:175px;
+      top:120px;
       left: 14px;
     }
   }
@@ -207,73 +207,110 @@ a:hover{
 
 <script>
 import UserEditModal from './../components/UserEditModal.vue'
-import TopNavbar from './../components/TopNavbar.vue'
-const dummyUser =
-    {
-      id: 1,
-      name: 'John Doe',
-      account: 'heyjohne',
-      avatar: 'https://i.imgur.com/27eBUkt.jpg',
-      cover: 'https://i.imgur.com/ZDk9KqZ.png',
-      introduction: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-      followerCount: 12,
-      followingCount: 333
-    }
-const currentUser =
-    {
-      id: 2,
-      name: 'Joy',
-      account: 'hellojoy',
-      avatar: 'https://i.imgur.com/27eBUkt.jpg',
-      cover: 'https://i.imgur.com/ZDk9KqZ.png',
-      introduction: 'No you minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-      followerCount: 12,
-      followingCount: 333,
-      isSubscribe: true,
-      isFollowing: true
-    }
+import userAPI from './../apis/users'
+import { Toast } from './../utils/helper'
+
 export default {
   components: {
-    UserEditModal,
-    TopNavbar
+    UserEditModal
+  },
+  props: {
+    getCurrentUser: {
+      type: [Object, Array],
+      required: true
+    }
   },
   data () {
     return {
-      user: {},
-      currentUser: [],
-      currentPage: 'userProfile'
+      user: [],
+      currentUser: this.getCurrentUser,
+      userFollowers: [],
+      currentPage: 'userProfile',
+      isFollowing: false
+    }
+  },
+  watch: {
+    getCurrentUser (newValue) {
+      this.currentUser = {
+        ...this.currentUser,
+        ...newValue
+      }
     }
   },
   created () {
-    this.fetchUser()
+    const { id } = this.$route.params
+    console.log(this.$route)
+    this.fetchUser(id)
+    this.fetUserFollowers(id)
   },
   methods: {
-    fetchUser () {
-      this.user = { ...dummyUser }
-      this.currentUser = { ...currentUser }
+    async fetUserFollowers (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowers({ userId })
+        this.userFollowers = data
+        this.userFollowers.forEach(item => {
+          if (item.followerId !== this.currentUser.id) {
+            this.isFollowing = false
+          } else {
+            this.isFollowing = true
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async fetchUser (userId) {
+      try {
+        const { data } = await userAPI.getUser({ userId })
+        this.user = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: 'user頁面資料讀取失敗'
+        })
+      }
     },
     addSubscribe () {
-      this.currentUser = {
-        ...this.currentUser,
-        isSubscribe: true
-      }
+      // this.currentUsers = {
+      //   ...this.currentUsers,
+      //   isSubscribe: true
+      // }
     },
     removeSubscribe () {
-      this.currentUser = {
-        ...this.currentUser,
-        isSubscribe: false
+      // this.currentUsers = {
+      //   ...this.currentUsers,
+      //   isSubscribe: false
+      // }
+    },
+    async addFollowing (userId) {
+      try {
+        const { data } = await userAPI.addFollowShip({ id: userId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isFollowing = true
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '新增追蹤失敗'
+        })
       }
     },
-    addFollowing () {
-      this.currentUser = {
-        ...this.currentUser,
-        isFollowing: true
-      }
-    },
-    removeFollowing () {
-      this.currentUser = {
-        ...this.currentUser,
-        isFollowing: false
+    async removeFollowing (userId) {
+      try {
+        const { data } = await userAPI.removeFollowShip({ userId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.isFollowing = false
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '取消追蹤失敗'
+        })
       }
     }
   }
