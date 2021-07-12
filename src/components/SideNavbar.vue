@@ -37,8 +37,9 @@
           設定
         </div>
       </router-link>
-      <div
+      <router-link
         class="side-navbar-button-wrapper"
+        :to="{name: 'new-tweet'}"
       >
         <button
           v-if="$route.path.slice(0, 6) !== '/admin'"
@@ -49,7 +50,7 @@
         >
           推文
         </button>
-      </div>
+      </router-link>
     </div>
     <template>
       <NewPostModal />

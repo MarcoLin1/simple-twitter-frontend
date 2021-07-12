@@ -39,7 +39,7 @@
           </div>
           <div class="post__content__reaction__item">
             <div
-              v-if="!post.isLike"
+              v-if="!Boolean(post.isLike)"
               class="post__content__reaction__item__heart"
               @click="addLiked(post.TweetId)"
             />
@@ -52,7 +52,7 @@
             <span
               class="post__content__reaction__item__text"
               :class="{liked:post.isLike}"
-            >{{ post.likeCount }}</span>
+            >{{ likeCount }}</span>
           </div>
         </div>
         <template>
@@ -74,11 +74,16 @@ export default {
     initialTweet: {
       type: Object,
       required: true
+    },
+    likeNum: {
+      type: [Number, String],
+      required: true
     }
   },
   data () {
     return {
       post: this.initialTweet,
+      likeCount: this.likeNum,
       currentUser: {
         name: 'JoJo',
         account: 'jojo',
@@ -88,10 +93,10 @@ export default {
   },
   watch: {
     initialTweet (newValue) {
-      this.post = {
+      this.post = [
         ...this.post,
         ...newValue
-      }
+      ]
       console.log('UserPost的newValue:', newValue)
     }
   },
@@ -104,12 +109,13 @@ export default {
         }
         console.log(data)
         // 還差取得currentUser的api判斷
-        if (this.currentUser.id !== tweetId) {
+        if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,
             isLike: true
           }
         }
+        this.likeCount += 1
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -124,13 +130,15 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+
         // 還差取得currentUser的api判斷
-        if (this.currentUser.id !== tweetId) {
+        if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,
             isLike: false
           }
         }
+        this.likeCount -= 1
       } catch (e) {
         console.log(e)
         Toast.fire({
