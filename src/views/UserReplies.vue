@@ -1,12 +1,13 @@
 <template>
   <div class="user__replies__container">
     <div class="user__replies__main__wrapper">
-      <UserProfile />
-      <UserPostButton />
-      <UserRepliesPost
-        v-for="reply in userReplies"
-        :key="reply.tweet.id"
-        :initial-user-reply="reply"
+      <UserProfile :get-current-user="currentUser" />
+      <UserPostItem />
+      <UserPost
+        v-for="post in userReplies"
+        :key="post.TweetId"
+        :initial-tweet="post"
+        :like-num="post.likeCount"
       />
     </div>
   </div>
@@ -16,22 +17,25 @@
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
 import UserProfile from './../components/UserProfile.vue'
-import UserPostButton from './../components/UserPostButton.vue'
-import UserRepliesPost from './../components/UserRepliesPost.vue'
+import UserPostItem from './../components/UserPostItem.vue'
+import UserPost from './../components/UserPost.vue'
 export default {
+  name: 'UserReplies',
   components: {
     UserProfile,
-    UserPostButton,
-    UserRepliesPost
+    UserPostItem,
+    UserPost
   },
   data () {
     return {
-      userReplies: []
+      userReplies: [],
+      currentUser: []
     }
   },
   created () {
     const { id } = this.$route.params
     this.fetchUserReplies(id)
+    this.fetchCurrentUser()
   },
   methods: {
     async fetchUserReplies (userId) {
@@ -44,6 +48,18 @@ export default {
         Toast.fire({
           icon: 'error',
           title: '有回覆訊息的資料讀取失敗，請稍候再試'
+        })
+      }
+    },
+    async fetchCurrentUser () {
+      try {
+        const { data } = await userAPI.getCurrentUser()
+        this.currentUser = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '讀取現在使用者資料失敗'
         })
       }
     }
