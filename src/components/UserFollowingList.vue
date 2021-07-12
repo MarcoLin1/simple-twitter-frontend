@@ -5,7 +5,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            to="/user/1/followings"
+            :to="{name: 'user-followings'}"
             type="button"
             class="users__list__item__button"
           >
@@ -15,7 +15,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            to="/user/1/followers"
+            :to="{name: 'user-followers'}"
             type="button"
             class="users__list__item__button"
           >
@@ -198,34 +198,33 @@ export default {
         ...this.followings,
         ...newValue
       ]
-      console.log(newValue)
     }
   },
   methods: {
-    async addFollowing (id) {
+    async addFollowing (userId) {
       try {
-        const { data } = await userAPI.addFollowShip({ id })
+        const { data } = await userAPI.addFollowShip({ userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        // this.followings.filter(item => {
-        //   if (item.Followings.id === userId) {
-        //     item.Followings.isFollowing = true
-        //   }
-        // })
-        this.followings = this.followings.map(user => {
-          if (user.Followings.id !== id) {
-            return user
-          } else {
-            return {
-              ...user,
-              Followings: {
-                ...user.Followings,
-                isFollowing: true
-              }
-            }
+        this.followings.filter(user => {
+          if (user.Followings.id === userId) {
+            user.Followings.isFollowing = true
           }
         })
+        // this.followings = this.followings.map(user => {
+        //   if (user.Followings.id !== id) {
+        //     return user
+        //   } else {
+        //     return {
+        //       ...user,
+        //       Followings: {
+        //         ...user.Followings,
+        //         isFollowing: true
+        //       }
+        //     }
+        //   }
+        // })
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -240,9 +239,9 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.followings.filter(item => {
-          if (item.Followings.id === userId) {
-            item.Followings.isFollowing = false
+        this.followings.filter(user => {
+          if (user.Followings.id === userId) {
+            user.Followings.isFollowing = false
           }
         })
       } catch (e) {

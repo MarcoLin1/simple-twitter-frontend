@@ -32,7 +32,8 @@ export default {
         tweetLength: '',
         isFollowed: false
       },
-      currentPage: 'UserFollowings'
+      currentPage: 'UserFollowings',
+      topUsers: []
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -41,13 +42,15 @@ export default {
     next()
   },
   created () {
-    this.fetchUser()
+    const { id } = this.$route.params
+    this.fetchUser(id)
   },
   methods: {
     async fetchUser (userId) {
       try {
         const { data } = await userAPI.getUserFollowing({ userId })
         this.followings = data
+        console.log('this followings:', this.followings)
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -60,10 +63,7 @@ export default {
       //   ...dummyUser.users
       // }
     }
-    // fetchTweets () {
-    //   const { tweets } = dummyData
-    //   this.userFollowingsTweets = tweets
-    // }
+
   }
 }
 </script>
