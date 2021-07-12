@@ -14,24 +14,7 @@ import TopNavbar from './../components/TopNavbar.vue'
 import UserFollowerList from './../components/UserFollowerList.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
-// const dummyData = {
-//   users:
-//     {
-//       id: 1,
-//       name: 'root',
-//       email: 'root@example.com',
-//       password: '$2a$10$K2x6pQHkzPEKzw86x8Tc0.bfW7QVdA2Ls4AXBFkFu7xHG3UgA4Mli',
-//       isAdmin: true,
-//       image: 'https://i.pravatar.cc/300',
-//       createdAt: '2021-07-05T09:58:39.000Z',
-//       updatedAt: '2021-07-05T10:31:19.000Z',
-//       Followers: [],
-//       FollowerCount: 0,
-//       TweetCount: 15,
-//       isFollowed: false
-//     },
-//   isAuthenticated: true
-// }
+
 export default {
   name: 'UserFollowers',
   components: {

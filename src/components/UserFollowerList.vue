@@ -5,7 +5,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            to="/user/1/followings"
+            :to="{name: 'user-followings'}"
             type="button"
             class="users__list__item__button"
           >
@@ -15,7 +15,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            to="/user/1/followers"
+            :to="{name: 'user-followers'}"
             type="button"
             class="users__list__item__button"
           >
@@ -198,32 +198,18 @@ export default {
         ...this.followers,
         ...newValue
       ]
-      console.log(newValue)
     }
   },
   methods: {
-    async addFollowing (id) {
+    async addFollowing (userId) {
       try {
-        const { data } = await userAPI.addFollowShip({ id })
+        const { data } = await userAPI.addFollowShip({ userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        // this.followings.filter(item => {
-        //   if (item.Followings.id === userId) {
-        //     item.Followings.isFollowing = true
-        //   }
-        // })
-        this.followers = this.followers.map(user => {
-          if (user.Followers.id !== id) {
-            return user
-          } else {
-            return {
-              ...user,
-              Followers: {
-                ...user.Followers,
-                isFollowing: true
-              }
-            }
+        this.followings.filter(user => {
+          if (user.Followings.id === userId) {
+            user.Followings.isFollowing = true
           }
         })
       } catch (e) {
@@ -240,9 +226,9 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.followers.filter(item => {
-          if (item.Followers.id === userId) {
-            item.Followers.isFollowing = false
+        this.followers.filter(user => {
+          if (user.Followers.id === userId) {
+            user.Followers.isFollowing = false
           }
         })
       } catch (e) {
