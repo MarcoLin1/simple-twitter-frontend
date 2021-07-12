@@ -1,5 +1,8 @@
 <template>
-  <form action="POST">
+  <form
+    action="POST"
+    @submit.stop.prevent="handleSubmit"
+  >
     <div class="logo-wrapper">
       <Logo />
     </div>
@@ -14,6 +17,7 @@
         </span>
         <input
           id="account"
+          v-model="account"
           type="text"
           class="login__account"
           required
@@ -25,6 +29,7 @@
         </span>
         <input
           id="password"
+          v-model="password"
           type="password"
           class="login__password login__form__control"
           required
@@ -57,9 +62,39 @@
 </template>
 <script>
 import Logo from './../assets/icon/logo.vue'
+import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helper'
 export default {
   components: {
     Logo
+  },
+  data () {
+    return {
+      account: '',
+      password: ''
+    }
+  },
+  methods: {
+    async handleSubmit () {
+      try {
+        const userData = await authorizationAPI.login({
+          account: this.account,
+          password: this.password
+        })
+        const { data } = userData
+        console.log('userData:', userData)
+        localStorage.setItem('token', data.token)
+
+        this.$store.commit('setCurrentUser', data.user)
+        this.$router.push('/mainpage')
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '登入失敗'
+        })
+      }
+    }
   }
 
 }
