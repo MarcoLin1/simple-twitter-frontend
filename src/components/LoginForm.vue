@@ -60,6 +60,14 @@
           註冊 Alphitter
         </router-link>·
         <router-link
+          v-if="$route.path.slice(0, 6) === '/admin'"
+          to="/login"
+          class="login__admin"
+        >
+          前台登入
+        </router-link>
+        <router-link
+          v-else
           to="/admin/login"
           class="login__admin"
         >
