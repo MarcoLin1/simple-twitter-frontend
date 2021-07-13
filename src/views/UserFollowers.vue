@@ -59,6 +59,6 @@ export default {
 @import '../assets/scss/main.scss';
   .user__followers__main__wrapper {
     width: 600px;
-    margin-top: 26px;
+
   }
 </style>

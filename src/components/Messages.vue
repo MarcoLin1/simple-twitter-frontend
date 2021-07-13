@@ -1,23 +1,21 @@
 <template>
   <div>
-    <div
-      v-for="reply in replies"
-      :key="reply.id"
-      class="reply"
-    >
+    <div class="reply">
       <div class="reply__avatar ">
-        <img
-          :src="reply.user.avatar"
-          alt=""
-          class="avatar-img"
-        >
+        <router-link :to="{ name:'user-tweets', params:{id:reply.User.id}}">
+          <img
+            :src="reply.User.avatar"
+            alt=""
+            class="avatar-img"
+          >
+        </router-link>
       </div>
       <div class="reply__content ml-2">
         <div class="reply__content__title mb-2">
           <span class="reply__content__title__item user-name">
-            {{ reply.user.name }}
+            {{ reply.User.name }}
           </span>
-          <span class="reply__content__title__item">@{{ reply.user.account }}</span>
+          <span class="reply__content__title__item">@{{ reply.User.account }}</span>
           <span class="reply__content__title__item">·</span>
           <span
             class="reply__content__title__item reply__content__title__item__time"
@@ -27,7 +25,7 @@
         </div>
         <div class="reply__content__object">
           <span>回覆</span>
-          <span>@apple</span>
+          <span>@{{ user.account }}</span>
         </div>
         <div class="reply__content__discription">
           {{ reply.comment }}
@@ -46,7 +44,7 @@
   display: grid;
   grid-template-columns: 50px 1fr;
   width: 600px;
-  border: solid 1px $light-gray;
+  border-top: solid 1px $light-gray;
   padding: 15px;
   margin-top: -1px;
   &__content {
@@ -58,7 +56,7 @@
           margin-right: 3px;
         }
         &__time {
-          // font-size: 14px;
+          font-size: 14px;
           margin-left: -1px;
         }
       }
@@ -70,6 +68,7 @@
     &__object{
       line-height: 21px;
       margin: 5px 0;
+      color: $tx-gray;
       span:nth-child(2){
         color: $orange;
         margin-left: 4px;
@@ -81,81 +80,40 @@
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
-const dummyData = {
-  replies: [
-    {
-      createdAt: '2021-07-3T16:24:55.443Z',
-      ReplyId: 1,
-      comment: 'Good Job!',
-      user: {
-        UserId: 1,
-        name: 'Mary Jane',
-        account: 'mjjane',
-        avatar: 'https://i.imgur.com/ZE7I56u.png'
-      }
-    },
-    {
-      createdAt: '2021-05-30T16:24:55.443Z',
-      ReplyId: 2,
-      comment: 'Great~',
-      user: {
-        UserId: 1,
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      createdAt: '2021-03-30T16:24:55.443Z',
-      ReplyId: 3,
-      comment: 'Good Job!',
-      user: {
-        UserId: 1,
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://i.imgur.com/27eBUkt.jpg'
-      }
-    },
-    {
-      createdAt: '2021-03-30T16:24:55.443Z',
-      ReplyId: 4,
-      comment: 'Good Job!',
-      user: {
-        UserId: 1,
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://i.imgur.com/27eBUkt.jpg'
-      }
-    },
-    {
-      createdAt: '2021-03-30T16:24:55.443Z',
-      ReplyId: 5,
-      comment: 'Good Job!',
-      user: {
-        UserId: 1,
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://i.imgur.com/27eBUkt.jpg'
-      }
-    }
-  ]
-}
-
 export default {
   mixins: [fromNowFilter],
+  props: {
+    initialUser: {
+      type: Object,
+      required: true
+    },
+    initialReply: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       repliedAccount: 'apple',
-      replies: []
+      user: this.initialUser,
+      reply: this.initialReply
     }
   },
-  created () {
-    this.fetchReplies()
+  watch: {
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
+    },
+    initialReply (newValue) {
+      this.reply = {
+        ...this.reply,
+        ...newValue
+      }
+    }
   },
   methods: {
-    fetchReplies () {
-      this.replies = dummyData.replies
-    }
   }
 }
 </script>

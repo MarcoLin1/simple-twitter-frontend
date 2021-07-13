@@ -1,7 +1,7 @@
 <template>
   <form
     action="POST"
-    @submit.stop.prevent="handleSubmit"
+    @submit.prevent.stop="handleSubmit"
   >
     <div class="logo-wrapper">
       <Logo />
@@ -12,24 +12,32 @@
 
     <div class="login__form__table">
       <div class="login__form__group">
-        <span class="login__form__group__title">
+        <label
+          for="account"
+          class="login__form__group__title"
+        >
           帳號
-        </span>
+        </label>
         <input
           id="account"
           v-model="account"
+          name="account"
           type="text"
           class="login__account"
           required
         >
       </div>
       <div class="login__form__group">
-        <span class="login__form__group__title">
+        <label
+          for="password"
+          class="login__form__group__title"
+        >
           密碼
-        </span>
+        </label>
         <input
           id="password"
           v-model="password"
+          name="password"
           type="password"
           class="login__password login__form__control"
           required
@@ -39,6 +47,7 @@
         <button
           type="submit"
           class="login__button"
+          :disabled="isProcessing"
         >
           登入
         </button>
@@ -61,6 +70,7 @@
   </form>
 </template>
 <script>
+import { Toast } from '../utils/helper'
 import Logo from './../assets/icon/logo.vue'
 import authorizationAPI from './../apis/authorization'
 import { Toast } from './../utils/helper'
@@ -71,29 +81,24 @@ export default {
   data () {
     return {
       account: '',
-      password: ''
+      password: '',
+      isProcessing: false
     }
   },
-  methods: {
-    async handleSubmit () {
-      try {
-        const userData = await authorizationAPI.login({
-          account: this.account,
-          password: this.password
-        })
-        const { data } = userData
-        console.log('userData:', userData)
-        localStorage.setItem('token', data.token)
 
-        this.$store.commit('setCurrentUser', data.user)
-        this.$router.push('/mainpage')
-      } catch (e) {
-        console.log(e)
+  methods: {
+    handleSubmit () {
+      this.isProcessing = true
+      if (!this.account.trim() || !this.password.trim()) {
         Toast.fire({
-          icon: 'error',
-          title: '登入失敗'
+          icon: 'warning',
+          title: '請填入 email 和 password'
         })
+        this.isProcessing = false
+        return
       }
+      const loginData = { account: this.account, password: this.password }
+      this.$emit('after-submit', loginData)
     }
   }
 
@@ -114,6 +119,9 @@ export default {
 }
 .login__form__group {
   @extend %form-group-style;
+  input{
+    padding-bottom: 10px;
+  }
 }
 .login__form__group__title {
   @extend %form-group-title-style;

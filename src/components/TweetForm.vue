@@ -8,6 +8,7 @@
           class="tweet__form__image"
         />
         <textarea
+          v-model="description"
           type="text"
           rows="4"
           cols="50"
@@ -20,6 +21,7 @@
         <button
           type="submit"
           class="tweet__form__button"
+          @click.stop.prevent="handleSubmit"
         >
           推文
         </button>
@@ -29,8 +31,32 @@
 </template>
 
 <script>
+import { Toast } from '../utils/helper'
 export default {
-
+  data () {
+    return {
+      description: '',
+      currentUser: {
+        name: 'Apple',
+        account: 'apple',
+        avator: 'https://i.imgur.com/27eBUkt.jpg'
+      }
+    }
+  },
+  methods: {
+    handleSubmit () {
+      if (!this.description) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請輸入推文內容'
+        })
+        return
+      }
+      this.$emit('after-submit', this.description)
+      this.description = ''
+      console.log('handleSubmit')
+    }
+  }
 }
 </script>
 
@@ -40,7 +66,7 @@ export default {
     width: 600px;
     height: auto;
     margin: 0 auto;
-    border: 1px solid $light-gray;
+    border-top: 1px solid $light-gray;
     border-bottom: 10px solid $light-gray;
     padding: 10px 15px 10px 15px;
   }

@@ -39,7 +39,7 @@
           </div>
           <div class="post__content__reaction__item">
             <div
-              v-if="!Boolean(post.isLike)"
+              v-if="!post.isLike"
               class="post__content__reaction__item__heart"
               @click="addLiked(post.TweetId)"
             />

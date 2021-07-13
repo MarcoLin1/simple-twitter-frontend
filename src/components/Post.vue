@@ -6,10 +6,7 @@
       class="post"
       :class="{ noborder: noborder }"
     >
-      <div
-        class="
-      post__avatar"
-      >
+      <div class=" post__avatar">
         <div class="avatar-img" />
       </div>
       <div class="post__content">
@@ -164,14 +161,7 @@ export default {
     ReplyPostModal
   },
   props: {
-    noborder: {
-      type: Boolean,
-      default: false
-    },
-    noreaction: {
-      type: Boolean,
-      default: false
-    }
+
   },
   data () {
     return {

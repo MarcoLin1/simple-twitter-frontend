@@ -14,3 +14,24 @@ export const emptyImageFilter = {
     }
   }
 }
+
+export const localTimeFilter = {
+  filters: {
+    localTime (datatime) {
+      const time = moment(datatime).locale('zh-tw')
+      return (time.format('a h:mm') + '·' + time.format('ll'))
+    }
+  }
+}
+// 如果發文時間少於 24 小時，顯示幾小時前，不然就顯示幾月幾號
+export const shortenTimeFilter = {
+  filters: {
+    shortenTime (datatime) {
+      let time = moment(datatime).locale('zh-tw').startOf('day').fromNow()
+      if (time.includes('天')) {
+        time = moment(datatime).locale('zh-tw').format('MMMDo')
+      }
+      return (time || '-')
+    }
+  }
+}
