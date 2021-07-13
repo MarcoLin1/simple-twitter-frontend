@@ -4,7 +4,10 @@
       <!-- <TopNavbar :current-page="currentPage" /> -->
     </template>
     <template>
-      <UserEditModal />
+      <UserEditModal
+        :initial-user="user"
+        @after-submit="afterHandleSubmit"
+      />
     </template>
     <div class="profile__cover">
       <img
@@ -49,6 +52,7 @@
         class="btn-border"
         data-toggle="modal"
         data-target="#user__edit__modal"
+        @click="showModal"
       >
         編輯個人資料
       </button>
@@ -283,6 +287,16 @@ export default {
       //   isSubscribe: false
       // }
     },
+    afterHandleSubmit (data) {
+      this.user.name = data.name
+      this.user.introduction = data.introduction
+      if (data.avatar) {
+        this.user.avatar = data.avatar
+      }
+      if (data.cover) {
+        this.user.cover = data.cover
+      }
+    },
     async addFollowing (userId) {
       try {
         const { data } = await userAPI.addFollowShip({ id: userId })
@@ -312,6 +326,11 @@ export default {
           title: '取消追蹤失敗'
         })
       }
+    },
+    showModal () {
+      const showModal = document.querySelector('#user__edit__modal')
+      showModal.classList.remove('non__show')
+      showModal.classList.add('show')
     }
   }
 }
