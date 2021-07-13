@@ -174,21 +174,28 @@ export default {
   components: {
     PurePost
   },
-  data () {
-    return {
-      comment: '',
-      tweet: {}
+  props: {
+    initialTweet: {
+      type: Object,
+      required: true
     }
   },
-  created () {
-    const { id: tweetId } = this.$route.params
-    this.fetchTweet(tweetId)
+  data () {
+    return {
+      tweet: {},
+      comment: ''
+
+    }
+  },
+  watch: {
+    initialTweet (newValue) {
+      this.tweet = {
+        ...this.tweet,
+        ...newValue
+      }
+    }
   },
   methods: {
-    async fetchTweet (tweetId) {
-      const { data } = await tweetAPI.getATweet({ tweetId })
-      this.tweet = data
-    },
     async handleSubmit () {
       const { id: tweetId } = this.$route.params
       console.log(tweetId)
@@ -196,13 +203,14 @@ export default {
         if (!this.comment) {
           console.log('You can not submit blank value')
         }
-        const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
+        const { data } = await tweetAPI.reply({ tweetId: this.initialTweet.TweetId, comment: this.comment })
         console.log(data)
-        this.$router.back()
+
         const replyData = {
           showModal: false,
           comment: this.comment
         }
+        this.$router.back()
         this.$emit('after-submit', replyData)
       } catch (error) {
         console.log('error', error)

@@ -25,18 +25,19 @@
         </div>
         <div class="post__content__discription">
           {{ post.description }}
+          {{ post.TweetId }}
         </div>
-        <div
-          class="post__content__reaction d-flex "
-        >
-          <div
-            class="post__content__reaction__item"
-            data-toggle="modal"
-            data-target="#reply__post__modal"
-          >
-            <div class="post__content__reaction__item__message " />
-            <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
-          </div>
+        <div class="post__content__reaction d-flex ">
+          <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
+            <div
+              class="post__content__reaction__item"
+              data-toggle="modal"
+              data-target="#reply__post__modal"
+            >
+              <div class="post__content__reaction__item__message " />
+              <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
+            </div>
+          </router-link>
           <div class="post__content__reaction__item">
             <div
               v-if="!post.isLike"
@@ -55,8 +56,11 @@
             >{{ likeCount }}</span>
           </div>
         </div>
-        <template>
-          <ReplyPostModal />
+        <template v-if="showModal">
+          <ReplyPostModal
+            :initial-tweet="initialTweet"
+            @after-submit="handleAfterSubmit"
+          />
         </template>
       </div>
     </div>
@@ -82,6 +86,7 @@ export default {
   },
   data () {
     return {
+      showModal: true,
       post: this.initialTweet,
       likeCount: this.likeNum,
       currentUser: {
@@ -101,6 +106,14 @@ export default {
     }
   },
   methods: {
+    handleAfterSubmit () {
+      this.showModal = false
+      // 關掉modal
+      const modalBg = document.querySelector('.modal-backdrop')
+      modalBg.classList.remove('modal-backdrop')
+      document.body.className = document.body.className.replace('modal-open', '')
+      this.post.replyCount = this.post.replyCount + 1
+    },
     async addLiked (tweetId) {
       try {
         const { data } = await userAPI.addLike({ tweetId })

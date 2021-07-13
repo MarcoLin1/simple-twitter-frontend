@@ -12,7 +12,6 @@ export default {
   },
   created () {
     console.log(this.$route.path)
-    console.log('1223')
   },
   methods: {
     async handelAfterSubmit (loginData) {

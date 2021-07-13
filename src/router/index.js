@@ -77,10 +77,16 @@ const routes = [
         component: () => import('./../views/MainPage.vue'),
         children: [
           {
+            path: '/replied/:id',
+            name: 'main-reply-post-modal',
+            component: () => import('./../components/ReplyPostModal.vue')
+          },
+          {
             path: '/new',
             name: 'new-tweet',
             component: () => import('./../components/NewPostModal.vue')
           }
+
         ]
       }
 

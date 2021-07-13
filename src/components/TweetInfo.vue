@@ -92,7 +92,6 @@ export default {
   data () {
     return {
       showModal: true,
-      isshow: true,
       currentPage: '推文',
       tweet: this.initialTweet
     }
