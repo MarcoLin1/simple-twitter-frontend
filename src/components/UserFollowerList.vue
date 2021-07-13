@@ -34,16 +34,11 @@
       >
         <div class="users__list__image__wrapper">
           <img
-            src=""
-            <<<<<<<
-            HEAD:src
             components
             UserFollowerList.vue
             :src="follower.Followers.avatar"
-            =="====="
-          >>>>>>> 57613d060d0c02c8a9dd30d1fbdd566f7160aace:src/components/UsersList.vue
-          alt=""
-          class="users__list__image"
+            alt=""
+            class="users__list__image"
           >
         </div>
         <div class="users__list__content__wrapper">
@@ -52,14 +47,10 @@
               {{ tweet.Followers.name }}
             </div>
             <div class="users__list__account">
-              @{{ tweet.Followers.account }}
-              <<<<<<< HEAD:src/components/UserFollowerList.vue
-              {{ follower.Followers.name }}
+              @{{ follower.Followers.name }}
             </div>
             <div class="users__list__account">
               @{{ follower.Followers.account }}
-              =======
-              >>>>>>> 57613d060d0c02c8a9dd30d1fbdd566f7160aace:src/components/UsersList.vue
             </div>
           </div>
           <div class="users__list__text__wrapper">
@@ -67,37 +58,19 @@
           </div>
           <div class="users__list__button__wrapper">
             <button
-              v-if="tweet.Followers.isFollowing"
               v-if="follower.Followers.isFollowing"
-              <<<<<<<
-              HEAD:src
-              components
-              UserFollowerList.vue
               type="submit"
               class="users__list__button__following"
-              =="====="
-              type="submit"
-              class="users__list__button__following"
-              @click.stop.prevent="removeFollowing(tweet.Followers.id)"
               @click.stop.prevent="removeFollowing(follower.Followers.id)"
             >
-              >>>>>> 57613d060d0c02c8a9dd30d1fbdd566f7160aace:src/components/UsersList.vue
-              >
               正在跟隨
             </button>
             <button
               v-else
               type="submit"
               class="users__list__button__unfollowing"
-              @click.stop.prevent="addFollowing(tweet.Followers.id)"
-              <<<<<<<
-              HEAD:src
-              components
-              UserFollowerList.vue="======"
               @click.stop.prevent="addFollowing(follower.Followers.id)"
             >
-              >>>>>> 57613d060d0c02c8a9dd30d1fbdd566f7160aace:src/components/UsersList.vue
-              >
               跟隨
             </button>
           </div>
@@ -119,8 +92,8 @@
     min-width: 300px;
     max-width: 600px;
     margin: 0 auto;
-    border-top: 1px solid $light-gray;
-    padding-top: 26px;
+    // border-top: 1px solid $light-gray;
+    // padding-top: 26px;
     .users__list__item__wrapper {
       display: flex;
       width: 40%;
@@ -239,7 +212,7 @@ export default {
   methods: {
     async addFollowing (userId) {
       try {
-        const { data } = await userAPI.addFollowShip({ userId })
+        const { data } = await userAPI.addFollowShip({ id: userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
