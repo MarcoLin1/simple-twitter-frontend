@@ -1,7 +1,6 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-// const baseURL = 'https://private-19d2c6-simpletwitter5.apiary-mock.com/api'
 const baseURL = 'https://infinite-mountain-11239.herokuapp.com/api'
 
 const axiosInstance = axios.create({

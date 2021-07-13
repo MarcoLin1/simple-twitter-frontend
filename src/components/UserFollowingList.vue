@@ -5,7 +5,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            to="/user/1/followings"
+            :to="{name: 'user-followings'}"
             type="button"
             class="users__list__item__button"
           >
@@ -15,7 +15,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            to="/user/1/followers"
+            :to="{name: 'user-followers'}"
             type="button"
             class="users__list__item__button"
           >
@@ -24,15 +24,17 @@
         </div>
       </div>
     </div>
-    <div class="users__list__main__container">
+    <div
+      class="users__list__main__container"
+    >
       <div
-        v-for="tweet in tweets"
-        :key="tweet.UserId"
+        v-for="following in followings"
+        :key="following.Followings.id"
         class="users__list__main__wrapper"
       >
         <div class="users__list__image__wrapper">
           <img
-            src=""
+            :src="following.Followings.avatar"
             alt=""
             class="users__list__image"
           >
@@ -40,21 +42,21 @@
         <div class="users__list__content__wrapper">
           <div class="users__list__name__wrapper">
             <div class="users__list__name">
-              {{ tweet.Followers.name }}
+              {{ following.Followings.name }}
             </div>
             <div class="users__list__account">
-              @{{ tweet.Followers.account }}
+              @{{ following.Followings.account }}
             </div>
           </div>
           <div class="users__list__text__wrapper">
-            {{ tweet.description }}
+            {{ following.Followings.introduction }}
           </div>
           <div class="users__list__button__wrapper">
             <button
-              v-if="tweet.Followers.isFollowing"
+              v-if="following.Followings.isFollowing"
               type="submit"
               class="users__list__button__following"
-              @click.stop.prevent="removeFollowing(tweet.Followers.id)"
+              @click.stop.prevent="removeFollowing(following.Followings.id)"
             >
               正在跟隨
             </button>
@@ -62,7 +64,7 @@
               v-else
               type="submit"
               class="users__list__button__unfollowing"
-              @click.stop.prevent="addFollowing(tweet.Followers.id)"
+              @click.stop.prevent="addFollowing(following.Followings.id)"
             >
               跟隨
             </button>
@@ -85,8 +87,6 @@
     min-width: 300px;
     max-width: 600px;
     margin: 0 auto;
-    border-top: 1px solid $light-gray;
-    padding-top: 26px;
     .users__list__item__wrapper {
       display: flex;
       width: 40%;
@@ -118,8 +118,6 @@
     position: relative;
     padding: 10px 15px 10px 15px;
     border-top: 1px solid $light-gray;
-    border-bottom: 1px solid $light-gray;
-    margin-top: -1px;
     .users__list__image__wrapper {
       display: flex;
       align-items: center;
@@ -179,80 +177,79 @@
 </style>
 
 <script>
-import usersAPI from './../apis/users'
+import { Toast } from '../utils/helper'
+import userAPI from '../apis/users'
 
 export default {
-  data () {
-    return {
-      tweets: []
+  props: {
+    initialFollowings: {
+      type: [Object, Array],
+      require: true
     }
   },
-  created () {
-    this.fetchData()
+  data () {
+    return {
+      followings: []
+    }
+  },
+  watch: {
+    initialFollowings (newValue) {
+      this.followings = [
+        ...this.followings,
+        ...newValue
+      ]
+    }
   },
   methods: {
-    async fetchData () {
-      const userId = '1'
-      const { data } = await usersAPI.getUserFollowers({ userId })
-      console.log('fetchdata', data)
-      this.tweets = data
-    },
     async addFollowing (userId) {
-      // this.tweets.filter(user => {
-      //   if (user.UserId === id) {
-      //     user.isFollowing = true
-      //   }
-      // })
       try {
-        const { data } = await usersAPI.addFollowShip({ userId })
-
-        console.log('data', data)
-
+        const { data } = await userAPI.addFollowShip({ userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-
-        this.tweets = this.map((user) => {
-          if (user.Followers.id !== userId) {
-            return user
-          } else {
-            return {
-              ...user,
-              Followers: {
-                ...user.Followers,
-                isFollowing: true
-              }
-
-            }
+        this.followings.filter(user => {
+          if (user.Followings.id === userId) {
+            user.Followings.isFollowing = true
           }
         })
-      } catch (error) {
-        console.log('add error', error)
+        // this.followings = this.followings.map(user => {
+        //   if (user.Followings.id !== id) {
+        //     return user
+        //   } else {
+        //     return {
+        //       ...user,
+        //       Followings: {
+        //         ...user.Followings,
+        //         isFollowing: true
+        //       }
+        //     }
+        //   }
+        // })
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '加入失敗'
+        })
       }
     },
     async removeFollowing (userId) {
       try {
-        const { data } = await usersAPI.removeFollowShip({ userId })
-        console.log('followingdata', data)
+        const { data } = await userAPI.removeFollowShip({ userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(this.tweets)
-        this.tweets = this.tweets.map((user) => {
-          if (user.Followers.id !== userId) {
-            return user
-          } else {
-            return {
-              ...user,
-              Followers: {
-                ...user.Followers,
-                isFollowing: false
-              }
-            }
+        this.followings.filter(user => {
+          if (user.Followings.id === userId) {
+            user.Followings.isFollowing = false
           }
         })
-      } catch (error) {
-        console.log('error')
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '移除失敗'
+        })
       }
     }
   }

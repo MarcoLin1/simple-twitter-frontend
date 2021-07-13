@@ -3,9 +3,13 @@
     <SideNavbar />
     <div class="setting__form__wrapper">
       <div class="setting__top__navbar__wrapper">
-        <TopNavbar :current-page="currentPage" />
+        <TopNavbar
+          :current-page="currentPage"
+          :user-data="userData"
+          :user-tweets-length="userTweetsLength"
+        />
       </div>
-      <AccountDetailForm />
+      <AccountDetailForm @after-submit="handleAfterSubmit" />
     </div>
   </div>
 </template>
@@ -14,6 +18,8 @@
 import SideNavbar from './../components/SideNavbar.vue'
 import TopNavbar from './../components/TopNavbar.vue'
 import AccountDetailForm from './../components/AccountDetailForm.vue'
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
 export default {
   components: {
     SideNavbar: SideNavbar,
@@ -22,7 +28,42 @@ export default {
   },
   data () {
     return {
-      currentPage: '帳戶設定'
+      currentPage: '帳戶設定',
+      userData: [],
+      userTweetsLength: '',
+      currentUser: []
+    }
+  },
+  created () {
+    this.fetchCurrentUser()
+  },
+  methods: {
+    async fetchCurrentUser () {
+      try {
+        const { data } = await userAPI.getCurrentUser()
+        this.currentUser = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '讀取currentUser失敗'
+        })
+      }
+    },
+    async handleAfterSubmit (formData) {
+      try {
+        const { data } = await userAPI.settingUpdate({ userId: this.currentUser.id, formData })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.$router.push({ name: 'main-page' })
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料更新失敗'
+        })
+      }
     }
   }
 }

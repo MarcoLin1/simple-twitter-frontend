@@ -13,9 +13,9 @@
           &larr;</span>
       </div>
       <div class="top-navbar-name">
-        John Doe
+        {{ user.User.name }}
         <div class="top-navbar-text">
-          25推文
+          {{ userTweetsLength }}推文
         </div>
       </div>
     </div>
@@ -23,7 +23,16 @@
       v-else
       class="top-navbar-title"
     >
-      {{ currentPage }}
+      <div
+        v-if="$route.path.slice(0, 7) === '/detail'"
+        class="top-nav-title-icon"
+      >
+        <span>
+          &larr;</span>
+      </div>
+      <div class="top-navbar-title-text">
+        {{ currentPage }}
+      </div>
     </div>
   </div>
 </template>
@@ -34,11 +43,27 @@ export default {
     currentPage: {
       type: String,
       required: true
+    },
+    userData: {
+      type: [Array, Object],
+      required: true
+    },
+    userTweetsLength: {
+      type: [Number, String],
+      required: true
     }
   },
   data () {
     return {
-      isTrue: true
+      user: this.userData
+    }
+  },
+  watch: {
+    userData (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
     }
   }
 }
@@ -46,11 +71,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-// .top-navbar-container{
-//   border-bottom: 1px solid $light-gray;
-//   // border-left: 1px solid $light-gray;
-//   // border-right: 1px solid $light-gray;
-// }
 .top-navbar-title {
   font-weight: 700;
   font-size: 18px;

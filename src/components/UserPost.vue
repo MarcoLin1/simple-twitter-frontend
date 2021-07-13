@@ -1,40 +1,6 @@
 <template>
   <div class="post__container">
     <!-- 切換選單 -->
-    <template v-if="$route.path.slice(0, 10) !== '/mainpage'">
-      <div class="post__item__wrapper">
-        <div class="post__item">
-          <!-- 記得改網址 -->
-          <router-link
-            to="/user/1/tweets"
-            type="button"
-            class="post__item__button"
-          >
-            推文
-          </router-link>
-        </div>
-        <div class="post__item">
-          <!-- 記得改網址 -->
-          <router-link
-            to="/user/1/replies"
-            type="button"
-            class="post__item__button"
-          >
-            推文回覆
-          </router-link>
-        </div>
-        <div class="post__item">
-          <!-- 記得改網址 -->
-          <router-link
-            to="/user/1/likes"
-            type="button"
-            class="post__item__button"
-          >
-            喜歡的內容
-          </router-link>
-        </div>
-      </div>
-    </template>
     <div class="post">
       <div
         class="
@@ -86,7 +52,7 @@
             <span
               class="post__content__reaction__item__text"
               :class="{liked:post.isLike}"
-            >{{ post.likeCount }}</span>
+            >{{ likeCount }}</span>
           </div>
         </div>
         <template>
@@ -108,11 +74,16 @@ export default {
     initialTweet: {
       type: Object,
       required: true
+    },
+    likeNum: {
+      type: [Number, String],
+      required: true
     }
   },
   data () {
     return {
       post: this.initialTweet,
+      likeCount: this.likeNum,
       currentUser: {
         name: 'JoJo',
         account: 'jojo',
@@ -121,11 +92,12 @@ export default {
     }
   },
   watch: {
-    initialTweets (newValue) {
-      this.post = {
+    initialTweet (newValue) {
+      this.post = [
         ...this.post,
         ...newValue
-      }
+      ]
+      console.log('UserPost的newValue:', newValue)
     }
   },
   methods: {
@@ -137,12 +109,13 @@ export default {
         }
         console.log(data)
         // 還差取得currentUser的api判斷
-        if (this.currentUser.id !== tweetId) {
+        if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,
             isLike: true
           }
         }
+        this.likeCount += 1
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -157,13 +130,15 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+
         // 還差取得currentUser的api判斷
-        if (this.currentUser.id !== tweetId) {
+        if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,
             isLike: false
           }
         }
+        this.likeCount -= 1
       } catch (e) {
         console.log(e)
         Toast.fire({

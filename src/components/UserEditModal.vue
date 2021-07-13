@@ -78,7 +78,7 @@
           名稱
         </span>
         <input
-          v-model="user.name"
+          v-model="name"
           type="text"
           class="user__edit__modal__input"
           maxlength="50"
@@ -94,7 +94,7 @@
         </span>
         <textarea
           id=""
-          v-model="user.introduction"
+          v-model="introduction"
           name=""
           cols="40"
           rows="6"
@@ -272,30 +272,36 @@
 </style>
 
 <script>
-const dummyUser =
-    {
-      id: 1,
-      name: 'John Doe',
-      account: 'heyjohne',
-      avatar: 'https://i.imgur.com/27eBUkt.jpg',
-      cover: 'https://i.imgur.com/ZDk9KqZ.png',
-      introduction: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-      followerCount: 12,
-      followingCount: 333
-    }
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
+
 export default {
+  props: {
+    initialUser: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
-      user: []
+      user: this.initialUser,
+      name: '',
+      introduction: '',
+      cover: '',
+      avatar: ''
     }
   },
-  created () {
-    this.fetchUser()
+  watch: {
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
+      this.name = newValue.name
+      this.introduction = newValue.introduction
+    }
   },
   methods: {
-    fetchUser () {
-      this.user = dummyUser
-    },
     handleAvatarChange (e) {
       const files = e.target.files
       if (files.length === 0) {
@@ -303,6 +309,7 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
         this.user.avatar = imageURL
+        this.avatar = imageURL
       }
     },
     handleCoverChange (e) {
@@ -312,10 +319,47 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
         this.user.cover = imageURL
+        this.cover = imageURL
       }
     },
     // 處理name, introducation, avatar, cover的資料轉成formData傳給後端
-    handleSubmit (e) {
+    async handleSubmit (e) {
+      try {
+        if (!this.user.name) {
+          Toast.fire({
+            icon: 'error',
+            title: '請確實填寫姓名'
+          })
+          return
+        }
+        // const form = e.target
+        // const formData = new FormData(form)
+        const { data } = await userAPI.update({
+          userId: this.user.id,
+          name: this.name,
+          introduction: this.introduction,
+          cover: this.cover,
+          avatar: this.avatar
+        })
+        this.$emit('after-submit', { name: this.name, introduction: this.introduction, cover: this.cover, avatar: this.avatar })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        } else {
+          const modalBg = document.querySelector('.modal-backdrop')
+          const showModal = document.querySelector('#user__edit__modal')
+          showModal.classList.remove('show')
+          showModal.classList.add('non__show')
+          modalBg.classList.remove('modal-backdrop')
+          this.$router.push({ name: 'user-tweets', params: { id: this.user.id } })
+        }
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '更新失敗，請稍候再試'
+        })
+      }
       if (!this.user.name) {
         console.log('please fill in your name')
       }

@@ -159,22 +159,22 @@ export default {
         })
       }
     },
-    handleSubmit (e) {
-      if (!this.user.account || !this.user.name || !this.user.email || !this.user.password || !this.user.checkPassword) {
+    async handleSubmit (e) {
+      try {
+        // 將form資料轉成formData傳父層
+        // const form = e.target
+        // const formData = new FormData(form)
+        this.$emit('after-submit', this.user)
+        this.$emit('after-register', this.newUser)
+        this.isProcessing = false
+      } catch (e) {
+        this.isProcessing = false
+        console.log(e)
         Toast.fire({
           icon: 'error',
-          title: '資料請確實填寫'
+          title: '資料修改失敗，請稍候再試'
         })
-        return
       }
-      this.isProcessing = true
-
-      // 將form資料轉成formData傳父層
-      // const form = e.target
-      // const formData = new FormData(form)
-      this.$emit('after-submit', this.user)
-      this.$emit('after-register', this.newUser)
-      this.isProcessing = false
     }
   }
 }

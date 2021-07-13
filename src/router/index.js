@@ -73,8 +73,15 @@ const routes = [
       },
       {
         path: '/mainpage',
-        name: 'mainpage',
-        component: () => import('./../views/MainPage.vue')
+        name: 'main-page',
+        component: () => import('./../views/MainPage.vue'),
+        children: [
+          {
+            path: '/new',
+            name: 'new-tweet',
+            component: () => import('./../components/NewPostModal.vue')
+          }
+        ]
       }
 
     ]

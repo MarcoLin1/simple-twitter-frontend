@@ -1,26 +1,71 @@
 <template>
   <div class="user__likes__container">
-    <!-- <div class="user__likes__side__navbar__wrapper">
-      <SideNavbar />
-    </div> -->
     <div class="user__likes__main__wrapper">
-      <!-- <TopNavbar /> -->
-      <UserProfile />
-      <UserPost />
+      <UserProfile :get-current-user="currentUser" />
+      <UserPostItem />
+      <UserPost
+        v-for="post in userLikes"
+        :key="post.TweetId"
+        :initial-tweet="post"
+        :like-num="post.likeCount"
+      />
     </div>
   </div>
 </template>
 
 <script>
-
 import UserProfile from './../components/UserProfile.vue'
 import UserPost from './../components/UserPost.vue'
-export default {
-  components: {
+import UserPostItem from './../components/UserPostItem.vue'
+import { Toast } from '../utils/helper'
+import userAPI from './../apis/users'
 
+export default {
+  name: 'UserLikes',
+  components: {
     UserProfile,
-    UserPost
+    UserPost,
+    UserPostItem
+  },
+  data () {
+    return {
+      userLikes: [],
+      currentUser: []
+    }
+  },
+  created () {
+    const { id } = this.$route.params
+    this.fetchUserLikes(id)
+    this.fetchCurrentUser()
+  },
+  methods: {
+    async fetchUserLikes (userId) {
+      try {
+        const { data } = await userAPI.getUserLikes({ userId })
+        this.userLikes = data
+        console.log(data)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '喜歡的內容讀取失敗，請稍候再試'
+        })
+      }
+    },
+    async fetchCurrentUser () {
+      try {
+        const { data } = await userAPI.getCurrentUser()
+        this.currentUser = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '讀取現在使用者資料失敗'
+        })
+      }
+    }
   }
+
 }
 </script>
 
@@ -33,6 +78,5 @@ export default {
   .user__likes__main__wrapper {
     width: 100%;
     max-width: 600px;
-
   }
 </style>

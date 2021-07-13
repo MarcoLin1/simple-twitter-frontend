@@ -37,8 +37,9 @@
           設定
         </div>
       </router-link>
-      <div
+      <router-link
         class="side-navbar-button-wrapper"
+        :to="{name: 'new-tweet'}"
       >
         <button
           v-if="$route.path.slice(0, 6) !== '/admin'"
@@ -49,7 +50,7 @@
         >
           推文
         </button>
-      </div>
+      </router-link>
     </div>
     <template>
       <NewPostModal />
@@ -225,9 +226,14 @@ export default {
       background: #ffffff;
     }
   }
-  .icon-main-wrpper, .icon-user-wrpper, .icon-setting-wrpper, .icon-logout-wrapper {
+  .side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .bottom-item-container {
     &:hover {
-      background: $orange;
+      .content {
+        color: $orange;
+      }
+      .icon-main-wrpper, .icon-user-wrpper, .icon-setting-wrpper, .icon-logout-wrapper {
+        background: $orange;
+      }
     }
   }
   .content {
