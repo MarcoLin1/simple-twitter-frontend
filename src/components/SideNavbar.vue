@@ -226,9 +226,14 @@ export default {
       background: #ffffff;
     }
   }
-  .icon-main-wrpper, .icon-user-wrpper, .icon-setting-wrpper, .icon-logout-wrapper {
+  .side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .bottom-item-container {
     &:hover {
-      background: $orange;
+      .content {
+        color: $orange;
+      }
+      .icon-main-wrpper, .icon-user-wrpper, .icon-setting-wrpper, .icon-logout-wrapper {
+        background: $orange;
+      }
     }
   }
   .content {
