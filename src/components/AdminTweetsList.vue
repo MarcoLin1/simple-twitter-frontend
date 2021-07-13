@@ -12,7 +12,7 @@
       >
         <div class="admin__tweets__list__image__wrapper">
           <img
-            :src="tweet.user.avatar"
+            :src="tweet.User.avatar"
             alt=""
             class="admin__tweets__list__image"
           >
@@ -20,13 +20,13 @@
         <div class="admin__tweets__list__content__wrapper">
           <div class="admin__tweets__list__name__wrapper">
             <div class="admin__tweets__list__name">
-              {{ tweet.user.name }}
+              {{ tweet.User.name }}
             </div>
             <div class="admin__tweets__list__account">
-              @ {{ tweet.user.account }} ·
+              @ {{ tweet.User.account }} ·
             </div>
             <div class="admin__tweets__list__time">
-              {{ tweet.createdAt }}
+              {{ tweet.createdAt | shortenTime }}
             </div>
           </div>
           <div class="admin__tweets__list__wrapper">
@@ -49,72 +49,16 @@
 
 <script>
 import TopNavbar from './../components/TopNavbar.vue'
-const dummyData = {
-  tweets: [
-    {
-      TweetId: 1,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2019',
-      replyCount: 1,
-      likeCount: 1,
-      isLike: true,
-      user: {
-        UserId: 1,
-        name: 'apple',
-        account: 'apple',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      TweetId: 2,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2020',
-      replyCount: 2,
-      likeCount: 2,
-      isLike: true,
-      user: {
-        UserId: 2,
-        name: 'pen',
-        account: 'pen',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      TweetId: 3,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2023',
-      replyCount: 3,
-      likeCount: 3,
-      isLike: true,
-      user: {
-        UserId: 3,
-        name: 'dog',
-        account: 'DG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    },
-    {
-      TweetId: 4,
-      description: 'It is very hard to overcome this question',
-      createdAt: '2016',
-      replyCount: 4,
-      likeCount: 4,
-      isLike: true,
-      user: {
-        UserId: 4,
-        name: 'google',
-        account: 'GG',
-        avatar: 'https://loremflickr.com/320/240/people?random'
-      }
-    }
-  ]
-}
+import tweetAPI from './../apis/tweets'
+import { shortenTimeFilter } from './../utils/mixins'
+import { Toast } from '../utils/helper'
 
 export default {
   name: 'AdminTweetsList',
   components: {
     TopNavbar: TopNavbar
   },
+  mixins: [shortenTimeFilter],
   data () {
     return {
       tweets: [],
@@ -123,13 +67,21 @@ export default {
     }
   },
   created () {
-    this.fetchData()
+    this.fetchTweets()
   },
   methods: {
-    fetchData () {
-      const { tweets } = dummyData
-      this.tweets = tweets
-      this.user = tweets.user
+    async fetchTweets () {
+      try {
+        const { data } = await tweetAPI.getTweets()
+        this.tweets = data
+        console.log(data)
+      } catch (error) {
+        console.log('error', error)
+        Toast.fire({
+          icon: 'error',
+          title: '目前無法讀取推文，請稍後再試'
+        })
+      }
     },
     deleteTweet (TweetId) {
       this.tweets = this.tweets.filter(tweet => tweet.TweetId !== TweetId)
