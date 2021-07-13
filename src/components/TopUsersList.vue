@@ -144,9 +144,9 @@ export default {
     toggleShowAll () {
       this.showAll = !this.showAll
     },
-    async addFollowing (id) {
+    async addFollowing (userId) {
       try {
-        const { data } = await userAPI.addFollowShip({ id })
+        const { data } = await userAPI.addFollowShip({ id: userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
@@ -159,14 +159,14 @@ export default {
         })
       }
       this.users.filter((user) => {
-        if (user.id === id) {
+        if (user.id === userId) {
           user.isFollowing = true
         }
       })
     },
-    async removeFollowing (id) {
+    async removeFollowing (userId) {
       try {
-        const { data } = await userAPI.removeFollowShip({ id })
+        const { data } = await userAPI.removeFollowShip({ userId })
         if (data !== 'success') {
           throw new Error(data.message)
         }
@@ -179,7 +179,7 @@ export default {
         })
       }
       this.users.filter((user) => {
-        if (user.id === id) {
+        if (user.id === userId) {
           user.isFollowing = false
         }
       })

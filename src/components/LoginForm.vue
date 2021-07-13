@@ -72,8 +72,8 @@
 <script>
 import { Toast } from '../utils/helper'
 import Logo from './../assets/icon/logo.vue'
-import authorizationAPI from './../apis/authorization'
-import { Toast } from './../utils/helper'
+// import authorizationAPI from './../apis/authorization'
+
 export default {
   components: {
     Logo
@@ -85,7 +85,6 @@ export default {
       isProcessing: false
     }
   },
-
   methods: {
     handleSubmit () {
       this.isProcessing = true

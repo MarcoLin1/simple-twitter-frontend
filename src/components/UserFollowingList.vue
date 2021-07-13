@@ -203,7 +203,7 @@ export default {
   methods: {
     async addFollowing (userId) {
       try {
-        const { data } = await userAPI.addFollowShip({ userId })
+        const { data } = await userAPI.addFollowShip({ id: userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }

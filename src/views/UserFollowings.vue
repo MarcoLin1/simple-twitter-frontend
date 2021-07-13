@@ -1,8 +1,8 @@
 <template>
   <div class="user__followings__container">
-    <TopNavbar
+    <!-- <TopNavbar
       :current-page="currentPage"
-    />
+    /> -->
     <div class="user__followings__main__wrapper">
       <UserFollowingList :initial-followings="followings" />
     </div>
@@ -12,13 +12,13 @@
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
-import TopNavbar from './../components/TopNavbar.vue'
+// import TopNavbar from './../components/TopNavbar.vue'
 import UserFollowingList from './../components/UserFollowingList.vue'
 
 export default {
   name: 'UserFollowings',
   components: {
-    TopNavbar,
+    // TopNavbar,
     UserFollowingList
   },
   data () {
