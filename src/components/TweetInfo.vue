@@ -46,6 +46,7 @@
               class="tweet__info__icon__message"
               data-toggle="modal"
               data-target="#reply__post__modal"
+              :data-modal="!showModal"
             />
           </div>
         </router-link>
@@ -61,9 +62,7 @@
             @click.prevent.stop="removeLiked(tweet.id)"
           />
         </div>
-        <template
-          v-if="isshow"
-        >
+        <template v-if="showModal">
           <ReplyPostModal
             :initial-tweet="initialTweet"
             @after-submit="handleAfterSubmit"
@@ -93,6 +92,7 @@ export default {
   },
   data () {
     return {
+      showModal: true,
       isshow: true,
       currentPage: '推文',
       tweet: this.initialTweet
@@ -108,8 +108,10 @@ export default {
   },
   methods: {
     handleAfterSubmit (status) {
-      this.isshow = status
+      this.showModal = false
       console.log(status)
+      const modalBg = document.querySelector('.modal-backdrop')
+      modalBg.classList.remove('modal-backdrop')
     },
     async addLiked (tweetId) {
       try {

@@ -6,6 +6,7 @@
       <div
         id="reply__post__modal"
         class="modal"
+        :data-modal="showModal"
         tabindex="-1"
       >
         <div class="modal__dialog">
@@ -56,7 +57,7 @@
               <button
                 type="submit"
                 class="modal__footer__button"
-                data-dismiss="close"
+
                 @click.stop.prevent="handleSubmit"
               >
                 回覆
@@ -177,7 +178,8 @@ export default {
   data () {
     return {
       comment: '',
-      tweet: {}
+      tweet: {},
+      showModal: true
     }
   },
   created () {
@@ -199,6 +201,7 @@ export default {
         const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
         console.log(data)
         this.$router.back()
+        this.showModal = true
         this.$emit('after-submit', false)
       } catch (error) {
         console.log('error', error)
