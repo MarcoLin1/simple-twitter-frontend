@@ -1,7 +1,6 @@
 <template>
   <div class="account__detail__form__container">
     <form
-      action="POST"
       class="account__detail__form__wrapper"
       @submit.stop.prevent="handleSubmit"
     >
@@ -11,9 +10,17 @@
             帳號
           </span>
           <input
+            v-if="$route.path.slice(0, 7) === '/signup'"
+            id="account"
+            v-model="newUser.account"
+            required
+            type="text"
+            class="account__detail__account account__detail__form__control"
+          >
+          <input
+            v-else
             id="account"
             v-model="user.account"
-            required
             type="text"
             class="account__detail__account account__detail__form__control"
           >
@@ -23,9 +30,17 @@
             名稱
           </span>
           <input
+            v-if="$route.path.slice(0, 7) === '/signup'"
+            id="name"
+            v-model="newUser.name"
+            required
+            type="text"
+            class="account__detail__name account__detail__form__control"
+          >
+          <input
+            v-else
             id="name"
             v-model="user.name"
-            required
             type="text"
             class="account__detail__name account__detail__form__control"
           >
@@ -35,9 +50,17 @@
             Email
           </span>
           <input
+            v-if="$route.path.slice(0, 7) === '/signup'"
+            id="email"
+            v-model="newUser.email"
+            required
+            type="email"
+            class="account__detail__email account__detail__form__control"
+          >
+          <input
+            v-else
             id="email"
             v-model="user.email"
-            required
             type="email"
             class="account__detail__email account__detail__form__control"
           >
@@ -47,9 +70,17 @@
             密碼
           </span>
           <input
+            v-if="$route.path.slice(0, 7) === '/signup'"
+            id="password"
+            v-model="newUser.password"
+            required
+            type="password"
+            class="account__detail__password account__detail__form__control"
+          >
+          <input
+            v-else
             id="password"
             v-model="user.password"
-            required
             type="password"
             class="account__detail__password account__detail__form__control"
           >
@@ -59,9 +90,17 @@
             密碼確認
           </span>
           <input
+            v-if="$route.path.slice(0, 7) === '/signup'"
+            id="check__password"
+            v-model="newUser.checkPassword"
+            required
+            type="password"
+            class="account__detail__check__password account__detail__form__control"
+          >
+          <input
+            v-else
             id="check__password"
             v-model="user.checkPassword"
-            required
             type="password"
             class="account__detail__check__password account__detail__form__control"
           >
@@ -83,24 +122,7 @@
 <script>
 import { Toast } from './../utils/helper'
 import userAPI from './../apis/users'
-const dummyUser = {
-  user:
-    {
-      id: 1,
-      name: 'google',
-      account: 'apple',
-      email: 'root@example.com',
-      password: 12345678,
-      isAdmin: true,
-      image: 'https://i.pravatar.cc/300',
-      createdAt: '2021-07-05T09:58:39.000Z',
-      updatedAt: '2021-07-05T10:31:19.000Z',
-      Followers: [],
-      FollowerCount: 0,
-      TweetCount: 15,
-      isFollowed: false
-    }
-}
+
 export default {
   data () {
     return {
@@ -111,38 +133,40 @@ export default {
         password: '',
         checkPassword: ''
       },
+      newUser: {
+        id: -1,
+        name: '',
+        account: '',
+        password: '',
+        checkPassword: ''
+      },
       isProcessing: false
     }
   },
   created () {
-    this.fetchUser()
+    this.fetchCurrentUser()
   },
   methods: {
-    fetchUser () {
-      const { user } = dummyUser
-      this.user = user
+    async fetchCurrentUser () {
+      try {
+        const { data } = await userAPI.getCurrentUser()
+        this.user = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '讀取currentUser失敗'
+        })
+      }
     },
     async handleSubmit (e) {
       try {
-        if (!this.user.name || !this.user.name || !this.user.email || !this.user.password || !this.user.checkPassword) {
-          Toast.fire({
-            icon: 'error',
-            title: '資料請確實填寫'
-          })
-          return
-        }
-        this.isProcessing = true
-
-        // 將form資料轉成formData傳至後端
-        const form = e.target
-        const formData = new FormData(form)
-        const { data } = await userAPI.update({ userId: this.user.id, formData })
-
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        } else {
-          this.$router.push({ name: 'main-page' })
-        }
+        // 將form資料轉成formData傳父層
+        // const form = e.target
+        // const formData = new FormData(form)
+        this.$emit('after-submit', this.user)
+        this.$emit('after-register', this.newUser)
+        this.isProcessing = false
       } catch (e) {
         this.isProcessing = false
         console.log(e)
