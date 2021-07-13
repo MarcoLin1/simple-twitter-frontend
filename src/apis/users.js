@@ -25,8 +25,11 @@ export default {
   getUserFollowers ({ userId }) {
     return apiHelper.get(`/users/${userId}/followers`)
   },
-  update ({ userId, formData }) {
-    return apiHelper.put(`/users/${userId}`, formData)
+  update ({ userId, name, introduction, cover, avatar }) {
+    return apiHelper.put(`/users/${userId}`, { name, introduction, cover, avatar })
+  },
+  settingUpdate ({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}/settings`, formData)
   },
   addFollowShip ({ id }) {
     return apiHelper.post('/followships', { id })
