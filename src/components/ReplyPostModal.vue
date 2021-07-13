@@ -6,7 +6,6 @@
       <div
         id="reply__post__modal"
         class="modal"
-        :data-modal="showModal"
         tabindex="-1"
       >
         <div class="modal__dialog">
@@ -178,8 +177,7 @@ export default {
   data () {
     return {
       comment: '',
-      tweet: {},
-      showModal: true
+      tweet: {}
     }
   },
   created () {
@@ -201,8 +199,11 @@ export default {
         const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
         console.log(data)
         this.$router.back()
-        this.showModal = true
-        this.$emit('after-submit', false)
+        const replyData = {
+          showModal: false,
+          comment: this.comment
+        }
+        this.$emit('after-submit', replyData)
       } catch (error) {
         console.log('error', error)
         Toast.fire({

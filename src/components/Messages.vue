@@ -68,6 +68,7 @@
     &__object{
       line-height: 21px;
       margin: 5px 0;
+      color: $tx-gray;
       span:nth-child(2){
         color: $orange;
         margin-left: 4px;

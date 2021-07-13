@@ -2,6 +2,7 @@
   <div>
     <TweetInfo
       :initial-tweet="tweet"
+      @after-submit="addTweetAfterSubmit"
     />
     <Messages
       v-for="reply in replies"
@@ -23,6 +24,11 @@ export default {
   },
   data () {
     return {
+      currentUser: {
+        name: 'Apple',
+        account: 'apple',
+        avator: 'https://i.imgur.com/27eBUkt.jpg'
+      },
       tweet: {},
       replies: [],
       user: {
@@ -53,9 +59,20 @@ export default {
       try {
         const { data } = await tweetAPI.getReplies({ tweetId })
         this.replies = data
+        console.log(data)
       } catch (error) {
         console.log('error', error)
       }
+    },
+    addTweetAfterSubmit (data) {
+      this.replies.unshift({
+        comment: data,
+        createdAt: new Date(),
+        User: {
+          account: this.currentUser.account,
+          name: this.currentUser.name
+        }
+      })
     }
   }
 }

@@ -4,11 +4,13 @@
       <TopNavbar :current-page="'首頁'" />
     </div>
     <TweetForm @after-submit="handleAfterSubmit" />
-    <UserPost
-      v-for="tweet in tweets"
-      :key="tweet.id"
-      :initial-tweet="tweet"
-    />
+    <template v-if="!isProcessing">
+      <UserPost
+        v-for="tweet in tweets"
+        :key="tweet.id"
+        :initial-tweet="tweet"
+      />
+    </template>
   </div>
 </template>
 <script>
@@ -27,6 +29,7 @@ export default {
   data () {
     return {
       tweets: [],
+      isProcessing: false,
       currentUser: {
         id: '2',
         name: 'user2',
@@ -36,7 +39,9 @@ export default {
     }
   },
   created () {
+    this.isProcessing = true
     this.fetchTweets()
+    this.isProcessing = false
   },
   methods: {
     async fetchTweets () {
@@ -44,7 +49,9 @@ export default {
         const { data } = await tweetAPI.getTweets()
         this.tweets = data
         console.log(this.tweets)
+        this.isProcessing = false
       } catch (errer) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法顯示Tweets，請稍後再試'

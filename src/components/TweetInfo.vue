@@ -46,7 +46,6 @@
               class="tweet__info__icon__message"
               data-toggle="modal"
               data-target="#reply__post__modal"
-              :data-modal="!showModal"
             />
           </div>
         </router-link>
@@ -107,11 +106,14 @@ export default {
     }
   },
   methods: {
-    handleAfterSubmit (status) {
-      this.showModal = false
-      console.log(status)
+    handleAfterSubmit (replyData) {
+      this.showModal = replyData.showModal
+      // 關掉modal
       const modalBg = document.querySelector('.modal-backdrop')
       modalBg.classList.remove('modal-backdrop')
+      document.body.className = document.body.className.replace('modal-open', '')
+      this.$emit('after-submit', replyData.comment)
+      this.showModal = true
     },
     async addLiked (tweetId) {
       try {
