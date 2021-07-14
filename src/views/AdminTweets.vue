@@ -33,6 +33,7 @@
           </div>
           <div class="admin__tweets__list__icon__wrapper">
             <button
+              :disabled="isProcessing"
               class="admin__tweets__list__icon"
               aria-hidden="true"
               @click.stop.prevent="deleteTweet(tweet.TweetId)"
@@ -63,9 +64,9 @@ export default {
   mixins: [shortenTimeFilter],
   data () {
     return {
+      isProcessing: false,
       tweets: [],
-      user: [],
-      currentPage: '推文清單'
+      user: []
     }
   },
   created () {
@@ -87,6 +88,7 @@ export default {
     },
     async deleteTweet (tweetId) {
       try {
+        this.isProcessing = true
         // 跳出sweet alert 確認使用者是否要刪除
         const result = await Swal.fire({
           title: '確定要刪除該則推文嗎？',
@@ -111,8 +113,13 @@ export default {
             '該則貼文已刪除',
             'success'
           )
-        } else return
+          this.isProcessing = false
+        } else {
+          this.isProcessing = false
+          return
+        }
       } catch (error) {
+        this.isProcessing = false
         console.log('error', error)
         Toast.fire({
           icon: 'error',
@@ -164,6 +171,12 @@ export default {
     line-height: 22px;
     font-size: 15px;
     margin-bottom: 2rem;
+    margin-right: 50px;
+    width: 65em;
+    letter-spacing: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .admin__tweets__list__icon {
     position: absolute;

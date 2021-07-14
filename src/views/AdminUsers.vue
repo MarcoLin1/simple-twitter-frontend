@@ -117,6 +117,9 @@ a:hover{
   background-color: $bg-gray;
   border-radius: 10px;
   position: relative;
+  &:hover{
+    box-shadow: 5px 5px 10px -2px rgba(0, 9, 12, 0.45);
+  }
   &__cover{
     height: 140px;
     background-color: $img-light-gray;

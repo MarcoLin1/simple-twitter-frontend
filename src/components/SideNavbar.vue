@@ -6,7 +6,7 @@
       </div>
       <router-link
         class="side-navbar-main-wrapper"
-        to="/mainpage"
+        :to="$route.path.slice(0, 6) === '/admin' ?'/admin/tweets':'/mainpage'"
       >
         <div class="icon-wrapper icon-main-wrpper" />
         <div class="content">
@@ -15,7 +15,7 @@
       </router-link>
       <router-link
         class="side-navbar-user-wrapper"
-        :to="{name: 'user-tweets'}"
+        :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets'}"
       >
         <div class="icon-wrapper icon-user-wrpper" />
         <div class="content">
@@ -38,6 +38,7 @@
         </div>
       </router-link>
       <div
+        v-if="$route.path.slice(0, 6) !== '/admin'"
         class="side-navbar-button-wrapper"
       >
         <label
