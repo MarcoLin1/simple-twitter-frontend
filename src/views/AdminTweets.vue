@@ -74,7 +74,7 @@ export default {
   methods: {
     async fetchTweets () {
       try {
-        const { data } = await adminAPI.twe.get()
+        const { data } = await adminAPI.tweet.get()
         this.tweets = data
         console.log(data)
       } catch (error) {
