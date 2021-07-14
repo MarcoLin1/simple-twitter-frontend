@@ -2,25 +2,26 @@
   <div>
     <div class="post">
       <div class=" post__avatar">
+        {{ tweet.TweetId }}
         <img
           class="avatar-img"
-          :src="initialTweet.User.avatar"
+          :src="tweet.User.avatar"
           alt=""
         >
       </div>
       <div class="post__content">
         <div class="post__content__title mb-2">
           <span class="post__content__title__item user-name">
-            {{ initialTweet.User.name }}
+            {{ tweet.User.name }}
           </span>
-          <span class="post__content__title__item">{{ initialTweet.User.account }}</span>
+          <span class="post__content__title__item">{{ tweet.User.account }}</span>
           <span class="post__content__title__item">·</span>
           <span class="post__content__title__item post__content__title__item__time">
-            {{ initialTweet.createdAt | fromNow }}
+            {{ tweet.createdAt | fromNow }}
           </span>
         </div>
         <div class="post__content__discription">
-          {{ initialTweet.description }}
+          {{ tweet.description }}
         </div>
       </div>
     </div>
@@ -69,6 +70,19 @@ export default {
     initialTweet: {
       type: Object,
       required: true
+    }
+  },
+  data () {
+    return {
+      tweet: this.initialTweet
+    }
+  },
+  watch: {
+    initialTweet (newValue) {
+      this.tweet = {
+        ...this.tweet,
+        ...newValue
+      }
     }
   }
 }

@@ -2,18 +2,21 @@
   <form
     action=""
   >
-    <div class="reply__modal__mask">
+    <div class="new__post__modal__wrapper">
       <div
-        id="reply__modal__wrapper"
-        class="reply__modal__wrapper"
+        id="reply__post__modal"
+        class="modal"
         tabindex="-1"
       >
-        <div class="reply__modal__container">
+        <div class="modal__dialog">
           <div class="modal__content">
             <div class="modal__header">
               <button
                 type="button"
-                @click="$emit('close')&$router.go(-1)"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                @click="$router.go(-1)"
               >
                 <span
                   aria-hidden="true"
@@ -23,9 +26,9 @@
             <div class="modal__body">
               <div class="modal__body__wrapper">
                 <div class="modal__body__wrapper__post">
-                  <!-- tweet area -->
                   <div class="post">
                     <div class=" post__avatar">
+                      {{ tweet.TweetId }}
                       <img
                         class="avatar-img"
                         :src="tweet.User.avatar"
@@ -40,7 +43,7 @@
                         <span class="post__content__title__item">{{ tweet.User.account }}</span>
                         <span class="post__content__title__item">·</span>
                         <span class="post__content__title__item post__content__title__item__time">
-                          {{ tweet.createdAt }}
+                          {{ tweet.createdAt | fromNow }}
                         </span>
                       </div>
                       <div class="post__content__discription">
@@ -77,7 +80,7 @@
               <button
                 type="submit"
                 class="modal__footer__button"
-                :disabled="isProcessing"
+
                 @click.stop.prevent="handleSubmit"
               >
                 回覆
@@ -92,35 +95,7 @@
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .reply__modal{
-    &__mask{
-      position: fixed;
-      z-index: 9998;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      transition: opacity 0.3s ease;
-
-    }
-    &__wrapper{
-      vertical-align: middle;
-    }
-    &__container{
-      width: 600px;
-      min-height: 450px;
-      border-radius: 14px;
-      background-color: #fff;
-      margin: auto;
-      margin-top: 50px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-      transition: all 0.3s ease;
-    }
-
-  }
-
-  .reply__modal__wrapper {
+  .new__post__modal__wrapper {
     .modal__dialog {
       margin: 3rem auto;
       .modal__content {
@@ -243,6 +218,7 @@
   }
   }
 </style>
+
 <script>
 import { Toast } from '../utils/helper'
 import tweetAPI from './../apis/tweets'
@@ -256,35 +232,38 @@ export default {
   },
   data () {
     return {
-      isProcessing: false,
       tweet: this.initialTweet,
       comment: ''
 
     }
   },
-
+  watch: {
+    initialTweet (newValue) {
+      this.tweet = {
+        ...this.tweet,
+        ...newValue
+      }
+      console.log('change')
+    }
+  },
   methods: {
     async handleSubmit () {
+      const { id: tweetId } = this.$route.params
+      console.log(tweetId)
       try {
-        this.isProcessing = true
         if (!this.comment) {
           console.log('You can not submit blank value')
         }
-        const tweetId = this.initialTweet.id ? this.initialTweet.id : this.initialTweet.TweetId
-        const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
+        const { data } = await tweetAPI.reply({ tweetId: this.initialTweet.TweetId, comment: this.comment })
+        console.log(data)
 
         const replyData = {
-          comment: this.comment.trim()
+          showModal: false,
+          comment: this.comment
         }
-        this.comment = ''
         this.$router.back()
-        this.$emit('close')
         this.$emit('after-submit', replyData)
       } catch (error) {
-        this.isProcessing = false
         console.log('error', error)
         Toast.fire({
           icon: 'error',

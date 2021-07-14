@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    <TopNavbar :current-page="currentPage" />
     <div class="tweet__info__container">
       <div class="tweet__info__top__wrapper">
         <div class="tweet__info__image_wrapper">
@@ -41,7 +40,10 @@
       </div>
       <div class="tweet__info__icon__wrapper">
         <router-link :to="{name:'reply-post-modal', params:{id:tweet.id}}">
-          <div class="tweet__info__icon__message__wrapper">
+          <div
+            class="tweet__info__icon__message__wrapper"
+            @click="showModal = true"
+          >
             <div
               class="tweet__info__icon__message"
               data-toggle="modal"
@@ -61,9 +63,12 @@
             @click.prevent.stop="removeLiked(tweet.id)"
           />
         </div>
-        <template v-if="showModal">
+        <template
+          v-if="showModal"
+        >
           <ReplyPostModal
             :initial-tweet="initialTweet"
+            @close="showModal = false"
             @after-submit="handleAfterSubmit"
           />
         </template>
@@ -72,15 +77,15 @@
   </div>
 </template>
 <script>
-import TopNavbar from './../components/TopNavbar.vue'
+// import ReplyPostModal from './../components/ReplyPostModal.vue'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
 import { localTimeFilter } from './../utils/mixins'
 import { Toast } from '../utils/helper'
 export default {
   components: {
-    TopNavbar,
     ReplyPostModal
+    // ReplyPostModal
   },
   mixins: [localTimeFilter],
   props: {
@@ -91,8 +96,7 @@ export default {
   },
   data () {
     return {
-      showModal: true,
-      isshow: true,
+      showModal: false,
       currentPage: '推文',
       tweet: this.initialTweet
     }
@@ -107,13 +111,8 @@ export default {
   },
   methods: {
     handleAfterSubmit (replyData) {
-      this.showModal = replyData.showModal
-      // 關掉modal
-      const modalBg = document.querySelector('.modal-backdrop')
-      modalBg.classList.remove('modal-backdrop')
-      document.body.className = document.body.className.replace('modal-open', '')
       this.$emit('after-submit', replyData.comment)
-      this.showModal = true
+      this.tweet.replyCount = this.tweet.replyCount + 1
     },
     async addLiked (tweetId) {
       try {

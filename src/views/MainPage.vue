@@ -1,7 +1,8 @@
 <template>
   <div>
     <TweetForm @after-submit="handleAfterSubmit" />
-    <template v-if="!isProcessing">
+
+    <template v-if="tweets.length">
       <UserPost
         v-for="tweet in tweets"
         :key="tweet.id"
@@ -18,7 +19,6 @@ import { Toast } from '../utils/helper'
 
 export default {
   components: {
-    // TopNavbar,
     TweetForm,
     UserPost
   },
