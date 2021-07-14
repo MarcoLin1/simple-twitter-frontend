@@ -76,7 +76,8 @@ export default {
   mixins: [shortenNumberFilter],
   data () {
     return {
-      users: []
+      users: [],
+      currentPage: '使用者列表'
     }
   },
   created () {
