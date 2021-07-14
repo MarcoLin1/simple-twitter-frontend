@@ -81,7 +81,6 @@ export default {
     ReplyPostModal
   },
   mixins: [fromNowFilter],
-  // mixins: [shortenTimeFilter],
   props: {
     initialTweet: {
       type: Object,
