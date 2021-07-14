@@ -1,70 +1,70 @@
 <template>
   <div class="post__container">
     <!-- 切換選單 -->
-    <div class="post">
-      <div
-        class="
-      post__avatar"
-      >
-        <img
-          class="avatar-img"
-          :src="post.User.avatar"
-          alt=""
-        >
-      </div>
-      <div class="post__content">
-        <div class="post__content__title mb-2">
-          <span class="post__content__title__item user-name">
-            {{ post.User.name }}
-          </span>
-          <span class="post__content__title__item">@{{ post.User.account }}</span>
-          <span class="post__content__title__item">·</span>
-          <span class="post__content__title__item post__content__title__item__time">
-            {{ post.createdAt }}
-          </span>
+    <router-link :to="{name:'detail-tweet', params:{id: post.TweetId}}">
+      <div class="post">
+        <div class=" post__avatar">
+          <img
+            class="avatar-img"
+            :src="post.User.avatar"
+            alt=""
+          >
         </div>
-        <div class="post__content__discription">
-          {{ post.description }}
-        </div>
-        <div class="post__content__reaction d-flex ">
-          <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
-            <div
-              class="post__content__reaction__item"
-              @click="showModal = true"
-            >
-              <div class="post__content__reaction__item__message " />
-              <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
-            </div>
-          </router-link>
-          <div class="post__content__reaction__item">
-            <div
-              v-if="!post.isLike"
-              class="post__content__reaction__item__heart"
-              @click="addLiked(post.TweetId)"
-            />
-            <div
-              v-else
-              class="post__content__reaction__item__heart--liked"
-              @click="removeLiked(post.TweetId)"
-            />
-
-            <span
-              class="post__content__reaction__item__text"
-              :class="{liked:post.isLike}"
-            >{{ likeCount }}</span>
+        <div class="post__content">
+          <div class="post__content__title mb-2">
+            <span class="post__content__title__item user-name">
+              {{ post.User.name }}
+            </span>
+            <span class="post__content__title__item">@{{ post.User.account }}</span>
+            <span class="post__content__title__item">·</span>
+            <span class="post__content__title__item post__content__title__item__time">
+              {{ post.createdAt }}
+            </span>
           </div>
+          <div class="post__content__discription">
+            {{ post.description }}
+          </div>
+
+          <div class="post__content__reaction d-flex ">
+            <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
+              <div
+                class="post__content__reaction__item message "
+                @click="showModal = true"
+              >
+                <div class="post__content__reaction__item__message " />
+                <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
+              </div>
+            </router-link>
+            <div class="post__content__reaction__item heart">
+              <div
+                v-if="!post.isLike"
+                class="post__content__reaction__item__heart"
+                @click="addLiked(post.TweetId)"
+              />
+              <div
+                v-else
+                class="post__content__reaction__item__heart--liked"
+                @click="removeLiked(post.TweetId)"
+              />
+
+              <span
+                class="post__content__reaction__item__text"
+                :class="{liked:post.isLike}"
+              >{{ likeCount }}</span>
+            </div>
+          </div>
+          <template
+            v-if="showModal"
+          >
+            <ReplyPostModal
+              :initial-tweet="initialTweet"
+              @close="showModal = false"
+              @after-submit="handleAfterSubmit"
+            />
+          </template>
         </div>
-        <template
-          v-if="showModal"
-        >
-          <ReplyPostModal
-            :initial-tweet="initialTweet"
-            @close="showModal = false"
-            @after-submit="handleAfterSubmit"
-          />
-        </template>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 <script>
@@ -161,6 +161,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+a{
+  text-decoration: none;
+  cursor: pointer;
+  color: $tx-gray;
+}
 .liked{
   color: $heart-pink;
   }
@@ -227,25 +232,26 @@ export default {
       height: 20px;
       display: flex;
       align-items: center;
-      &__item {
-        cursor: pointer;
-        margin-right: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 47px;
-        &:first-child:hover{
+      z-index: 10;
+      .message:hover {
           color: $light-blue;
           div{
             background: $light-blue;
           }
         }
-        &:last-child:hover{
+        .heart:hover{
           color: $heart-pink;
           div{
             background: $heart-pink;
           }
         }
+      &__item {
+        cursor: pointer;
+        margin-right: 50px;
+        display: flex;
+        align-items: center;
+        width: 47px;
+
         &__text {
           font-size: 13px;
           line-height: 13px;

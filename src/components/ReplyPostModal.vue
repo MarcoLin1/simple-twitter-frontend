@@ -77,7 +77,7 @@
               <button
                 type="submit"
                 class="modal__footer__button"
-
+                :disabled="isProcessing"
                 @click.stop.prevent="handleSubmit"
               >
                 回覆
@@ -256,6 +256,7 @@ export default {
   },
   data () {
     return {
+      isProcessing: false,
       tweet: this.initialTweet,
       comment: ''
 
@@ -265,6 +266,7 @@ export default {
   methods: {
     async handleSubmit () {
       try {
+        this.isProcessing = true
         if (!this.comment) {
           console.log('You can not submit blank value')
         }
@@ -275,13 +277,14 @@ export default {
         }
 
         const replyData = {
-          comment: this.comment
+          comment: this.comment.trim()
         }
         this.comment = ''
         this.$router.back()
         this.$emit('close')
         this.$emit('after-submit', replyData)
       } catch (error) {
+        this.isProcessing = false
         console.log('error', error)
         Toast.fire({
           icon: 'error',

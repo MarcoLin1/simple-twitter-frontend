@@ -112,6 +112,7 @@ export default {
   methods: {
     handleAfterSubmit (replyData) {
       this.$emit('after-submit', replyData.comment)
+      this.tweet.replyCount = this.tweet.replyCount + 1
     },
     async addLiked (tweetId) {
       try {
