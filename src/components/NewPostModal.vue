@@ -1,12 +1,13 @@
 <template>
   <form
     action=""
-    @click.stop.prevent="handleSubmit"
+    class="new__post__modal__form"
+    @submit.stop.prevent="handleSubmit"
   >
     <div class="new__post__modal__wrapper">
       <div
         id="new__post__modal"
-        class="modal"
+        class=""
         tabindex="-1"
       >
         <div class="modal__dialog">
@@ -15,12 +16,15 @@
               <button
                 type="button"
                 class="close"
-                data-dismiss="modal"
-                aria-label="Close"
               >
-                <span
-                  aria-hidden="true"
-                >&times;</span>
+                <label
+                  class="side-navbar-button toggle__label"
+                  for="toggle__control"
+                >
+                  <span
+                    aria-hidden="true"
+                  >&times;</span>
+                </label>
               </button>
             </div>
             <div class="modal__body">
@@ -42,12 +46,17 @@
               </div>
             </div>
             <div class="modal__footer">
-              <button
-                type="submit"
-                class="modal__footer__button"
+              <label
+                class="side-navbar-button toggle__label"
               >
-                推文
-              </button>
+                <div class="toggle__text">
+                  推文
+                </div>
+                <button
+                  type="submit"
+                  class="modal__footer__button"
+                  @click.stop.prevent="handleSubmit"
+                /></label>
             </div>
           </div>
         </div>
@@ -58,6 +67,17 @@
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+  .new__post__modal__form {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.33);
+
+  }
   .new__post__modal__wrapper {
     .modal__dialog {
       margin: 3rem auto;
@@ -69,6 +89,7 @@
         margin: auto;
         background: #ffffff;
         border-radius: 14px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.33);
       }
     }
     .modal__header {
@@ -121,9 +142,21 @@
       }
     }
   }
+  .toggle__label {
+    display: flex;
+    align-items: center;
+    position: relative;
+    .toggle__text {
+      position: relative;
+      right: -46px;
+      color: #ffffff;
+    }
+  }
 </style>
 
 <script>
+import { Toast } from '../utils/helper'
+import tweetAPI from './../apis/tweets'
 export default {
   data () {
     return {
@@ -131,10 +164,27 @@ export default {
     }
   },
   methods: {
-    handleSubmit () {
-      if (!this.tweet) {
-        console.log('You can not submit blank value')
+    async handleSubmit () {
+      try {
+        const { data } = await tweetAPI.create({ description: this.tweet })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.tweet = ''
+        const toggleControl = document.querySelector('.toggle__control')
+        toggleControl.checked = false
+
+        this.$router.push({ name: 'main-page' })
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '新增貼文失敗'
+        })
       }
+      // if (!this.tweet) {
+      //   console.log('You can not submit blank value')
+      // }
     }
   }
 }

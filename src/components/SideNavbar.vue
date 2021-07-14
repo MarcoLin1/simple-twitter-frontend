@@ -15,7 +15,7 @@
       </router-link>
       <router-link
         class="side-navbar-user-wrapper"
-        to=""
+        :to="{name: 'user-tweets'}"
       >
         <div class="icon-wrapper icon-user-wrpper" />
         <div class="content">
@@ -37,22 +37,23 @@
           設定
         </div>
       </router-link>
-      <router-link
+      <div
         class="side-navbar-button-wrapper"
-        :to="{name: 'new-tweet'}"
       >
-        <button
-          v-if="$route.path.slice(0, 6) !== '/admin'"
-          type="submit"
-          class="side-navbar-button"
-          data-toggle="modal"
-          data-target="#new__post__modal"
+        <label
+          class="side-navbar-button toggle__label"
+          for="toggle__control"
         >
           推文
-        </button>
-      </router-link>
+        </label>
+      </div>
     </div>
     <template>
+      <input
+        id="toggle__control"
+        type="checkbox"
+        class="toggle__control"
+      >
       <NewPostModal />
     </template>
     <div class="bottom-item-container">
@@ -146,6 +147,11 @@ export default {
     background: $orange;
   }
 }
+.side-navbar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .icon-wrapper {
   width: 40px;
   height: 40px;
@@ -192,7 +198,6 @@ export default {
     text-decoration: none;
   }
 }
-
 .side-navbar-button {
   width: auto;
   min-width: 40px;
@@ -205,6 +210,14 @@ export default {
     background: $orange;
     color: #ffffff;
     border: none;
+  }
+}
+#toggle__control {
+  display: none;
+  &:checked {
+    ~ .new__post__modal__form {
+      display: block;
+    }
   }
 }
 
@@ -256,5 +269,7 @@ export default {
     width: 210px;
     justify-content: flex-start;
   }
+
 }
+
 </style>
