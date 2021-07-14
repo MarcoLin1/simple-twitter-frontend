@@ -116,9 +116,11 @@ export default {
         this.$emit('after-submit', data)
       } catch (error) {
         console.log('error', error)
+        this.isProcessing = false
+        this.account = ''
         Toast.fire({
-          icon: 'error',
-          title: '請確認帳號密碼'
+          icon: 'warning',
+          title: '請確認您輸入了正確的帳號密碼'
         })
       }
     }

@@ -16,6 +16,7 @@ import TweetForm from './../components/TweetForm.vue'
 import UserPost from './../components/UserPost.vue'
 import tweetAPI from './../apis/tweets'
 import { Toast } from '../utils/helper'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Mainpage',
@@ -26,26 +27,28 @@ export default {
   data () {
     return {
       tweets: [],
-      isProcessing: false,
-      currentUser: {
-        id: '2',
-        name: 'user2',
-        account: 'user2',
-        avator: 'https://loremflickr.com/320/240/people?random=0'
-      }
+      isProcessing: false
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   created () {
     this.isProcessing = true
     this.fetchTweets()
     this.isProcessing = false
   },
+
+  beforeRouteUpdate (to, from, next) {
+    this.fetchTweets()
+    next()
+  },
   methods: {
     async fetchTweets () {
       try {
         const { data } = await tweetAPI.getTweets()
         this.tweets = data
-        console.log(this.tweets)
+        console.log('this.tweets', this.tweets)
         this.isProcessing = false
       } catch (errer) {
         this.isProcessing = false
@@ -62,14 +65,17 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.tweets.push({
+
+        console.log(this.tweets)
+        this.tweets.unshift({
+          TweetId: data.id,
           createdAt: new Date(),
           description: description,
           User: {
-            // account: this.currentUser.account,
+            account: this.currentUser.account,
             name: this.currentUser.name,
-            id: this.currentUser.id
-            // avator: this.currentUser.avator
+            id: this.currentUser.id,
+            avatar: this.currentUser.avatar
           }
         })
         console.log(data)
