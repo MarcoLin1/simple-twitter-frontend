@@ -18,6 +18,7 @@ import tweetAPI from './../apis/tweets'
 import { Toast } from '../utils/helper'
 
 export default {
+  name: 'Mainpage',
   components: {
     TweetForm,
     UserPost
@@ -62,15 +63,14 @@ export default {
           throw new Error(data.message)
         }
         this.tweets.push({
-          User: {
-            account: this.currentUser.account,
-            name: this.currentUser.name,
-            id: this.currentUser.id,
-            avator: this.currentUser.avator
-          },
           createdAt: new Date(),
-          description: description
-
+          description: description,
+          User: {
+            // account: this.currentUser.account,
+            name: this.currentUser.name,
+            id: this.currentUser.id
+            // avator: this.currentUser.avator
+          }
         })
         console.log(data)
       } catch (error) {
