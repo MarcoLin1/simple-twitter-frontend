@@ -10,6 +10,9 @@ export default {
     delete ({ tweetId }) {
       console.log('delete')
       return apiHelper.delete(`/admin/tweets/${tweetId}`)
+    },
+    get () {
+      return apiHelper.get('/admin/tweets')
     }
   }
 }
