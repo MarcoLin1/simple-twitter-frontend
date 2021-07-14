@@ -18,7 +18,7 @@
             <span class="post__content__title__item">@{{ post.User.account }}</span>
             <span class="post__content__title__item">·</span>
             <span class="post__content__title__item post__content__title__item__time">
-              {{ post.createdAt }}
+              {{ post.createdAt | shortenTime }}
             </span>
           </div>
           <div class="post__content__discription">
@@ -71,11 +71,13 @@
 import { Toast } from '../utils/helper'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
+import { shortenTimeFilter } from './../utils/mixins'
 export default {
   name: 'UserPost',
   components: {
     ReplyPostModal
   },
+  mixins: [shortenTimeFilter],
   props: {
     initialTweet: {
       type: Object,

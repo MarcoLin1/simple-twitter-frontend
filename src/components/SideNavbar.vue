@@ -15,7 +15,7 @@
       </router-link>
       <router-link
         class="side-navbar-user-wrapper"
-        :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets'}"
+        :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets', params: {id: currentUser.id}}"
       >
         <div class="icon-wrapper icon-user-wrpper" />
         <div class="content">
@@ -58,18 +58,17 @@
       <NewPostModal />
     </template>
     <div class="bottom-item-container">
-      <router-link
+      <div
         class="side-navbar-logout-wrpper"
-        to="/login"
+        @click="logout"
       >
         <div
           class="icon-wrapper icon-logout-wrapper"
-          @click="logout"
         />
         <div class="content">
           登出
         </div>
-      </router-link>
+      </div>
     </div>
   </div>
 </template>
