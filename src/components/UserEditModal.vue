@@ -1,7 +1,7 @@
 <template>
   <div
-    id="user__edit__modal"
-    class="user__edit__modal__container modal"
+    id="user__edit__modal__container"
+    class="user__edit__modal__container"
     role="dialog"
     aria-labelledby="user__edit__modal"
   >
@@ -12,15 +12,16 @@
     >
       <div class="user__edit__modal__header">
         <div class="user__edit__modal__header__wrapper">
-          <button
-            class="user__edit__modal__close close"
-            aria-label="Close"
+          <label
+            for="user__edit__modal"
+            class="user__edit__modal__label"
           >
-            <span
-              aria-hidden="true"
-              data-dismiss="modal"
-            >&times;</span>
-          </button>
+            <div
+              class="user__edit__modal__close close"
+            >
+              <span>&times;</span>
+            </div>
+          </label>
           <div class="user__edit__modal__title">
             編輯個人資料
           </div>
@@ -47,16 +48,21 @@
           class="user__edit__modal__icon user__edit__modal__cover__photo"
           @change="handleCoverChange"
         >
-        <button
-          class="user__edit__modal__cover__close"
-          data-dismiss="modal"
-          aria-label="Close"
+        <label
+          for="user__edit__modal"
+          class="user__edit__modal__label"
         >
-          <span
-            aria-hidden="true"
-            data-bs-dismiss="modal"
-          >&times;</span>
-        </button>
+          <div
+            class="user__edit__modal__cover__close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span
+              aria-hidden="true"
+              data-bs-dismiss="modal"
+            >&times;</span>
+          </div>
+        </label>
         <div class="user__edit__modal__icon user__edit__modal__cover__delete" />
       </div>
       <div class="user__edit__modal__avatar__wrapper">
@@ -115,7 +121,7 @@
 
 %user__edit__icon__style {
   @extend %icon-style;
-  position: absolute;
+  // position: absolute;
   background: #ffffff;
   color: #ffffff;
   cursor: pointer;
@@ -130,13 +136,24 @@
 }
 
 .user__edit__modal__container {
-  width:600px;
-  height: 654px;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  width:100%;
+  height: 100%;
   margin: 0 auto;
-  border-radius: 14px;
-  transform: translate(60%, 20px);
-  background: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
   padding-right: 0px !important;
+  .modal__content {
+    width: 600px;
+    height: 630px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 14px;
+    margin-top: 20px;
+  }
 }
 .show {
   padding-right: 100px;
@@ -163,6 +180,7 @@
       width: 100%;
       font-weight: 700;
       color: $black;
+      text-align: right;
     }
   }
     .user__edit__modal__button__wrapper {
@@ -191,12 +209,13 @@
     mask-image: url('./../assets/icon/icon_photo.svg');
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
     @extend %user__edit__icon__style;
-    top: 135px;
-    left: 20%;
+    position: relative;
+    top: -135px;
+    left: 15%;
   }
   .user__edit__modal__cover__close {
-    position: absolute;
-    top: 135px;
+    position: relative;
+    top: -133px;
     right: 40%;
     color: #ffffff;
     font-size: 1.2rem;
@@ -209,9 +228,9 @@
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    position: absolute;
-    top: 195px;
-    left: 15px;
+    position: relative;
+    top: -80px;
+    left: 20px;
     border: 5px solid white;
     opacity: 0.8;
   }
@@ -219,8 +238,9 @@
     mask-image: url('./../assets/icon/icon_photo.svg');
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
     @extend %user__edit__icon__style;
-    left: -80px;
-    top: 240px;
+    position: relative;
+    left: -65px;
+    bottom: 150px;
   }
 }
 .user__edit__modal__form__group {
@@ -304,6 +324,7 @@ export default {
   methods: {
     handleAvatarChange (e) {
       const files = e.target.files
+      console.log(files)
       if (files.length === 0) {
         this.user.avatar = ''
       } else {
@@ -341,17 +362,22 @@ export default {
           cover: this.cover,
           avatar: this.avatar
         })
+        // document.body.style.backgroundColor = 'transparent'
+        // document.body.style.opacity = '1'
+        // const toggleControl = document.querySelector('#user__edit__modal')
+        // toggleControl.checked = false
         this.$emit('after-submit', { name: this.name, introduction: this.introduction, cover: this.cover, avatar: this.avatar })
-
+        const editModal = document.querySelector('#user__edit__modal')
+        editModal.checked = false
         if (data.status !== 'success') {
           throw new Error(data.message)
         } else {
-          const modalBg = document.querySelector('.modal-backdrop')
-          const showModal = document.querySelector('#user__edit__modal')
-          showModal.classList.remove('show')
-          showModal.classList.add('non__show')
-          modalBg.classList.remove('modal-backdrop')
-          this.$router.push({ name: 'user-tweets', params: { id: this.user.id } })
+          // const modalBg = document.querySelector('.modal-backdrop')
+          // const showModal = document.querySelector('#user__edit__modal')
+          // showModal.classList.remove('show')
+          // showModal.classList.add('non__show')
+          // modalBg.classList.remove('modal-backdrop')
+          this.$router.push({ name: 'user-tweets' })
         }
       } catch (e) {
         console.log(e)
@@ -364,6 +390,10 @@ export default {
         console.log('please fill in your name')
       }
     }
+    // changeBackground () {
+    //   document.body.style.backgroundColor = 'transparent'
+    //   document.body.style.opacity = '1'
+    // }
   }
 }
 </script>

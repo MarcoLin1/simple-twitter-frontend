@@ -4,6 +4,11 @@
       <!-- <TopNavbar :current-page="currentPage" /> -->
     </template>
     <template>
+      <input
+        id="user__edit__modal"
+        type="checkbox"
+        name="user__edit__modal"
+      >
       <UserEditModal
         :initial-user="user"
         @after-submit="afterHandleSubmit"
@@ -33,29 +38,32 @@
         <div class="profile__icon profile__icon__email" />
       </div>
       <div
-        v-if="(currentUser.id !== user.id) && (!currentUser.isSubscribe)"
+        v-if="(currentUser.id !== user.id) && (!isSubscribe)"
         class="profile__icon__wrapper"
         @click="addSubscribe"
       >
         <div class="profile__icon profile__icon__subscribe" />
       </div>
       <div
-        v-if="(currentUser.id !== user.id) && (currentUser.isSubscribe)"
+        v-if="(currentUser.id !== user.id) && (isSubscribe)"
         class="profile__icon__wrapper profile__icon__wrapper__checked"
         @click="removeSubscribe"
       >
         <div class="profile__icon profile__icon__subscribe__checked" />
       </div>
       <!-- 當現在頁面的user 等於 currentUser，就顯示編輯個人資料按鈕，否則反之 -->
-      <button
-        v-if="currentUser.id === user.id"
-        class="btn-border"
-        data-toggle="modal"
-        data-target="#user__edit__modal"
-        @click="showModal"
+      <label
+        for="user__edit__modal"
+        class="user__edit__modal__label"
       >
-        編輯個人資料
-      </button>
+        <div
+          v-if="currentUser.id === user.id"
+          class="btn-border"
+        >
+          編輯個人資料
+
+        </div>
+      </label>
       <button
         v-if="(currentUser.id !== user.id) && (isFollowing)"
         class="btn-border btn__following"
@@ -85,13 +93,13 @@
       <!-- 要記得改連結 -->
       <div class="profile__detail__follow">
         <div class="profile__detail__follow__item">
-          <router-link to="/">
+          <router-link :to="{name: 'user-followings', params: {id: user.id}}">
             <span>{{ user.followingCount }} 個</span>
             <span>跟隨中</span>
           </router-link>
         </div>
         <div class="profile__detail__follow__item">
-          <router-link to="/">
+          <router-link :to="{name: 'user-followers', params: {id: user.id}}">
             <span>{{ user.followerCount }} 位</span>
             <span>跟隨者</span>
           </router-link>
@@ -124,6 +132,8 @@ a:hover{
     margin: 10px;
     .btn-border{
       height: 40px;
+      display: flex;
+      align-items: center;
     }
     .btn__following {
       background: $orange;
@@ -207,6 +217,14 @@ a:hover{
 .profile__icon__wrapper__checked {
   background: $orange;
 }
+#user__edit__modal {
+  display: none;
+  &:checked {
+    ~ .user__edit__modal__container {
+      display: block;
+    }
+  }
+}
 </style>
 
 <script>
@@ -229,8 +247,9 @@ export default {
       user: [],
       currentUser: this.getCurrentUser,
       userFollowers: [],
-      currentPage: 'userProfile',
-      isFollowing: false
+      // currentPage: 'userProfile',
+      isFollowing: false,
+      isSubscribe: false
     }
   },
   watch: {
@@ -248,6 +267,7 @@ export default {
     this.fetUserFollowers(id)
   },
   methods: {
+    // 取得目前路由的使用者的followers清單，和currentUser比對，如果currentUser在清單中就是following狀態
     async fetUserFollowers (userId) {
       try {
         const { data } = await userAPI.getUserFollowers({ userId })
@@ -261,8 +281,13 @@ export default {
         })
       } catch (e) {
         console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '讀取不到跟隨者的資料'
+        })
       }
     },
+    // 取得目前路由的使用者資料
     async fetchUser (userId) {
       try {
         const { data } = await userAPI.getUser({ userId })
@@ -275,18 +300,15 @@ export default {
         })
       }
     },
+    // 新增訂閱
     addSubscribe () {
-      // this.currentUsers = {
-      //   ...this.currentUsers,
-      //   isSubscribe: true
-      // }
+      this.isSubscribe = true
     },
+    // 移除訂閱
     removeSubscribe () {
-      // this.currentUsers = {
-      //   ...this.currentUsers,
-      //   isSubscribe: false
-      // }
+      this.isSubscribe = false
     },
+    // 接收user edit後的資料，再render到頁面
     afterHandleSubmit (data) {
       this.user.name = data.name
       this.user.introduction = data.introduction
@@ -297,6 +319,7 @@ export default {
         this.user.cover = data.cover
       }
     },
+    // 增加追蹤
     async addFollowing (userId) {
       try {
         const { data } = await userAPI.addFollowShip({ id: userId })
@@ -312,6 +335,7 @@ export default {
         })
       }
     },
+    // 移除追蹤
     async removeFollowing (userId) {
       try {
         const { data } = await userAPI.removeFollowShip({ userId })
@@ -326,12 +350,13 @@ export default {
           title: '取消追蹤失敗'
         })
       }
-    },
-    showModal () {
-      const showModal = document.querySelector('#user__edit__modal')
-      showModal.classList.remove('non__show')
-      showModal.classList.add('show')
     }
+    // 恢復編輯個人頁面視窗
+    // modalBackground () {
+    //   document.body.style.backgroundColor = 'rgba(0, 0, 0, 8%)'
+    //   document.body.style.opacity = '0.9'
+    //   document.body.style.zIndex = '9998'
+    // }
   }
 }
 </script>
