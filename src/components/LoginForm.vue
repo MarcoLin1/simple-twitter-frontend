@@ -80,7 +80,7 @@
 <script>
 import { Toast } from '../utils/helper'
 import Logo from './../assets/icon/logo.vue'
-// import authorizationAPI from './../apis/authorization'
+import authorizationAPI from './../apis/authorization'
 
 export default {
   components: {
@@ -94,19 +94,31 @@ export default {
     }
   },
   methods: {
-    handleSubmit () {
-      this.isProcessing = true
-      if (!this.account.trim() || !this.password.trim()) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請填入 email 和 password'
-        })
+    async handleSubmit () {
+      try {
+        this.isProcessing = true
+        if (!this.account.trim() || !this.password.trim()) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請填入 email 和 password'
+          })
+          this.password = ''
+          this.isProcessing = false
+          return
+        }
+        const { data } = await authorizationAPI.login({ account: this.account, password: this.password })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
         this.isProcessing = false
-        return
+        this.password = ''
+        this.account = ''
+        this.$emit('after-submit', data)
+      } catch (error) {
+        console.log('error', error)
       }
-      const loginData = { account: this.account, password: this.password }
-      this.$emit('after-submit', loginData)
     }
+
   }
 
 }

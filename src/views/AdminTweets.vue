@@ -4,7 +4,6 @@
       v-if="$route.path.slice(0, 5) !== '/admin'"
       class="admin__tweets__list__main__wrapper"
     >
-      <TopNavbar :current-page="currentPage" />
       <div
         v-for="tweet in tweets"
         :key="tweet.TweetId"
@@ -51,7 +50,6 @@
 </template>
 
 <script>
-import TopNavbar from './../components/TopNavbar.vue'
 import tweetAPI from './../apis/tweets'
 import adminAPI from './../apis/admin'
 import { shortenTimeFilter } from './../utils/mixins'
@@ -61,7 +59,6 @@ import Swal from 'sweetalert2'
 export default {
   name: 'AdminTweetsList',
   components: {
-    TopNavbar: TopNavbar
   },
   mixins: [shortenTimeFilter],
   data () {

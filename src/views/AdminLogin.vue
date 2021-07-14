@@ -5,24 +5,21 @@
 </template>
 <script>
 import LoginForm from './../components/LoginForm.vue'
-import authorizationAPI from './../apis/authorization'
+import { Toast } from '../utils/helper'
 export default {
   components: {
     LoginForm
   },
   methods: {
-    async handelAfterSubmit (loginData) {
-      try {
-        console.log('data')
-        const { data } = await authorizationAPI.login(loginData)
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        console.log(data)
+    handelAfterSubmit (data) {
+      if (!data.user.isAdmin) {
+        Toast.fire({
+          icon: 'warning',
+          title: '查無此管理者資料'
+        })
+      } else {
         localStorage.setItem('token', data.token)
-        this.$router.push('/mainpage')
-      } catch (error) {
-        console.log('error', error)
+        this.$router.push('/admin/tweets')
       }
     }
   }
