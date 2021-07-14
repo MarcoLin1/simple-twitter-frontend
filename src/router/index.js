@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from './../store'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -118,5 +119,11 @@ const routes = [
 const router = new VueRouter({
   linkExactActiveClass: 'active',
   routes
+})
+
+// 每一次路由改變時，都呼叫一次store中的fetchCurrentUser
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 export default router

@@ -23,7 +23,7 @@ export default new Vuex.Store({
         ...currentUser
       }
       // 將使用者驗證用的 token 儲存在 state 中
-      state.tolken = localStorage.getItem('token')
+      state.token = localStorage.getItem('token')
       // 將使用者的登入狀態改為 true
       state.isAuthenticated = true
     },
