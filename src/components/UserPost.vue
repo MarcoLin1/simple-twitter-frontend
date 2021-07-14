@@ -1,8 +1,9 @@
 <template>
   <div class="post__container">
     <!-- 切換選單 -->
-    <router-link :to="{name:'detail-tweet', params:{id: post.TweetId}}">
-      <div class="post">
+
+    <div class="post">
+      <router-link :to="{name:'user-tweets', params:{id: post.User.id}}">
         <div class=" post__avatar">
           <img
             class="avatar-img"
@@ -10,6 +11,8 @@
             alt=""
           >
         </div>
+      </router-link>
+      <router-link :to="{name:'detail-tweet', params:{id: post.TweetId}}">
         <div class="post__content">
           <div class="post__content__title mb-2">
             <span class="post__content__title__item user-name">
@@ -18,57 +21,57 @@
             <span class="post__content__title__item">@{{ post.User.account }}</span>
             <span class="post__content__title__item">·</span>
             <span class="post__content__title__item post__content__title__item__time">
-              {{ post.createdAt | shortenTime }}
+              {{ post.createdAt | fromNow }}
             </span>
           </div>
           <div class="post__content__discription">
             {{ post.description }}
           </div>
-
-          <div class="post__content__reaction d-flex ">
-            <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
-              <div
-                class="post__content__reaction__item message "
-                @click="showModal = true"
-              >
-                <div class="post__content__reaction__item__message " />
-                <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
-              </div>
-            </router-link>
-            <div class="post__content__reaction__item heart">
-              <div
-                v-if="!post.isLike"
-                class="post__content__reaction__item__heart"
-                @click="addLiked(post.TweetId)"
-              />
-              <div
-                v-else
-                class="post__content__reaction__item__heart--liked"
-                @click="removeLiked(post.TweetId)"
-              />
-
-              <span
-                class="post__content__reaction__item__text"
-                :class="{liked:post.isLike}"
-              >{{ likeCount }}</span>
-            </div>
-          </div>
-          <template
-            v-if="showModal"
+        </div>
+      </router-link>
+      <div class="post__reaction d-flex ">
+        <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
+          <div
+            class="post__reaction__item message "
+            @click="showModal = true"
           >
-            <ReplyPostModal
-              :initial-tweet="initialTweet"
-              @close="showModal = false"
-              @after-submit="handleAfterSubmit"
-            />
-          </template>
+            <div class="post__reaction__item__message " />
+            <span class="post__reaction__item__text">{{ post.replyCount }}</span>
+          </div>
+        </router-link>
+        <div class="post__reaction__item heart">
+          <div
+            v-if="!post.isLike"
+            class="post__reaction__item__heart"
+            @click="addLiked(post.TweetId)"
+          />
+          <div
+            v-else
+            class="post__reaction__item__heart--liked"
+            @click="removeLiked(post.TweetId)"
+          />
+
+          <span
+            class="post__reaction__item__text"
+            :class="{liked:post.isLike}"
+          >{{ likeCount }}</span>
         </div>
       </div>
-    </router-link>
+    </div>
+    <template
+      v-if="showModal"
+    >
+      <ReplyPostModal
+        :initial-tweet="initialTweet"
+        @close="showModal = false"
+        @after-submit="handleAfterSubmit"
+      />
+    </template>
   </div>
 </template>
 <script>
 import { Toast } from '../utils/helper'
+import { fromNowFilter } from './../utils/mixins'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
 import { shortenTimeFilter } from './../utils/mixins'
@@ -77,7 +80,7 @@ export default {
   components: {
     ReplyPostModal
   },
-  mixins: [shortenTimeFilter],
+  mixins: [fromNowFilter],
   props: {
     initialTweet: {
       type: Object,
@@ -98,11 +101,10 @@ export default {
   },
   watch: {
     initialTweet (newValue) {
-      this.post = [
+      this.post = {
         ...this.post,
         ...newValue
-      ]
-      console.log('UserPost的newValue:', newValue)
+      }
     }
   },
   methods: {
@@ -199,15 +201,15 @@ a{
   display: grid;
   grid-template-columns: 50px 1fr;
   max-width: 600px;
-  border-bottom: solid 1px $light-gray;
-  border-top: 1px solid $light-gray;
-  margin-bottom: -1px;
+  border-bottom: 1px solid $light-gray;
+  margin-top: -1px;
   padding: 15px;
   &.noborder{
     border: 0px;
   }
   &__content {
     margin-left: 10px;
+    cursor: pointer;
     &__title {
       color: $tx-gray;
       &__item {
@@ -223,15 +225,19 @@ a{
     }
     &__discription {
       line-height: 20px;
-      @include text-style(15px, normal, $black);
+      @include text-style(15px, normal, $black,pointer);
     }
-    &__reaction {
+
+  }
+  &__reaction {
+      grid-column: 2/3;
+      grid-row: 2/3;
+      margin-left: 10px;
       color: $tx-gray;
-      margin-top: 14px;
       height: 20px;
       display: flex;
       align-items: center;
-      z-index: 10;
+
       .message:hover {
           color: $light-blue;
           div{
@@ -283,6 +289,5 @@ a{
         }
       }
     }
-  }
 }
 </style>

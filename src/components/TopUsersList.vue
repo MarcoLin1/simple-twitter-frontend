@@ -10,7 +10,13 @@
         class="user__list"
       >
         <div class="user__list__content">
-          <div class="user__list__content__avator avatar-img" />
+          <div class=" user__list__content__avator ">
+            <img
+              class="avatar-img"
+              :src="user.avatar"
+              alt=""
+            >
+          </div>
           <router-link to="/">
             <div class="user__list__content__title">
               <span class="user__list__content__title__name user-name">
@@ -55,7 +61,7 @@ a{
   text-decoration: none;
 }
 .user-list-container{
-  margin: 15px 30px;
+  margin: 15px;
 }
 .user-list-wrapper{
   width: 350px;

@@ -42,6 +42,12 @@ export default {
     this.fetchData(tweetId)
     this.fetchReplies(tweetId)
   },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchData(id)
+    this.fetchReplies(id)
+    next()
+  },
   methods: {
     async fetchData (tweetId) {
       try {
