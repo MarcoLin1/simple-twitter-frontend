@@ -25,14 +25,12 @@
         </div>
         <div class="post__content__discription">
           {{ post.description }}
-          {{ post.TweetId }}
         </div>
         <div class="post__content__reaction d-flex ">
           <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
             <div
               class="post__content__reaction__item"
-              data-toggle="modal"
-              data-target="#reply__post__modal"
+              @click="showModal = true"
             >
               <div class="post__content__reaction__item__message " />
               <span class="post__content__reaction__item__text">{{ post.replyCount }}</span>
@@ -56,9 +54,12 @@
             >{{ likeCount }}</span>
           </div>
         </div>
-        <template v-if="showModal">
+        <template
+          v-if="showModal"
+        >
           <ReplyPostModal
             :initial-tweet="initialTweet"
+            @close="showModal = false"
             @after-submit="handleAfterSubmit"
           />
         </template>
@@ -86,7 +87,7 @@ export default {
   },
   data () {
     return {
-      showModal: true,
+      showModal: false,
       post: this.initialTweet,
       likeCount: this.likeNum,
       currentUser: {
@@ -107,11 +108,6 @@ export default {
   },
   methods: {
     handleAfterSubmit () {
-      this.showModal = false
-      // 關掉modal
-      const modalBg = document.querySelector('.modal-backdrop')
-      modalBg.classList.remove('modal-backdrop')
-      document.body.className = document.body.className.replace('modal-open', '')
       this.post.replyCount = this.post.replyCount + 1
     },
     async addLiked (tweetId) {

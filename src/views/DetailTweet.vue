@@ -65,6 +65,7 @@ export default {
       }
     },
     addTweetAfterSubmit (data) {
+      console.log('in')
       this.replies.unshift({
         comment: data,
         createdAt: new Date(),
