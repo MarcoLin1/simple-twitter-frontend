@@ -55,7 +55,11 @@ export default {
   },
   created () {
     const { id } = this.$route.params
-    this.fetchUserData(id)
+    if (!id) {
+      console.log(id)
+    } else {
+      this.fetchUserData(id)
+    }
   },
   methods: {
     async fetchUserData (userId) {
