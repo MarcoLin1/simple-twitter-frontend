@@ -74,16 +74,16 @@ export default {
     initialTweet: {
       type: Object,
       required: true
-    },
-    likeNum: {
-      type: [Number, String],
-      required: true
     }
+    // likeNum: {
+    //   type: [Number, String],
+    //   required: true
+    // }
   },
   data () {
     return {
       post: this.initialTweet,
-      likeCount: this.likeNum,
+      likeCount: this.initialTweet.likeCount,
       currentUser: {
         name: 'JoJo',
         account: 'jojo',

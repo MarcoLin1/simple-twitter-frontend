@@ -150,7 +150,6 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(data)
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -167,10 +166,9 @@ export default {
     async removeFollowing (userId) {
       try {
         const { data } = await userAPI.removeFollowShip({ userId })
-        if (data !== 'success') {
+        if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(data)
       } catch (e) {
         console.log(e)
         Toast.fire({

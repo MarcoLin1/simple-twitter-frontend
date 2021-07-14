@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="top-wrapper">
-      <TopNavbar :current-page="'首頁'" />
-    </div>
     <TweetForm @after-submit="handleAfterSubmit" />
     <template v-if="!isProcessing">
       <UserPost
@@ -16,13 +13,12 @@
 <script>
 import TweetForm from './../components/TweetForm.vue'
 import UserPost from './../components/UserPost.vue'
-import TopNavbar from './../components/TopNavbar.vue'
 import tweetAPI from './../apis/tweets'
 import { Toast } from '../utils/helper'
 
 export default {
   components: {
-    TopNavbar,
+    // TopNavbar,
     TweetForm,
     UserPost
   },

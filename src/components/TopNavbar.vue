@@ -13,7 +13,7 @@
           &larr;</span>
       </div>
       <div class="top-navbar-name">
-        {{ user.User.name }}
+        {{ userData.User.name }}
         <div class="top-navbar-text">
           {{ userTweetsLength }}推文
         </div>
@@ -45,8 +45,7 @@ export default {
       required: true
     },
     userData: {
-      type: [Array, Object],
-      required: true
+      type: [Array, Object]
     },
     userTweetsLength: {
       type: [Number, String],
@@ -64,6 +63,7 @@ export default {
         ...this.user,
         ...newValue
       }
+      console.log(this.userData)
     }
   }
 }
