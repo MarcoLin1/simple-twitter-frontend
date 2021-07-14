@@ -54,7 +54,7 @@
       </div>
       <div class="login__group">
         <router-link
-          to="/register"
+          to="/signup"
           class="login__register"
         >
           註冊 Alphitter
@@ -116,6 +116,10 @@ export default {
         this.$emit('after-submit', data)
       } catch (error) {
         console.log('error', error)
+        Toast.fire({
+          icon: 'error',
+          title: '請確認帳號密碼'
+        })
       }
     }
 
