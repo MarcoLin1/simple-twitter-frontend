@@ -221,6 +221,9 @@
   grid-template-columns: 50px 1fr;
   max-width: 600px;
   padding: 15px;
+  .avatar-img{
+    cursor: default;
+  }
   &__content {
     margin-left: 10px;
     &__title {

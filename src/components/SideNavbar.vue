@@ -124,6 +124,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
 }
 .nav-item-container {
   height: 50%;

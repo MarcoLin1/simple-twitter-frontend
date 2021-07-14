@@ -58,7 +58,9 @@ export default {
 @import '../assets/scss/main.scss';
 .main-container{
   display: grid;
-  grid-template-columns: 100px 1fr 50px 2fr 50px 1fr 100px;
+  // grid-template-columns: 100px 1fr 50px 2fr 50px 1fr 100px;
+  grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
+
   grid-template-areas: " . left . middle . right .";
 
 }

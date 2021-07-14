@@ -44,7 +44,7 @@
   display: grid;
   grid-template-columns: 50px 1fr;
   width: 600px;
-  border-top: solid 1px $light-gray;
+  border-bottom: solid 1px $light-gray;
   padding: 15px;
   margin-top: -1px;
   &__content {
