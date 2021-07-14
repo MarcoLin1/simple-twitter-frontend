@@ -5,7 +5,7 @@
       <div class="setting__top__navbar__wrapper">
         <TopNavbar
           :current-page="currentPage"
-          :user-data="userData"
+          :user-data="currentUser"
           :user-tweets-length="userTweetsLength"
         />
       </div>
@@ -20,6 +20,7 @@ import TopNavbar from './../components/TopNavbar.vue'
 import AccountDetailForm from './../components/AccountDetailForm.vue'
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
+import { mapState } from 'vuex'
 export default {
   components: {
     SideNavbar: SideNavbar,
@@ -30,26 +31,28 @@ export default {
     return {
       currentPage: '帳戶設定',
       userData: [],
-      userTweetsLength: '',
-      currentUser: []
+      userTweetsLength: ''
     }
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   created () {
-    this.fetchCurrentUser()
+    // this.fetchCurrentUser()
   },
   methods: {
-    async fetchCurrentUser () {
-      try {
-        const { data } = await userAPI.getCurrentUser()
-        this.currentUser = data
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '讀取currentUser失敗'
-        })
-      }
-    },
+    // async fetchCurrentUser () {
+    //   try {
+    //     const { data } = await userAPI.getCurrentUser()
+    //     this.currentUser = data
+    //   } catch (e) {
+    //     console.log(e)
+    //     Toast.fire({
+    //       icon: 'error',
+    //       title: '讀取currentUser失敗'
+    //     })
+    //   }
+    // },
     async handleAfterSubmit (formData) {
       try {
         const { data } = await userAPI.settingUpdate({ userId: this.currentUser.id, formData })

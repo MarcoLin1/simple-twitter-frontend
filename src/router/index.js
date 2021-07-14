@@ -93,7 +93,6 @@ const routes = [
         path: '/mainpage',
         name: 'main-page',
         component: () => import('./../views/MainPage.vue'),
-
         children: [
           {
             path: '/replied/:id',
@@ -108,7 +107,6 @@ const routes = [
 
         ]
       }
-
     ]
   },
   // 以下路由會包含 SideNavBar
