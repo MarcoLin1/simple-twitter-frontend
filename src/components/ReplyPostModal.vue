@@ -101,7 +101,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
-        transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease;
 
     }
     &__wrapper{
@@ -270,15 +270,17 @@ export default {
         }
         const tweetId = this.initialTweet.id ? this.initialTweet.id : this.initialTweet.TweetId
         const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
-        console.log(data)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
 
         const replyData = {
           comment: this.comment
         }
+        this.comment = ''
         this.$router.back()
-
-        this.$emit('after-submit', replyData)
         this.$emit('close')
+        this.$emit('after-submit', replyData)
       } catch (error) {
         console.log('error', error)
         Toast.fire({
