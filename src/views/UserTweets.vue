@@ -2,7 +2,7 @@
   <div class="user__tweet__container">
     <div class="user__tweet__main__wrapper">
       <UserProfile :get-current-user="currentUser" />
-      <UserPostItem />
+      <UserPostItem :user-id="userId" />
       <UserPost
         v-for="post in posts"
         :key="post.TweetId"
@@ -19,6 +19,7 @@ import UserPostItem from './../components/UserPostItem.vue'
 import UserPost from './../components/UserPost.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
+import { mapState } from 'vuex'
 export default {
   name: 'UserTweets',
   components: {
@@ -29,13 +30,21 @@ export default {
   data () {
     return {
       posts: [],
-      currentUser: []
+      userId: ''
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchTweets(id)
+    next()
   },
   created () {
     const { id } = this.$route.params
+    this.userId = id
     this.fetchTweets(id)
-    this.fetchCurrentUser()
   },
   methods: {
     async fetchTweets (userId) {
@@ -47,18 +56,6 @@ export default {
         Toast.fire({
           icon: 'error',
           title: '推文資料讀取失敗，請稍後再試'
-        })
-      }
-    },
-    async fetchCurrentUser () {
-      try {
-        const { data } = await userAPI.getCurrentUser()
-        this.currentUser = data
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '讀取現在使用者資料失敗'
         })
       }
     }

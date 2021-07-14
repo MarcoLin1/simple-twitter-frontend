@@ -2,7 +2,7 @@
   <div class="user__replies__container">
     <div class="user__replies__main__wrapper">
       <UserProfile :get-current-user="currentUser" />
-      <UserPostItem />
+      <UserPostItem :user-id="userId" />
       <UserPost
         v-for="post in userReplies"
         :key="post.TweetId"
@@ -29,11 +29,13 @@ export default {
   data () {
     return {
       userReplies: [],
-      currentUser: []
+      currentUser: [],
+      userId: ''
     }
   },
   created () {
     const { id } = this.$route.params
+    this.userId = id
     this.fetchUserReplies(id)
     this.fetchCurrentUser()
   },

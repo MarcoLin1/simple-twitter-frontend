@@ -6,8 +6,6 @@
     <div class="middle-content">
       <TopNavbar
         :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
-        :user-data="userData"
-        :user-tweets-length="userTweetsLength"
       />
       <router-view />
     </div>
@@ -31,14 +29,12 @@ export default {
   },
   data () {
     return {
-      topUsers: [],
-      userData: [],
-      userTweetsLength: ''
+      topUsers: []
     }
   },
   created () {
-    const { id } = this.$route.params
-    this.fetchUserData(id)
+    // const { id } = this.$route.params
+    // this.fetchUserData(id)
     this.fetchTopUser()
   },
   methods: {
@@ -51,19 +47,6 @@ export default {
         Toast.fire({
           icon: 'error',
           title: 'TopUser讀取失敗'
-        })
-      }
-    },
-    async fetchUserData (userId) {
-      try {
-        const { data } = await userAPI.getUserTweets({ userId })
-        this.userData = data[0]
-        this.userTweetsLength = data.length
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: 'user data讀取失敗'
         })
       }
     }

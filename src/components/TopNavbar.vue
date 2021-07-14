@@ -13,7 +13,7 @@
           &larr;</span>
       </div>
       <div class="top-navbar-name">
-        {{ userData.User.name }}
+        {{ name }}
         <div class="top-navbar-text">
           {{ userTweetsLength }}推文
         </div>
@@ -38,32 +38,38 @@
 </template>
 
 <script>
+// import { mapState } from 'vuex'
+import userAPI from './../apis/users'
 export default {
   props: {
     currentPage: {
       type: String,
       required: true
-    },
-    userData: {
-      type: [Array, Object]
-    },
-    userTweetsLength: {
-      type: [Number, String],
-      required: true
     }
   },
   data () {
     return {
-      user: this.userData
+      name: '',
+      userTweetsLength: ''
     }
   },
-  watch: {
-    userData (newValue) {
-      this.user = {
-        ...this.user,
-        ...newValue
+  created () {
+    const { id } = this.$route.params
+    this.fetchUserData(id)
+  },
+  methods: {
+    async fetchUserData (userId) {
+      try {
+        const { data } = await userAPI.getUserTweets({ userId })
+        this.name = data[0].User.name
+        this.userTweetsLength = data.length
+      } catch (e) {
+        console.log(e)
+        // Toast.fire({
+        //   icon: 'error',
+        //   title: 'user data讀取失敗'
+        // })
       }
-      console.log(this.userData)
     }
   }
 }

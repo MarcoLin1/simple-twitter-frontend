@@ -72,6 +72,7 @@ import { Toast } from '../utils/helper'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
 export default {
+  name: 'UserPost',
   components: {
     ReplyPostModal
   },

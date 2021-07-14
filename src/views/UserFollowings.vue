@@ -12,13 +12,11 @@
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
-// import TopNavbar from './../components/TopNavbar.vue'
 import UserFollowingList from './../components/UserFollowingList.vue'
 
 export default {
   name: 'UserFollowings',
   components: {
-    // TopNavbar,
     UserFollowingList
   },
   data () {
