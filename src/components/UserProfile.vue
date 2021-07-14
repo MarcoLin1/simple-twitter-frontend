@@ -1,9 +1,6 @@
 <template>
   <div class="middle-container">
     <template>
-      <!-- <TopNavbar :current-page="currentPage" /> -->
-    </template>
-    <template>
       <input
         id="user__edit__modal"
         type="checkbox"
@@ -16,13 +13,13 @@
     </template>
     <div class="profile__cover">
       <img
-        :src="user.cover"
+        :src="user.cover ? user.cover: backupData.cover"
         alt=""
       >
     </div>
     <div class="profile__avatar">
       <img
-        :src="user.avatar"
+        :src="user.avatar ? user.avatar: backupData.avatar"
         alt=""
         class="avatar-img"
       >
@@ -32,20 +29,20 @@
     >
       <!-- 當現在頁面的user 不是 currentUser，就顯示icon -->
       <div
-        v-if="(currentUser.id !== user.id)"
+        v-if="(currentUser.id !== user.id && backupData.id)"
         class="profile__icon__wrapper"
       >
         <div class="profile__icon profile__icon__email" />
       </div>
       <div
-        v-if="(currentUser.id !== user.id) && (!isSubscribe)"
+        v-if="(currentUser.id !== user.id && backupData.id) && (!isSubscribe)"
         class="profile__icon__wrapper"
         @click="addSubscribe"
       >
         <div class="profile__icon profile__icon__subscribe" />
       </div>
       <div
-        v-if="(currentUser.id !== user.id) && (isSubscribe)"
+        v-if="(currentUser.id !== user.id && backupData.id) && (isSubscribe)"
         class="profile__icon__wrapper profile__icon__wrapper__checked"
         @click="removeSubscribe"
       >
@@ -57,7 +54,7 @@
         class="user__edit__modal__label"
       >
         <div
-          v-if="currentUser.id === user.id"
+          v-if="currentUser.id === user.id && backupData.id"
           class="btn-border"
         >
           編輯個人資料
@@ -65,16 +62,16 @@
         </div>
       </label>
       <button
-        v-if="(currentUser.id !== user.id) && (isFollowing)"
+        v-if="(currentUser.id !== user.id && backupData.id) && (isFollowing)"
         class="btn-border btn__following"
-        @click.stop.prevent="removeFollowing(user.id)"
+        @click.stop.prevent="removeFollowing(user.id || backupData.id)"
       >
         正在跟隨
       </button>
       <button
-        v-if="(currentUser.id !== user.id) && (!isFollowing)"
+        v-if="(currentUser.id !== user.id && backupData.id) && (!isFollowing)"
         class="btn-border btn__unFollowing"
-        @click.stop.prevent="addFollowing(user.id)"
+        @click.stop.prevent="addFollowing(user.id || backupData.id)"
       >
         跟隨
       </button>
@@ -82,25 +79,25 @@
 
     <div class="profile__detail">
       <div class="profile__detail__name">
-        {{ user.name }}
+        {{ user.name ? user.name: backupData.name }}
       </div>
       <div class="profile__detail__account">
-        @{{ user.account }}
+        @{{ user.account ? user.account: backupData.account }}
       </div>
       <div class="profile__detail__intro">
-        {{ user.introduction }}
+        {{ user.introduction ? user.introduction: backupData.introduction }}
       </div>
       <!-- 要記得改連結 -->
       <div class="profile__detail__follow">
         <div class="profile__detail__follow__item">
-          <router-link :to="{name: 'user-followings', params: {id: user.id}}">
-            <span>{{ user.followingCount }} 個</span>
+          <router-link :to="{name: 'user-followings', params: {id: userId || backupData.id}}">
+            <span>{{ user.followingCount ? user.followingCount: backupData.followingCount }} 個</span>
             <span>跟隨中</span>
           </router-link>
         </div>
         <div class="profile__detail__follow__item">
-          <router-link :to="{name: 'user-followers', params: {id: user.id}}">
-            <span>{{ user.followerCount }} 位</span>
+          <router-link :to="{name: 'user-followers', params: {id: userId || backupData.id}}">
+            <span>{{ user.followerCount ? user.followerCount: backupData.followerCount }} 位</span>
             <span>跟隨者</span>
           </router-link>
         </div>
@@ -240,16 +237,27 @@ export default {
     getCurrentUser: {
       type: [Object, Array],
       required: true
+    },
+    initialUser: {
+      type: [Object, Array],
+      require: true
+    },
+    initialFollowing: {
+      type: Boolean
+    },
+    userId: {
+      type: [Number, String]
     }
   },
   data () {
     return {
-      user: [],
+      user: this.initialUser,
       currentUser: this.getCurrentUser,
-      userFollowers: [],
+      // userFollowers: this.initialFollowers,
       // currentPage: 'userProfile',
-      isFollowing: false,
-      isSubscribe: false
+      isFollowing: this.initialFollowing,
+      isSubscribe: false,
+      backupData: []
     }
   },
   watch: {
@@ -258,40 +266,47 @@ export default {
         ...this.currentUser,
         ...newValue
       }
+    },
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
+    },
+    initialFollowing (newValue) {
+      this.isFollowing = newValue
     }
   },
   created () {
     const { id } = this.$route.params
-    console.log(this.$route)
     this.fetchUser(id)
-    this.fetUserFollowers(id)
   },
   methods: {
     // 取得目前路由的使用者的followers清單，和currentUser比對，如果currentUser在清單中就是following狀態
-    async fetUserFollowers (userId) {
-      try {
-        const { data } = await userAPI.getUserFollowers({ userId })
-        this.userFollowers = data
-        this.userFollowers.forEach(item => {
-          if (item.followerId !== this.currentUser.id) {
-            this.isFollowing = false
-          } else {
-            this.isFollowing = true
-          }
-        })
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '讀取不到跟隨者的資料'
-        })
-      }
-    },
+    // async fetUserFollowers (userId) {
+    //   try {
+    //     // const { data } = await userAPI.getUserFollowers({ userId })
+    //     // this.userFollowers = data
+    //     this.userFollowers.forEach(item => {
+    //       if (item.followerId !== this.currentUser.id) {
+    //         this.isFollowing = false
+    //       } else {
+    //         this.isFollowing = true
+    //       }
+    //     })
+    //   } catch (e) {
+    //     console.log(e)
+    //     Toast.fire({
+    //       icon: 'error',
+    //       title: '讀取不到跟隨者的資料'
+    //     })
+    //   }
+    // },
     // 取得目前路由的使用者資料
     async fetchUser (userId) {
       try {
         const { data } = await userAPI.getUser({ userId })
-        this.user = data
+        this.backupData = data
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -351,12 +366,6 @@ export default {
         })
       }
     }
-    // 恢復編輯個人頁面視窗
-    // modalBackground () {
-    //   document.body.style.backgroundColor = 'rgba(0, 0, 0, 8%)'
-    //   document.body.style.opacity = '0.9'
-    //   document.body.style.zIndex = '9998'
-    // }
   }
 }
 </script>

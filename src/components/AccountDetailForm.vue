@@ -20,7 +20,7 @@
           <input
             v-else
             id="account"
-            v-model="user.account"
+            v-model="currentUser.account"
             type="text"
             class="account__detail__account account__detail__form__control"
           >
@@ -40,7 +40,7 @@
           <input
             v-else
             id="name"
-            v-model="user.name"
+            v-model="currentUser.name"
             type="text"
             class="account__detail__name account__detail__form__control"
           >
@@ -60,7 +60,7 @@
           <input
             v-else
             id="email"
-            v-model="user.email"
+            v-model="currentUser.email"
             type="email"
             class="account__detail__email account__detail__form__control"
           >
@@ -80,7 +80,7 @@
           <input
             v-else
             id="password"
-            v-model="user.password"
+            v-model="currentUser.password"
             type="password"
             class="account__detail__password account__detail__form__control"
           >
@@ -100,7 +100,7 @@
           <input
             v-else
             id="check__password"
-            v-model="user.checkPassword"
+            v-model="currentUser.checkPassword"
             type="password"
             class="account__detail__check__password account__detail__form__control"
           >
@@ -121,7 +121,8 @@
 
 <script>
 import { Toast } from './../utils/helper'
-import userAPI from './../apis/users'
+// import userAPI from './../apis/users'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -143,22 +144,25 @@ export default {
       isProcessing: false
     }
   },
-  created () {
-    this.fetchCurrentUser()
+  computed: {
+    ...mapState(['currentUser'])
   },
+  // created () {
+  //   this.fetchCurrentUser()
+  // },
   methods: {
-    async fetchCurrentUser () {
-      try {
-        const { data } = await userAPI.getCurrentUser()
-        this.user = data
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '讀取currentUser失敗'
-        })
-      }
-    },
+    // async fetchCurrentUser () {
+    //   try {
+    //     const { data } = await userAPI.getCurrentUser()
+    //     this.user = data
+    //   } catch (e) {
+    //     console.log(e)
+    //     Toast.fire({
+    //       icon: 'error',
+    //       title: '讀取currentUser失敗'
+    //     })
+    //   }
+    // },
     async handleSubmit (e) {
       try {
         // 將form資料轉成formData傳父層

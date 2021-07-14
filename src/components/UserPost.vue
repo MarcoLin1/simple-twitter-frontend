@@ -74,6 +74,7 @@ import { Toast } from '../utils/helper'
 import { fromNowFilter } from './../utils/mixins'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
+import { shortenTimeFilter } from './../utils/mixins'
 export default {
   name: 'UserPost',
   components: {

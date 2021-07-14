@@ -49,7 +49,8 @@
 
 <script>
 import TopNavbar from './../components/TopNavbar.vue'
-import tweetAPI from './../apis/tweets'
+// import tweetAPI from './../apis/tweets'
+import adminAPI from './../apis/admin'
 import { shortenTimeFilter } from './../utils/mixins'
 import { Toast } from '../utils/helper'
 
@@ -72,7 +73,7 @@ export default {
   methods: {
     async fetchTweets () {
       try {
-        const { data } = await tweetAPI.getTweets()
+        const { data } = await adminAPI.tweet.get()
         this.tweets = data
         console.log(data)
       } catch (error) {

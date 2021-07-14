@@ -10,16 +10,16 @@
       >
         <div class="icon-wrapper icon-main-wrpper" />
         <div class="content">
-          {{ (user.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
+          {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
         </div>
       </router-link>
       <router-link
         class="side-navbar-user-wrapper"
-        :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets'}"
+        :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets', params: {id: currentUser.id}}"
       >
         <div class="icon-wrapper icon-user-wrpper" />
         <div class="content">
-          {{ (user.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
+          {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
         </div>
       </router-link>
       <router-link
@@ -58,15 +58,17 @@
       <NewPostModal />
     </template>
     <div class="bottom-item-container">
-      <router-link
+      <div
         class="side-navbar-logout-wrpper"
-        to="/login"
+        @click="logout"
       >
-        <div class="icon-wrapper icon-logout-wrapper" />
+        <div
+          class="icon-wrapper icon-logout-wrapper"
+        />
         <div class="content">
           登出
         </div>
-      </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -74,43 +76,22 @@
 <script>
 import Logo from './../assets/icon/logo.vue'
 import NewPostModal from './../components/NewPostModal.vue'
-const dummyUser = {
-  users:
-    {
-      id: 1,
-      name: 'google',
-      email: 'root@example.com',
-      password: '$2a$10$K2x6pQHkzPEKzw86x8Tc0.bfW7QVdA2Ls4AXBFkFu7xHG3UgA4Mli',
-      isAdmin: true,
-      image: 'https://i.pravatar.cc/300',
-      createdAt: '2021-07-05T09:58:39.000Z',
-      updatedAt: '2021-07-05T10:31:19.000Z',
-      Followers: [],
-      FollowerCount: 0,
-      TweetCount: 15,
-      isFollowed: false
-    }
-}
+import { mapState } from 'vuex'
+
 export default {
   components: {
     Logo,
     NewPostModal
   },
-  data () {
-    return {
-      user: []
-    }
-  },
-  created () {
-    this.fetchUser()
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
-    fetchUser () {
-      const { users } = dummyUser
-      this.user = users
+    logout () {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/login')
     }
   }
-
 }
 </script>
 
