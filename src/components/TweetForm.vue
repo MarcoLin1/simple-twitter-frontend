@@ -2,11 +2,13 @@
   <div class="tweet__form__container">
     <form class="tweet__form__wrapper">
       <div class="tweet__form__image__wrapper">
-        <div
-          src=""
-          alt=""
-          class="tweet__form__image"
-        />
+        <div class="tweet__form__image">
+          <img
+            class="avatar-img"
+            :src="currentUser.avatar"
+            alt=""
+          >
+        </div>
         <textarea
           v-model="description"
           type="text"

@@ -110,3 +110,9 @@ $line-gray:#ccd6dd;
 .non__show {
   display: none !important;
 }
+//////////
+//sweet alert 優先級最高
+/////////
+.swal2-container {
+  z-index: 9999;
+}
