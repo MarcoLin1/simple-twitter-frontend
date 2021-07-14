@@ -2,6 +2,22 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './../store'
 Vue.use(VueRouter)
+
+const authorizeIsAdmin = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && !currentUser.isAdmin) {
+    next('/admin/login')
+  }
+  next()
+}
+const authorizeIsUser = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && currentUser.isAdmin) {
+    next('/login')
+  }
+  next()
+}
+
 const routes = [
   {
     path: '/admin/login',
@@ -34,6 +50,7 @@ const routes = [
     path: '/user',
     name: 'user',
     component: () => import('./../views/user.vue'),
+    beforeEnter: authorizeIsUser,
     children: [
 
       {
@@ -76,6 +93,7 @@ const routes = [
         path: '/mainpage',
         name: 'main-page',
         component: () => import('./../views/MainPage.vue'),
+
         children: [
           {
             path: '/replied/:id',
@@ -98,6 +116,7 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: () => import('./../views/Admin.vue'),
+    beforeEnter: authorizeIsAdmin,
     children: [
       {
         path: 'tweets',
@@ -114,6 +133,11 @@ const routes = [
   {
     path: '/',
     name: 'root'
+  },
+  {
+    path: '*',
+    name: 'not-found',
+    component: () => import('./../views/NotFound')
   }
 ]
 const router = new VueRouter({
@@ -121,9 +145,29 @@ const router = new VueRouter({
   routes
 })
 
-// 每一次路由改變時，都呼叫一次store中的fetchCurrentUser
-router.beforeEach((to, from, next) => {
-  store.dispatch('fetchCurrentUser')
+router.beforeEach(async (to, from, next) => {
+  const tokenInLocalStorage = localStorage.getItem('token')
+  const tokenInstore = store.state.token
+  let isAuthenticated = store.state.isAuthenticated
+
+  // 比較 localStorage 和 store 中的 token 是否一樣
+  if (tokenInLocalStorage && tokenInLocalStorage !== tokenInstore) {
+    isAuthenticated = await store.dispatch('fetchCurrentUser')
+  }
+
+  const pathsWithoutAuthentication = ['signup', 'login']
+
+  // 如果 token 無效則轉址到登入頁
+  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
+    next('/login')
+    return
+  }
+  // 如果 token 有效則轉址到首頁
+  if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
+    next('/mainpage')
+    return
+  }
   next()
 })
+
 export default router

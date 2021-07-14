@@ -32,23 +32,29 @@
 
 <script>
 import { Toast } from '../utils/helper'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      description: '',
-      currentUser: {
-        name: 'Apple',
-        account: 'apple',
-        avator: 'https://i.imgur.com/27eBUkt.jpg'
-      }
+      description: ''
     }
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
   },
   methods: {
     handleSubmit () {
-      if (!this.description) {
+      if (!this.description.trim()) {
         Toast.fire({
           icon: 'warning',
           title: '請輸入推文內容'
+        })
+        return
+      }
+      if (this.description.length > 140) {
+        Toast.fire({
+          icon: 'warning',
+          title: '字數請限制於 140 字內'
         })
         return
       }

@@ -22,10 +22,7 @@ export default {
         })
       } else {
         localStorage.setItem('token', data.token)
-
-        // 透過setCurrentUser 把使用者資料存到Vuex的state中
         this.$store.commit('setCurrentUser', data.user)
-
         this.$router.push('/mainpage')
       }
     }

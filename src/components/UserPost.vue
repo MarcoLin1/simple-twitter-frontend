@@ -81,10 +81,6 @@ export default {
       type: Object,
       required: true
     }
-    // likeNum: {
-    //   type: [Number, String],
-    //   required: true
-    // }
   },
   data () {
     return {
