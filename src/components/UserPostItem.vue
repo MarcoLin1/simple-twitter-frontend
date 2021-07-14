@@ -4,7 +4,7 @@
       <div class="post__item">
         <!-- 記得改網址 -->
         <router-link
-          :to="{name: 'user-tweets'}"
+          :to="{name: 'user-tweets', params:{id: id}}"
           type="button"
           class="post__item__button"
         >
@@ -14,7 +14,7 @@
       <div class="post__item">
         <!-- 記得改網址 -->
         <router-link
-          :to="{name: 'user-replies'}"
+          :to="{name: 'user-replies', params:{id: id}}"
           type="button"
           class="post__item__button"
         >
@@ -24,7 +24,7 @@
       <div class="post__item">
         <!-- 記得改網址 -->
         <router-link
-          :to="{name: 'user-likes'}"
+          :to="{name: 'user-likes', params:{id: id}}"
           type="button"
           class="post__item__button"
         >
@@ -71,6 +71,15 @@
 <script>
 
 export default {
-
+  props: {
+    userId: {
+      type: String
+    }
+  },
+  data () {
+    return {
+      id: this.userId
+    }
+  }
 }
 </script>

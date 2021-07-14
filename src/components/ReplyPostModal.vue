@@ -247,6 +247,7 @@
 import { Toast } from '../utils/helper'
 import tweetAPI from './../apis/tweets'
 export default {
+  name: 'ReplyPostModal',
   components: { },
   props: {
     initialTweet: {

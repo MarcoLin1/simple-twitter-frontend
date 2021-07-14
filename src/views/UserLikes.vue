@@ -2,7 +2,7 @@
   <div class="user__likes__container">
     <div class="user__likes__main__wrapper">
       <UserProfile :get-current-user="currentUser" />
-      <UserPostItem />
+      <UserPostItem :user-id="userId" />
       <UserPost
         v-for="post in userLikes"
         :key="post.TweetId"
@@ -30,11 +30,13 @@ export default {
   data () {
     return {
       userLikes: [],
-      currentUser: []
+      currentUser: [],
+      userId: ''
     }
   },
   created () {
     const { id } = this.$route.params
+    this.userId = id
     this.fetchUserLikes(id)
     this.fetchCurrentUser()
   },

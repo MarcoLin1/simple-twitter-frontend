@@ -92,7 +92,7 @@
         >
       </div>
       <div class="user__edit__modal__number">
-        {{ user.name.length }} / 50
+        {{ nameLength }} / 50
       </div>
       <div class="user__edit__modal__intro__wrapper">
         <span class="user__edit__modal__intro__title">
@@ -110,7 +110,7 @@
         />
       </div>
       <div class="user__edit__modal__number">
-        {{ user.introduction.length }} / 160
+        {{ introLength }} / 160
       </div>
     </form>
   </div>
@@ -121,7 +121,6 @@
 
 %user__edit__icon__style {
   @extend %icon-style;
-  // position: absolute;
   background: #ffffff;
   color: #ffffff;
   cursor: pointer;
@@ -223,7 +222,7 @@
 }
 .user__edit__modal__avatar__wrapper {
   width: 120px;
-  height: 80px;
+  height: 55px;
   .user__edit__modal__avatar {
     border-radius: 50%;
     width: 120px;
@@ -263,7 +262,6 @@
   }
 }
 .user__edit__modal__intro__wrapper {
-  height: 100%;
   max-width: 540px;
   margin: 20px auto 0 auto;
   position: relative;
@@ -298,8 +296,7 @@ import userAPI from './../apis/users'
 export default {
   props: {
     initialUser: {
-      type: Object,
-      required: true
+      type: [Array, Object]
     }
   },
   data () {
@@ -307,8 +304,8 @@ export default {
       user: this.initialUser,
       name: '',
       introduction: '',
-      cover: '',
-      avatar: ''
+      introLength: '',
+      nameLength: ''
     }
   },
   watch: {
@@ -318,10 +315,13 @@ export default {
         ...newValue
       }
       this.name = newValue.name
+      this.nameLength = newValue.name.length
       this.introduction = newValue.introduction
+      this.introLength = newValue.introduction.length
     }
   },
   methods: {
+    // 處理avatar預覽圖片
     handleAvatarChange (e) {
       const files = e.target.files
       console.log(files)
@@ -333,6 +333,7 @@ export default {
         this.avatar = imageURL
       }
     },
+    // 處理cover預覽圖片
     handleCoverChange (e) {
       const files = e.target.files
       if (files.length === 0) {
@@ -353,8 +354,6 @@ export default {
           })
           return
         }
-        // const form = e.target
-        // const formData = new FormData(form)
         const { data } = await userAPI.update({
           userId: this.user.id,
           name: this.name,
@@ -362,21 +361,12 @@ export default {
           cover: this.cover,
           avatar: this.avatar
         })
-        // document.body.style.backgroundColor = 'transparent'
-        // document.body.style.opacity = '1'
-        // const toggleControl = document.querySelector('#user__edit__modal')
-        // toggleControl.checked = false
         this.$emit('after-submit', { name: this.name, introduction: this.introduction, cover: this.cover, avatar: this.avatar })
         const editModal = document.querySelector('#user__edit__modal')
         editModal.checked = false
         if (data.status !== 'success') {
           throw new Error(data.message)
         } else {
-          // const modalBg = document.querySelector('.modal-backdrop')
-          // const showModal = document.querySelector('#user__edit__modal')
-          // showModal.classList.remove('show')
-          // showModal.classList.add('non__show')
-          // modalBg.classList.remove('modal-backdrop')
           this.$router.push({ name: 'user-tweets' })
         }
       } catch (e) {
@@ -390,10 +380,6 @@ export default {
         console.log('please fill in your name')
       }
     }
-    // changeBackground () {
-    //   document.body.style.backgroundColor = 'transparent'
-    //   document.body.style.opacity = '1'
-    // }
   }
 }
 </script>
