@@ -93,7 +93,6 @@ const routes = [
         path: '/mainpage',
         name: 'main-page',
         component: () => import('./../views/MainPage.vue'),
-
         children: [
           {
             path: '/replied/:id',
@@ -108,7 +107,6 @@ const routes = [
 
         ]
       }
-
     ]
   },
   // 以下路由會包含 SideNavBar
@@ -155,7 +153,7 @@ router.beforeEach(async (to, from, next) => {
     isAuthenticated = await store.dispatch('fetchCurrentUser')
   }
 
-  const pathsWithoutAuthentication = ['signup', 'login']
+  const pathsWithoutAuthentication = ['signup', 'login', 'admin-login']
 
   // 如果 token 無效則轉址到登入頁
   if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
