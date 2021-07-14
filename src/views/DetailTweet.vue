@@ -16,6 +16,7 @@
 import TweetInfo from './../components/TweetInfo.vue'
 import Messages from './../components/Messages.vue'
 import tweetAPI from './../apis/tweets'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -24,11 +25,6 @@ export default {
   },
   data () {
     return {
-      currentUser: {
-        name: 'Apple',
-        account: 'apple',
-        avator: 'https://i.imgur.com/27eBUkt.jpg'
-      },
       tweet: {},
       replies: [],
       user: {
@@ -36,6 +32,9 @@ export default {
         account: ''
       }
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   created () {
     const { id: tweetId } = this.$route.params
@@ -70,7 +69,8 @@ export default {
         createdAt: new Date(),
         User: {
           account: this.currentUser.account,
-          name: this.currentUser.name
+          name: this.currentUser.name,
+          avatar: this.currentUser.avatar
         }
       })
     }

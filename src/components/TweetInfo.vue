@@ -97,7 +97,6 @@ export default {
   data () {
     return {
       showModal: false,
-      currentPage: '推文',
       tweet: this.initialTweet
     }
   },

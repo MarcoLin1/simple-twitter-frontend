@@ -31,7 +31,8 @@
           <div class="card__list__detail__reaction d-flex ">
             <div class="card__list__detail__reaction__item">
               <div class="card__list__detail__reaction__item__message " />
-              <span class="card__list__detail__reaction__item__text">1.5k</span>
+              <span class="card__list__detail__reaction__item__text">
+                {{ user.tweetCount | toThousand }}</span>
             </div>
             <div class="card__list__detail__reaction__item">
               <div
@@ -39,20 +40,20 @@
               />
               <span
                 class="card__list__detail__reaction__item__text"
-              >20k</span>
+              >{{ user.likeCount | toThousand }}</span>
             </div>
           </div>
           <!-- 要記得改連結 -->
           <div class="card__list__detail__follow">
             <div class="card__list__detail__follow__item">
               <router-link to="/">
-                <span>{{ user.followingCount }} 個</span>
+                <span>{{ user.followingCount | toThousand }} 個</span>
                 <span>跟隨中</span>
               </router-link>
             </div>
             <div class="card__list__detail__follow__item">
               <router-link to="/">
-                <span>{{ user.followerCount }} 位</span>
+                <span>{{ user.followerCount | toThousand }} 位</span>
                 <span>跟隨者</span>
               </router-link>
             </div>
@@ -67,14 +68,15 @@
 import { Toast } from '../utils/helper'
 import TopNavbar from './../components/TopNavbar.vue'
 import adminAPI from './../apis/admin'
+import { shortenNumberFilter } from './../utils/mixins'
 export default {
   components: {
     TopNavbar
   },
+  mixins: [shortenNumberFilter],
   data () {
     return {
-      users: [],
-      currentPage: '使用者列表'
+      users: []
     }
   },
   created () {

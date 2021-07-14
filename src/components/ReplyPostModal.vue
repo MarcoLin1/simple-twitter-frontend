@@ -57,7 +57,7 @@
                 </div>
                 <div class="modal__body__wrapper__reply">
                   <img
-                    src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                    :src="currentUser.avatar"
                     alt=""
                     class="modal__body__img"
                   >
@@ -95,7 +95,7 @@
   .reply__modal{
     &__mask{
       position: fixed;
-      z-index: 9998;
+      z-index: 999;
       top: 0;
       left: 0;
       width: 100%;
@@ -244,6 +244,7 @@
   }
 </style>
 <script>
+import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
 import tweetAPI from './../apis/tweets'
 export default {
@@ -263,13 +264,21 @@ export default {
 
     }
   },
-
+  computed: {
+    ...mapState(['currentUser'])
+  },
   methods: {
     async handleSubmit () {
       try {
         this.isProcessing = true
-        if (!this.comment) {
+        if (!this.comment.trim()) {
+          this.isProcessing = false
           console.log('You can not submit blank value')
+          Toast.fire({
+            icon: 'warning',
+            title: '請輸入回覆內容'
+          })
+          return
         }
         const tweetId = this.initialTweet.id ? this.initialTweet.id : this.initialTweet.TweetId
         const { data } = await tweetAPI.reply({ tweetId, comment: this.comment })
