@@ -49,7 +49,7 @@
           class="login__button"
           :disabled="isProcessing"
         >
-          登入
+          {{ isProcessing?'處理中':'登入' }}
         </button>
       </div>
       <div class="login__group">
@@ -102,7 +102,6 @@ export default {
             icon: 'warning',
             title: '請填入 email 和 password'
           })
-          this.password = ''
           this.isProcessing = false
           return
         }
@@ -110,14 +109,14 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        this.$emit('after-submit', data)
         this.isProcessing = false
         this.password = ''
         this.account = ''
-        this.$emit('after-submit', data)
       } catch (error) {
         console.log('error', error)
         this.isProcessing = false
-        this.account = ''
+        this.password = ''
         Toast.fire({
           icon: 'warning',
           title: '請確認您輸入了正確的帳號密碼'
@@ -160,6 +159,9 @@ export default {
 }
 .login__button {
   @extend %form-button-style;
+  :disabled{
+    background-color: $disabled-orange;
+  }
 }
 .login__group {
   width: 100%;

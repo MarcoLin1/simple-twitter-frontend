@@ -195,6 +195,7 @@ export default {
       color: $black;
       line-height: 1.5rem;
       font-size: 1rem;
+      word-break: break-all;
     }
   }
   .tweet__info__time__wrapper {

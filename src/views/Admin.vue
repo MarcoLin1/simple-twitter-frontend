@@ -22,16 +22,17 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .admin__container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
+  grid-template-areas: " . left . right right right right";
 }
 .admin__left__wrapper {
-  flex: 0 1 25%;
+  grid-area: left;
   display: flex;
   justify-content: center;
 }
 .admin__right__wrapper {
-  width: 100%;
-  flex: 0 1 75%;
+  grid-area: right;
   border-left: 1px solid $light-gray;
 }
 </style>

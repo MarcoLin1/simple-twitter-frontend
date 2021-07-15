@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="left-content">
-      <SideNavbar />
+      <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
     <div class="middle-content">
       <TopNavbar
@@ -9,9 +9,7 @@
         :initial-name="name"
         :initial-user-tweets-length="userTweetsLength"
       />
-      <template>
-        <router-view />
-      </template>
+      <router-view :new-tweet="newTweet" />
     </div>
     <div class="right-content">
       <TopUsersList :top-users="topUsers" />
@@ -35,7 +33,8 @@ export default {
     return {
       topUsers: [],
       name: '',
-      userTweetsLength: ''
+      userTweetsLength: '',
+      newTweet: {}
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -70,6 +69,10 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    handleAfterSubmit (data) {
+      this.newTweet = data
+      this.$emit('after-side-submit', data)
     }
   }
 }
