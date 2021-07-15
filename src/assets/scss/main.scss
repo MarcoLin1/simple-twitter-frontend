@@ -98,7 +98,9 @@ $disabled-orange:#FFB685;
   background-color: transparent;
   color: $orange;
 }
-
+button:disabled,button[disabled]{
+  background-color: $disabled-orange !important
+}
 //大頭貼 class 可用
 .avatar-img {
   border-radius: 50%;
@@ -126,14 +128,14 @@ $disabled-orange:#FFB685;
 
 /////// 字數提醒樣式 ///////
 .alert-text{
-      width: 30px;
-      height: 30px;
-      border: 1px solid $line-gray;
-      border-radius: 50%;
-      margin: 0 15px;
-      line-height: 28px;
-      text-align: center;
-      @include text-style(12px, 400, $line-gray);
+  width: 30px;
+  height: 30px;
+  border: 1px solid $line-gray;
+  border-radius: 50%;
+  margin: 0 15px;
+  line-height: 28px;
+  text-align: center;
+  @include text-style(12px, 400, $line-gray);
 
     }
 .hint{

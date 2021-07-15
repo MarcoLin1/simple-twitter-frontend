@@ -39,22 +39,8 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
-  created () {
-    // this.fetchCurrentUser()
-  },
   methods: {
-    // async fetchCurrentUser () {
-    //   try {
-    //     const { data } = await userAPI.getCurrentUser()
-    //     this.currentUser = data
-    //   } catch (e) {
-    //     console.log(e)
-    //     Toast.fire({
-    //       icon: 'error',
-    //       title: '讀取currentUser失敗'
-    //     })
-    //   }
-    // },
+
     async handleAfterSubmit (formData) {
       try {
         const { data } = await userAPI.settingUpdate({ userId: this.currentUser.id, formData })

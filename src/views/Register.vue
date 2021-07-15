@@ -32,14 +32,26 @@ export default {
           password: formData.password,
           checkPassword: formData.checkPassword
         })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        } else {
+        if (data.message.includes('帳號重複')) {
           Toast.fire({
-            icon: 'success',
-            title: '註冊成功'
+            icon: 'warning',
+            title: '此帳號已有人註冊，請重新輸入'
           })
+          return
+        } else if (data.message.includes('信箱重複')) {
+          Toast.fire({
+            icon: 'warning',
+            title: '此信箱已被註冊，請重新輸入'
+          })
+          return
+        } else if (data.status !== 'success') {
+          throw new Error(data.message)
         }
+        Toast.fire({
+          icon: 'success',
+          title: '註冊成功'
+        })
+
         this.$router.push({ name: 'login' })
       } catch (e) {
         console.log(e)
