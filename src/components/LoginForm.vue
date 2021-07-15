@@ -110,6 +110,7 @@ export default {
           throw new Error(data.message)
         }
         this.$emit('after-submit', data)
+        this.isProcessing = false
         this.password = ''
         this.account = ''
       } catch (error) {
