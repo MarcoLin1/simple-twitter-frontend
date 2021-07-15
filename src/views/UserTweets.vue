@@ -1,19 +1,22 @@
 <template>
   <div class="user__tweet__container">
     <div class="user__tweet__main__wrapper">
-      <UserProfile
-        :get-current-user="currentUser"
-        :initial-user="initialUser"
-        :initial-following="initialFollowing"
-        :user-id="userId"
-      />
-      <UserPostItem :user-id="userId" />
-      <UserPost
-        v-for="post in posts"
-        :key="post.TweetId"
-        :initial-tweet="post"
-        :like-num="post.likeCount"
-      />
+      <Spinner v-if="isLoading" />
+      <template v-else>
+        <UserProfile
+          :get-current-user="currentUser"
+          :initial-user="initialUser"
+          :initial-following="initialFollowing"
+          :user-id="userId"
+        />
+        <UserPostItem :user-id="userId" />
+        <UserPost
+          v-for="post in posts"
+          :key="post.TweetId"
+          :initial-tweet="post"
+          :like-num="post.likeCount"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -25,12 +28,14 @@ import UserPost from './../components/UserPost.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
 import { mapState } from 'vuex'
+import Spinner from './../components/Spinner.vue'
 export default {
   name: 'UserTweets',
   components: {
     UserProfile,
     UserPostItem,
-    UserPost
+    UserPost,
+    Spinner
   },
   data () {
     return {
@@ -38,7 +43,8 @@ export default {
       userId: '',
       initialUser: [],
       initialFollowers: [],
-      initialFollowing: false
+      initialFollowing: false,
+      isLoading: true
     }
   },
   computed: {
@@ -74,10 +80,13 @@ export default {
     // 取得目前路由的使用者資料
     async fetchUser (userId) {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getUser({ userId })
         this.initialUser = data
+        this.isLoading = false
       } catch (e) {
         console.log(e)
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: 'user頁面資料讀取失敗'
