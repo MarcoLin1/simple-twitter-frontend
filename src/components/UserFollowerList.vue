@@ -37,7 +37,7 @@
           :to="{name: 'user-tweets', params: {id: follower.Followers.id}}"
         >
           <img
-            :src="follower.Followers.avatar"
+            :src="follower.Followers.avatar | emptyImage"
             alt=""
             class="users__list__image"
           >
@@ -90,8 +90,6 @@
     min-width: 300px;
     max-width: 600px;
     margin: 0 auto;
-    // border-top: 1px solid $light-gray;
-    // padding-top: 26px;
     .users__list__item__wrapper {
       display: flex;
       width: 40%;
@@ -185,9 +183,11 @@
 
 <script>
 import { Toast } from '../utils/helper'
+import { emptyImageFilter } from './../utils/mixins'
 import userAPI from './../apis/users'
 
 export default {
+  mixins: [emptyImageFilter],
   props: {
     initialFollowers: {
       type: [Object, Array],

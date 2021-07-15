@@ -13,7 +13,7 @@
         >
           <div class="admin__tweets__list__image__wrapper">
             <img
-              :src="tweet.User.avatar"
+              :src="tweet.User.avatar | emptyImage"
               alt=""
               class="admin__tweets__list__image"
             >
@@ -52,7 +52,7 @@
 
 <script>
 import adminAPI from './../apis/admin'
-import { shortenTimeFilter } from './../utils/mixins'
+import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 import { Toast } from '../utils/helper'
 import Swal from 'sweetalert2'
 import TopNavbar from './../components/TopNavbar.vue'
@@ -62,7 +62,7 @@ export default {
   components: {
     TopNavbar
   },
-  mixins: [shortenTimeFilter],
+  mixins: [shortenTimeFilter, emptyImageFilter],
   data () {
     return {
       isProcessing: false,

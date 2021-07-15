@@ -12,7 +12,7 @@
       >
         <div class="admin__tweets__list__image__wrapper">
           <img
-            :src="tweet.User.avatar"
+            :src="tweet.User.avatar | emptyImage"
             alt=""
             class="admin__tweets__list__image"
           >
@@ -49,9 +49,8 @@
 
 <script>
 import TopNavbar from './../components/TopNavbar.vue'
-// import tweetAPI from './../apis/tweets'
 import adminAPI from './../apis/admin'
-import { shortenTimeFilter } from './../utils/mixins'
+import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 import { Toast } from '../utils/helper'
 
 export default {
@@ -59,7 +58,7 @@ export default {
   components: {
     TopNavbar: TopNavbar
   },
-  mixins: [shortenTimeFilter],
+  mixins: [shortenTimeFilter, emptyImageFilter],
   data () {
     return {
       tweets: [],

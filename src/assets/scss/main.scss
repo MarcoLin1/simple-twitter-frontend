@@ -106,20 +106,38 @@ $disabled-orange:#FFB685;
   width: 50px;
   height: 50px;
   cursor: pointer;
+  object-fit: cover;
 }
 
 .non__show {
   display: none !important;
 }
-//////////
-//sweet alert 優先級最高
-/////////
+//// sweet alert 優先級最高 ////
 .swal2-container {
   z-index: 9999;
 }
 
+/////// 空內容提醒文字 ///////
 .empty-message{
   margin: 30px;
   text-align: center;
   @include text-style(20px, 700, $disabled-orange )
 }
+
+/////// 字數提醒樣式 ///////
+.alert-text{
+      width: 30px;
+      height: 30px;
+      border: 1px solid $line-gray;
+      border-radius: 50%;
+      margin: 0 15px;
+      line-height: 28px;
+      text-align: center;
+      @include text-style(12px, 400, $line-gray);
+
+    }
+.hint{
+    border-color:$orange;
+    color: $orange;
+    font-weight: 600;
+  }

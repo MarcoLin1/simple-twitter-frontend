@@ -9,13 +9,13 @@
       >
         <div class="card__list__cover">
           <img
-            :src="user.cover"
+            :src="user.cover | emptyImage"
             alt=""
           >
         </div>
         <div class="card__list__avatar">
           <img
-            :src="user.avatar"
+            :src="user.avatar | emptyImage"
             alt=""
             class="avatar-img"
           >
@@ -68,12 +68,12 @@
 import { Toast } from '../utils/helper'
 import TopNavbar from './../components/TopNavbar.vue'
 import adminAPI from './../apis/admin'
-import { shortenNumberFilter } from './../utils/mixins'
+import { shortenNumberFilter, emptyImageFilter } from './../utils/mixins'
 export default {
   components: {
     TopNavbar
   },
-  mixins: [shortenNumberFilter],
+  mixins: [shortenNumberFilter, emptyImageFilter],
   data () {
     return {
       users: [],

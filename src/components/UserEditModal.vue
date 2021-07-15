@@ -38,7 +38,7 @@
         </div>
         <div class="user__edit__modal__cover__wrapper">
           <img
-            :src="user.cover"
+            :src="user.cover | emptyImage"
             class="user__edit__modal__cover"
             alt=""
           >
@@ -69,7 +69,7 @@
         </div>
         <div class="user__edit__modal__avatar__wrapper">
           <img
-            :src="user.avatar"
+            :src="user.avatar | emptyImage"
             class="user__edit__modal__avatar"
             alt=""
           >
@@ -300,14 +300,16 @@
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
 import Spinner from './../components/Spinner.vue'
-
+import { emptyImageFilter } from './../utils/mixins'
 export default {
   components: {
     Spinner
   },
+  mixins: [emptyImageFilter],
   props: {
     initialUser: {
-      type: [Array, Object]
+      type: [Array, Object],
+      required: true
     }
   },
   data () {
