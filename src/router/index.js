@@ -130,7 +130,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'root'
+    name: 'root',
+    redirect: '/login'
   },
   {
     path: '*',
