@@ -1,29 +1,5 @@
 <template>
   <div class="users__list__container">
-    <div class="users__list__top__navbar__container">
-      <div class="users__list__item__wrapper">
-        <div class="users__list__item">
-          <!-- 記得改網址 -->
-          <router-link
-            :to="{name: 'user-followers'}"
-            type="button"
-            class="users__list__item__button"
-          >
-            跟隨者
-          </router-link>
-        </div>
-        <div class="users__list__item">
-          <!-- 記得改網址 -->
-          <router-link
-            :to="{name: 'user-followings'}"
-            type="button"
-            class="users__list__item__button"
-          >
-            正在跟隨
-          </router-link>
-        </div>
-      </div>
-    </div>
     <div
       class="users__list__main__container"
     >
@@ -37,7 +13,7 @@
           :to="{name: 'user-tweets', params: {id: following.Followings.id}}"
         >
           <img
-            :src="following.Followings.avatar"
+            :src="following.Followings.avatar | emptyImage"
             alt=""
             class="users__list__image"
           >
@@ -84,37 +60,6 @@
     font-size: 15px;
     font-style: normal;
     font-weight: 700;
-  }
-  .users__list__container {
-    height: 100vh;
-    min-width: 300px;
-    max-width: 600px;
-    margin: 0 auto;
-    .users__list__item__wrapper {
-      display: flex;
-      width: 40%;
-      justify-content: space-around;
-      .users__list__item {
-        width: 100%;
-        text-align: center;
-        @extend %text-normal-style;
-      }
-      .users__list__item__button {
-        width: 100%;
-        border: none;
-        background: none;
-        padding-bottom: 14px;
-        color: $tx-gray;
-        text-decoration: none;
-      &:focus {
-          border-bottom: 1px solid $orange;
-          color: $orange;
-        }
-      &:hover {
-        color: $orange;
-      }
-      }
-    }
   }
   .users__list__main__wrapper {
     display: flex;
@@ -182,28 +127,38 @@
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from '../apis/users'
+import { emptyImageFilter } from './../utils/mixins'
 
 export default {
-  props: {
-    initialFollowings: {
-      type: [Object, Array],
-      require: true
-    }
-  },
+  mixins: [emptyImageFilter],
   data () {
     return {
       followings: []
     }
   },
-  watch: {
-    initialFollowings (newValue) {
-      this.followings = [
-        ...this.followings,
-        ...newValue
-      ]
-    }
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchUser(id)
+    next()
+  },
+  created () {
+    const { id } = this.$route.params
+    this.fetchUser(id)
   },
   methods: {
+    async fetchUser (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowing({ userId })
+        this.followings = data
+        console.log('this followings:', this.followings)
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料讀取失敗，請稍候再試'
+        })
+      }
+    },
     async addFollowing (userId) {
       try {
         const { data } = await userAPI.addFollowShip({ id: userId })
@@ -215,19 +170,6 @@ export default {
             user.Followings.isFollowing = true
           }
         })
-        // this.followings = this.followings.map(user => {
-        //   if (user.Followings.id !== id) {
-        //     return user
-        //   } else {
-        //     return {
-        //       ...user,
-        //       Followings: {
-        //         ...user.Followings,
-        //         isFollowing: true
-        //       }
-        //     }
-        //   }
-        // })
       } catch (e) {
         console.log(e)
         Toast.fire({

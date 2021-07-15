@@ -69,6 +69,24 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/user/:id',
+    name: 'user-follow-page',
+    component: () => import('./../views/UserFollowPage'),
+    beforeEnter: authorizeIsUser,
+    children: [
+      {
+        path: 'followings',
+        name: 'user-followings',
+        component: () => import('./../components/UserFollowingList.vue')
+      },
+      {
+        path: 'followers',
+        name: 'user-followers',
+        component: () => import('./../components/UserFollowerList.vue')
+      }
+    ]
+  },
   // 以下路由會包含 TopUsersList / SideNavBar
   {
     path: '/user',
@@ -76,17 +94,6 @@ const routes = [
     component: () => import('./../views/user.vue'),
     beforeEnter: authorizeIsUser,
     children: [
-
-      {
-        path: ':id/followings',
-        name: 'user-followings',
-        component: () => import('./../views/UserFollowings.vue')
-      },
-      {
-        path: ':id/followers',
-        name: 'user-followers',
-        component: () => import('./../views/UserFollowers.vue')
-      },
       {
         path: '/detail/:id',
         name: 'detail-tweet',
