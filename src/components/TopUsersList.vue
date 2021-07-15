@@ -127,7 +127,7 @@ a{
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   props: {
     topUsers: {
@@ -141,9 +141,9 @@ export default {
       users: this.topUsers
     }
   },
-  // computed: {
-  //   ...mapState(['followingNum', 'followerNum'])
-  // },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   watch: {
     topUsers (newValue) {
       this.users = [
@@ -158,6 +158,13 @@ export default {
     },
     async addFollowing (userId) {
       try {
+        if (this.currentUser.id === userId) {
+          Toast.fire({
+            icon: 'error',
+            title: '不能自己追蹤自己啦!!!'
+          })
+          return
+        }
         const { data } = await userAPI.addFollowShip({ id: userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
