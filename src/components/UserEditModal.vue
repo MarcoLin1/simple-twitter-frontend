@@ -5,114 +5,120 @@
     role="dialog"
     aria-labelledby="user__edit__modal"
   >
-    <form
-      action=""
-      class="modal__dialog modal__content"
-      @submit.stop.prevent="handleSubmit"
-    >
-      <div class="user__edit__modal__header">
-        <div class="user__edit__modal__header__wrapper">
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <form
+        class="modal__dialog modal__content"
+        @submit.stop.prevent="handleSubmit"
+      >
+        <div class="user__edit__modal__header">
+          <div class="user__edit__modal__header__wrapper">
+            <label
+              for="user__edit__modal"
+              class="user__edit__modal__label"
+            >
+              <div
+                class="user__edit__modal__close close"
+              >
+                <span>&times;</span>
+              </div>
+            </label>
+            <div class="user__edit__modal__title">
+              編輯個人資料
+            </div>
+          </div>
+          <div class="user__edit__modal__button__wrapper">
+            <button
+              type="submit"
+              class="user__edit__modal__button"
+            >
+              儲存
+            </button>
+          </div>
+        </div>
+        <div class="user__edit__modal__cover__wrapper">
+          <img
+            :src="user.cover"
+            class="user__edit__modal__cover"
+            alt=""
+          >
+          <input
+            id="user__edit__modal__cover__file image"
+            accept="image/*"
+            name="cover"
+            type="file"
+            class="user__edit__modal__icon user__edit__modal__cover__photo"
+            @change="handleCoverChange"
+          >
           <label
             for="user__edit__modal"
             class="user__edit__modal__label"
           >
             <div
-              class="user__edit__modal__close close"
+              class="user__edit__modal__cover__close"
+              data-dismiss="modal"
+              aria-label="Close"
             >
-              <span>&times;</span>
+              <span
+                aria-hidden="true"
+                data-bs-dismiss="modal"
+              >&times;</span>
             </div>
           </label>
-          <div class="user__edit__modal__title">
-            編輯個人資料
-          </div>
+          <div class="user__edit__modal__icon user__edit__modal__cover__delete" />
         </div>
-        <div class="user__edit__modal__button__wrapper">
-          <button
-            type="submit"
-            class="user__edit__modal__button"
+        <div class="user__edit__modal__avatar__wrapper">
+          <img
+            :src="user.avatar"
+            class="user__edit__modal__avatar"
+            alt=""
           >
-            儲存
-          </button>
+          <input
+            id="user__edit__modal__avatar__file image"
+            accept="image/*"
+            name="avatar"
+            type="file"
+            class="user__edit__modal__icon user__edit__modal__avatar__photo"
+            @change="handleAvatarChange"
+          >
         </div>
-      </div>
-      <div class="user__edit__modal__cover__wrapper">
-        <img
-          :src="user.cover"
-          class="user__edit__modal__cover"
-          alt=""
-        >
-        <input
-          id="user__edit__modal__cover__file"
-          accept="image"
-          type="file"
-          class="user__edit__modal__icon user__edit__modal__cover__photo"
-          @change="handleCoverChange"
-        >
-        <label
-          for="user__edit__modal"
-          class="user__edit__modal__label"
-        >
-          <div
-            class="user__edit__modal__cover__close"
-            data-dismiss="modal"
-            aria-label="Close"
+        <div class="user__edit__modal__form__group">
+          <span class="user__edit__modal__title">
+            名稱
+          </span>
+          <input
+            id="name"
+            v-model="name"
+            type="text"
+            name="name"
+            class="user__edit__modal__input"
+            maxlength="50"
+            required
           >
-            <span
-              aria-hidden="true"
-              data-bs-dismiss="modal"
-            >&times;</span>
-          </div>
-        </label>
-        <div class="user__edit__modal__icon user__edit__modal__cover__delete" />
-      </div>
-      <div class="user__edit__modal__avatar__wrapper">
-        <img
-          :src="user.avatar"
-          class="user__edit__modal__avatar"
-          alt=""
-        >
-        <input
-          id="user__edit__modal__avatar__file"
-          accept="image"
-          type="file"
-          class="user__edit__modal__icon user__edit__modal__avatar__photo"
-          @change="handleAvatarChange"
-        >
-      </div>
-      <div class="user__edit__modal__form__group">
-        <span class="user__edit__modal__title">
-          名稱
-        </span>
-        <input
-          v-model="name"
-          type="text"
-          class="user__edit__modal__input"
-          maxlength="50"
-          required
-        >
-      </div>
-      <div class="user__edit__modal__number">
-        {{ nameLength }} / 50
-      </div>
-      <div class="user__edit__modal__intro__wrapper">
-        <span class="user__edit__modal__intro__title">
-          自我介紹
-        </span>
-        <textarea
-          id=""
-          v-model="introduction"
-          name=""
-          cols="40"
-          rows="6"
-          type="text"
-          class="user__edit__modal__intro"
-          maxlength="160"
-        />
-      </div>
-      <div class="user__edit__modal__number">
-        {{ introLength }} / 160
-      </div>
-    </form>
+        </div>
+        <div class="user__edit__modal__number">
+          {{ name.length }} / 50
+        </div>
+        <div class="user__edit__modal__intro__wrapper">
+          <span class="user__edit__modal__intro__title">
+            自我介紹
+          </span>
+          <textarea
+            id=""
+            v-model="introduction"
+            name="introduction"
+            cols="40"
+            rows="6"
+            type="text"
+            class="user__edit__modal__intro"
+            maxlength="160"
+          />
+        </div>
+        <div class="user__edit__modal__number">
+          {{ introduction.length }} / 160
+        </div>
+      </form>
+    </template>
   </div>
 </template>
 
@@ -152,6 +158,7 @@
     background-color: #ffffff;
     border-radius: 14px;
     margin-top: 20px;
+    position: relative;
   }
 }
 .show {
@@ -208,13 +215,13 @@
     mask-image: url('./../assets/icon/icon_photo.svg');
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
     @extend %user__edit__icon__style;
-    position: relative;
-    top: -135px;
-    left: 15%;
+    position: absolute;
+    top: 20%;
+    left: 20%;
   }
   .user__edit__modal__cover__close {
-    position: relative;
-    top: -133px;
+    position: absolute;
+    top: 130px;
     right: 40%;
     color: #ffffff;
     font-size: 1.2rem;
@@ -292,8 +299,12 @@
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
+import Spinner from './../components/Spinner.vue'
 
 export default {
+  components: {
+    Spinner
+  },
   props: {
     initialUser: {
       type: [Array, Object]
@@ -302,10 +313,9 @@ export default {
   data () {
     return {
       user: this.initialUser,
-      name: '',
-      introduction: '',
-      introLength: '',
-      nameLength: ''
+      name: this.initialUser.name,
+      introduction: this.initialUser.introduction,
+      isLoading: false
     }
   },
   watch: {
@@ -314,17 +324,12 @@ export default {
         ...this.user,
         ...newValue
       }
-      this.name = newValue.name
-      this.nameLength = newValue.name.length
-      this.introduction = newValue.introduction
-      this.introLength = newValue.introduction.length
     }
   },
   methods: {
     // 處理avatar預覽圖片
     handleAvatarChange (e) {
       const files = e.target.files
-      console.log(files)
       if (files.length === 0) {
         this.user.avatar = ''
       } else {
@@ -354,30 +359,36 @@ export default {
           })
           return
         }
-        const { data } = await userAPI.update({
-          userId: this.user.id,
+        this.isLoading = true
+        const form = e.target
+        const formData = new FormData(form)
+        const { data } = await userAPI.update({ userId: this.user.id, formData })
+
+        this.$emit('after-submit', {
           name: this.name,
           introduction: this.introduction,
           cover: this.cover,
           avatar: this.avatar
         })
-        this.$emit('after-submit', { name: this.name, introduction: this.introduction, cover: this.cover, avatar: this.avatar })
+
         const editModal = document.querySelector('#user__edit__modal')
         editModal.checked = false
+
+        this.isLoading = false
+
         if (data.status !== 'success') {
+          this.isLoading = false
           throw new Error(data.message)
         } else {
           this.$router.push({ name: 'user-tweets' })
         }
       } catch (e) {
         console.log(e)
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '更新失敗，請稍候再試'
         })
-      }
-      if (!this.user.name) {
-        console.log('please fill in your name')
       }
     }
   }

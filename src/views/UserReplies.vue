@@ -1,19 +1,24 @@
 <template>
   <div class="user__replies__container">
-    <div class="user__replies__main__wrapper">
-      <UserProfile
-        :get-current-user="currentUser"
-        :initial-user="initialUser"
-        :initial-following="initialFollowing"
-        :user-id="userId"
-      />
-      <UserPostItem :user-id="userId" />
-      <UserPost
-        v-for="post in userReplies"
-        :key="post.TweetId"
-        :initial-tweet="post"
-        :like-num="post.likeCount"
-      />
+    <div
+      class="user__replies__main__wrapper"
+    >
+      <Spinner v-if="isLoading" />
+      <template v-else>
+        <UserProfile
+          :get-current-user="currentUser"
+          :initial-user="initialUser"
+          :initial-following="initialFollowing"
+          :user-id="userId"
+        />
+        <UserPostItem :user-id="userId" />
+        <UserPost
+          v-for="post in userReplies"
+          :key="post.TweetId"
+          :initial-tweet="post"
+          :like-num="post.likeCount"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -25,13 +30,15 @@ import userAPI from './../apis/users'
 import UserProfile from './../components/UserProfile.vue'
 import UserPostItem from './../components/UserPostItem.vue'
 import UserPost from './../components/UserPost.vue'
+import Spinner from './../components/Spinner.vue'
 
 export default {
   name: 'UserReplies',
   components: {
     UserProfile,
     UserPostItem,
-    UserPost
+    UserPost,
+    Spinner
   },
   data () {
     return {
@@ -39,7 +46,8 @@ export default {
       userId: '',
       initialUser: [],
       initialFollowers: [],
-      initialFollowing: false
+      initialFollowing: false,
+      isLoading: true
     }
   },
   computed: {
@@ -56,14 +64,13 @@ export default {
     const { id } = this.$route.params
     this.userId = id
     this.fetchUserReplies(id)
-    // this.fetchCurrentUser()
+    this.fetchUser(id)
   },
   methods: {
     async fetchUserReplies (userId) {
       try {
         const { data } = await userAPI.getUserReplies({ userId })
         this.userReplies = data
-        console.log(this.userReplies)
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -75,10 +82,13 @@ export default {
     // 取得目前路由的使用者資料
     async fetchUser (userId) {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getUser({ userId })
         this.initialUser = data
+        this.isLoading = false
       } catch (e) {
         console.log(e)
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: 'user頁面資料讀取失敗'
@@ -105,18 +115,6 @@ export default {
         })
       }
     }
-    // async fetchCurrentUser () {
-    //   try {
-    //     const { data } = await userAPI.getCurrentUser()
-    //     this.currentUser = data
-    //   } catch (e) {
-    //     console.log(e)
-    //     Toast.fire({
-    //       icon: 'error',
-    //       title: '讀取現在使用者資料失敗'
-    //     })
-    //   }
-    // }
   }
 }
 </script>

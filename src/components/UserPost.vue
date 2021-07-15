@@ -1,7 +1,6 @@
 <template>
   <div class="post__container">
     <!-- 切換選單 -->
-
     <div class="post">
       <router-link :to="{name:'user-tweets', params:{id: post.User.id}}">
         <div class=" post__avatar">
@@ -74,7 +73,6 @@ import { Toast } from '../utils/helper'
 import { fromNowFilter } from './../utils/mixins'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
-// import { shortenTimeFilter } from './../utils/mixins'
 export default {
   name: 'UserPost',
   components: {
@@ -91,12 +89,7 @@ export default {
     return {
       showModal: false,
       post: this.initialTweet,
-      likeCount: this.initialTweet.likeCount,
-      currentUser: {
-        name: 'JoJo',
-        account: 'jojo',
-        id: 10
-      }
+      likeCount: this.initialTweet.likeCount
     }
   },
   watch: {
@@ -272,7 +265,6 @@ a{
           @extend %icon-style;
         }
         &__message{
-          // background-image: url(https://i.imgur.com/mcPjxeq.png);
           mask-image: url('./../assets/icon/icon_message.svg');
           -webkit-mask-image:url('./../assets/icon/icon_message.svg');
           background: $tx-gray;

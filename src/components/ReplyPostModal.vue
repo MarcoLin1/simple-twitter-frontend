@@ -28,7 +28,7 @@
                     <div class=" post__avatar">
                       <img
                         class="avatar-img"
-                        :src="tweet.User.avatar"
+                        :src="tweet.User.avatar | emptyImage"
                         alt=""
                       >
                     </div>
@@ -52,12 +52,12 @@
                 <div class="modal__body__wrapper">
                   <div class="modal__body__wrapper__replyto">
                     <span>回覆給 </span>
-                    <span class="modal__body__wrapper__account">@apple</span>
+                    <span class="modal__body__wrapper__account">@{{ tweet.User.name }}</span>
                   </div>
                 </div>
                 <div class="modal__body__wrapper__reply">
                   <img
-                    :src="currentUser.avatar"
+                    :src="currentUser.avatar | emptyImage"
                     alt=""
                     class="modal__body__img"
                   >
@@ -253,10 +253,12 @@
 <script>
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
+import { emptyImageFilter } from './../utils/mixins'
 import tweetAPI from './../apis/tweets'
 export default {
   name: 'ReplyPostModal',
   components: { },
+  mixins: [emptyImageFilter],
   props: {
     initialTweet: {
       type: Object,
