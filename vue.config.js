@@ -1,3 +1,5 @@
-{
-  'http://localhost:8081/'
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/simple-twitter-frontend/'
+    : '/'
 }
