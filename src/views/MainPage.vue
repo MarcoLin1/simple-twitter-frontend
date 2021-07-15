@@ -45,6 +45,9 @@ export default {
         TweetId: newValue.id,
         createdAt: new Date(),
         description: newValue.tweet,
+        isLike: 0,
+        likeCount: 0,
+        replyCount: 0,
         User: {
           account: this.currentUser.account,
           name: this.currentUser.name,
@@ -53,6 +56,7 @@ export default {
         }
       })
     }
+
   },
 
   created () {
@@ -60,17 +64,11 @@ export default {
     this.fetchTweets()
     this.isProcessing = false
   },
-
-  beforeRouteUpdate (to, from, next) {
-    this.fetchTweets()
-    next()
-  },
   methods: {
     async fetchTweets () {
       try {
         const { data } = await tweetAPI.getTweets()
         this.tweets = data
-        console.log('this.tweets', this.tweets)
         this.isProcessing = false
       } catch (errer) {
         this.isProcessing = false
@@ -92,6 +90,9 @@ export default {
           TweetId: data.id,
           createdAt: new Date(),
           description: description,
+          isLike: 0,
+          likeCount: 0,
+          replyCount: 0,
           User: {
             account: this.currentUser.account,
             name: this.currentUser.name,
