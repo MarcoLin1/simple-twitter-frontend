@@ -10,21 +10,23 @@
         class="user__list"
       >
         <div class="user__list__content">
-          <div class=" user__list__content__avator ">
-            <img
-              class="avatar-img"
-              :src="user.avatar"
-              alt=""
-            >
-          </div>
-          <router-link to="/">
+          <router-link :to="{name:'user-tweets', params:{id: user.id}}">
+            <div class=" user__list__content__avator ">
+              <img
+                class="avatar-img"
+                :src="user.avatar"
+                alt=""
+              >
+            </div>
+          </router-link>
+          <router-link :to="{name:'user-tweets', params:{id: user.id}}">
             <div class="user__list__content__title">
               <span class="user__list__content__title__name user-name">
                 {{ user.name }}
               </span>
               <span
                 class="user__list__content__title__account"
-              >{{ user.account }}</span>
+              >@{{ user.account }}</span>
             </div>
           </router-link>
         </div>
@@ -61,7 +63,7 @@ a{
   text-decoration: none;
 }
 .user-list-container{
-  margin: 15px;
+  margin: 15px 16px;
 }
 .user-list-wrapper{
   width: 350px;

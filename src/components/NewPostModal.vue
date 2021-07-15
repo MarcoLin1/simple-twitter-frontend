@@ -30,7 +30,7 @@
             <div class="modal__body">
               <div class="modal__body__wrapper">
                 <img
-                  src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                  :src="currentUser.avatar"
                   alt=""
                   class="modal__body__img"
                 >
@@ -49,14 +49,17 @@
               <label
                 class="side-navbar-button toggle__label"
               >
-                <div class="toggle__text">
-                  推文
-                </div>
+                <div
+                  class="toggle__text"
+                />
                 <button
                   type="submit"
                   class="modal__footer__button"
-                  @click.stop.prevent="handleSubmit"
-                /></label>
+                  :disabled="isProcessing"
+                >
+                  {{ isProcessing? '處理中':'推文' }}
+                </button>
+              </label>
             </div>
           </div>
         </div>
@@ -72,7 +75,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9998;
+    z-index: 999;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.33);
@@ -133,12 +136,16 @@
       padding-bottom: 15px;
       .modal__footer__button {
         border-radius: 100px;
-        background: $orange;
+        background-color: $orange;
         border: none;
         width: 64px;
         height: 40px;
         cursor: pointer;
         color: #ffffff;
+        &:disabled{
+          background-color: $disabled-orange;
+        }
+
       }
     }
   }
@@ -150,33 +157,59 @@
       position: relative;
       right: -46px;
       color: #ffffff;
+
     }
   }
 </style>
 
 <script>
+import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
 import tweetAPI from './../apis/tweets'
 export default {
   data () {
     return {
+      isProcessing: false,
       tweet: ''
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     async handleSubmit () {
       try {
+        this.isProcessing = true
+        if (!this.tweet.trim()) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請輸入推文內容'
+          })
+          this.isProcessing = false
+          return
+        }
+        if (this.tweet.length > 140) {
+          Toast.fire({
+            icon: 'warning',
+            title: '字數請限制於 140 字內'
+          })
+          this.isProcessing = false
+          return
+        }
+
         const { data } = await tweetAPI.create({ description: this.tweet })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.tweet = ''
         const toggleControl = document.querySelector('.toggle__control')
         toggleControl.checked = false
-
+        this.$emit('after-side-submit', { tweet: this.tweet, id: data.id })
+        this.tweet = ''
         this.$router.push({ name: 'main-page' })
+        this.isProcessing = false
       } catch (e) {
         console.log(e)
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '新增貼文失敗'

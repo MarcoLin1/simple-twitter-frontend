@@ -80,7 +80,7 @@
                 :disabled="isProcessing"
                 @click.stop.prevent="handleSubmit"
               >
-                回覆
+                {{ isProcessing?'處理中':'回覆' }}
               </button>
             </div>
           </div>
@@ -210,6 +210,9 @@
         height: 40px;
         cursor: pointer;
         color: #ffffff;
+        &:disabled{
+          background-color: $disabled-orange;
+  }
       }
     }
   }
@@ -241,6 +244,7 @@
     }
     &__discription {
       line-height: 20px;
+      word-break: break-all;
       @include text-style(15px, normal, $black);
     }
   }

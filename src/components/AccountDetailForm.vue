@@ -232,5 +232,8 @@ export default {
   color: #ffffff;
   border-radius: 50px;
   border: none;
+  &:disabled{
+    background-color: $disabled-orange;
+  }
 }
 </style>

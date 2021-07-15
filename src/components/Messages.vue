@@ -63,6 +63,7 @@
     }
     &__discription {
       line-height: 21px;
+      word-break: break-all;
       @include text-style(15px, 400, $black);
     }
     &__object{
