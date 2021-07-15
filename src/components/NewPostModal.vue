@@ -146,6 +146,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    cursor: pointer;
     .toggle__text {
       position: relative;
       right: -46px;

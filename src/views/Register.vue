@@ -25,7 +25,6 @@ export default {
   methods: {
     async handleAfterSubmit (formData) {
       try {
-        console.log('formData裡面有什麼？', formData)
         const { data } = await authorizationAPI.register({
           name: formData.name,
           account: formData.account,
@@ -35,13 +34,18 @@ export default {
         })
         if (data.status !== 'success') {
           throw new Error(data.message)
+        } else {
+          Toast.fire({
+            icon: 'success',
+            title: '註冊成功'
+          })
         }
-        this.$router.push({ name: 'main-page' })
+        this.$router.push({ name: 'login' })
       } catch (e) {
         console.log(e)
         Toast.fire({
           icon: 'error',
-          title: '註冊失敗'
+          title: '註冊失敗，請確認註冊的帳號密碼'
         })
       }
     }
