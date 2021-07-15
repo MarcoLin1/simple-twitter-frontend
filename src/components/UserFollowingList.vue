@@ -5,7 +5,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            :to="{name: 'user-followings'}"
+            :to="{name: 'user-followers'}"
             type="button"
             class="users__list__item__button"
           >
@@ -15,7 +15,7 @@
         <div class="users__list__item">
           <!-- 記得改網址 -->
           <router-link
-            :to="{name: 'user-followers'}"
+            :to="{name: 'user-followings'}"
             type="button"
             class="users__list__item__button"
           >
