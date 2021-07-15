@@ -1,15 +1,21 @@
 <template>
   <div>
-    <TweetInfo
-      :initial-tweet="tweet"
-      @after-submit="addTweetAfterSubmit"
+    <Spinner
+      v-if="isLoading"
+      class="mt-5"
     />
-    <Messages
-      v-for="reply in replies"
-      :key="reply.id"
-      :initial-user="user"
-      :initial-reply="reply"
-    />
+    <template v-else>
+      <TweetInfo
+        :initial-tweet="tweet"
+        @after-submit="addTweetAfterSubmit"
+      />
+      <Messages
+        v-for="reply in replies"
+        :key="reply.id"
+        :initial-user="user"
+        :initial-reply="reply"
+      />
+    </template>
   </div>
 </template>
 <script>
@@ -17,11 +23,14 @@ import TweetInfo from './../components/TweetInfo.vue'
 import Messages from './../components/Messages.vue'
 import tweetAPI from './../apis/tweets'
 import { mapState } from 'vuex'
+import Spinner from './../components/Spinner.vue'
+import { Toast } from '../utils/helper'
 
 export default {
   components: {
     TweetInfo,
-    Messages
+    Messages,
+    Spinner
   },
   data () {
     return {
@@ -30,7 +39,8 @@ export default {
       user: {
         id: '',
         account: ''
-      }
+      },
+      isLoading: true
     }
   },
   computed: {
@@ -51,20 +61,26 @@ export default {
   methods: {
     async fetchData (tweetId) {
       try {
+        this.isLoading = true
         const { data } = await tweetAPI.getATweet({ tweetId })
-        console.log('data', data)
         this.tweet = data
         this.user.id = data.User.id
         this.user.account = data.User.account
+        this.isLoading = false
       } catch (error) {
         console.log('error', error)
+        Toast.fire({
+          icon: 'error',
+          title: '目前無法讀取該則推文，請稍後再試'
+        })
       }
     },
     async fetchReplies (tweetId) {
       try {
+        this.isLoading = true
         const { data } = await tweetAPI.getReplies({ tweetId })
         this.replies = data
-        console.log(data)
+        this.isLoading = false
       } catch (error) {
         console.log('error', error)
       }

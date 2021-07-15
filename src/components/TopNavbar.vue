@@ -48,11 +48,11 @@ export default {
     },
     initialName: {
       type: [Number, String],
-      required: true
+      default: ''
     },
     initialUserTweetsLength: {
       type: [Number, String],
-      required: true
+      default: 0
     }
 
   },

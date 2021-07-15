@@ -1,66 +1,72 @@
 <template>
   <div>
-    <TopNavbar :current-page="currentPage" />
-    <div class="right-container">
-      <div
-        v-for="user in users"
-        :key="user.id"
-        class="card__list"
-      >
-        <div class="card__list__cover">
-          <img
-            :src="user.cover | emptyImage"
-            alt=""
-          >
-        </div>
-        <div class="card__list__avatar">
-          <img
-            :src="user.avatar | emptyImage"
-            alt=""
-            class="avatar-img"
-          >
-        </div>
+    <Spinner
+      v-if="isLoading"
+      class="mt-5"
+    />
+    <template v-else>
+      <TopNavbar :current-page="currentPage" />
+      <div class="right-container">
+        <div
+          v-for="user in users"
+          :key="user.id"
+          class="card__list"
+        >
+          <div class="card__list__cover">
+            <img
+              :src="user.cover | emptyImage"
+              alt=""
+            >
+          </div>
+          <div class="card__list__avatar">
+            <img
+              :src="user.avatar | emptyImage"
+              alt=""
+              class="avatar-img"
+            >
+          </div>
 
-        <div class="card__list__detail">
-          <div class="card__list__detail__name">
-            {{ user.name }}
-          </div>
-          <div class="card__list__detail__account">
-            @{{ user.account }}
-          </div>
-          <div class="card__list__detail__reaction d-flex ">
-            <div class="card__list__detail__reaction__item">
-              <div class="card__list__detail__reaction__item__message " />
-              <span class="card__list__detail__reaction__item__text">
-                {{ user.tweetCount | toThousand }}</span>
+          <div class="card__list__detail">
+            <div class="card__list__detail__name">
+              {{ user.name }}
             </div>
-            <div class="card__list__detail__reaction__item">
-              <div
-                class="card__list__detail__reaction__item__heart"
-              />
-              <span
-                class="card__list__detail__reaction__item__text"
-              >{{ user.likeCount | toThousand }}</span>
+            <div class="card__list__detail__account">
+              @{{ user.account }}
             </div>
-          </div>
-          <!-- 要記得改連結 -->
-          <div class="card__list__detail__follow">
-            <div class="card__list__detail__follow__item">
-              <router-link to="/">
-                <span>{{ user.followingCount | toThousand }} 個</span>
-                <span>跟隨中</span>
-              </router-link>
+            <div class="card__list__detail__reaction d-flex ">
+              <div class="card__list__detail__reaction__item">
+                <div class="card__list__detail__reaction__item__message " />
+                <span class="card__list__detail__reaction__item__text">
+                  {{ user.tweetCount | toThousand }}</span>
+              </div>
+              <div class="card__list__detail__reaction__item">
+                <div
+                  class="card__list__detail__reaction__item__heart"
+                />
+                <span
+                  class="card__list__detail__reaction__item__text"
+                >{{ user.likeCount | toThousand }}</span>
+              </div>
             </div>
-            <div class="card__list__detail__follow__item">
-              <router-link to="/">
-                <span>{{ user.followerCount | toThousand }} 位</span>
-                <span>跟隨者</span>
-              </router-link>
+            <!-- 要記得改連結 -->
+            <div class="card__list__detail__follow">
+              <div class="card__list__detail__follow__item">
+                <router-link to="/">
+                  <span>{{ user.followingCount | toThousand }} 個</span>
+                  <span>跟隨中</span>
+                </router-link>
+              </div>
+              <div class="card__list__detail__follow__item">
+                <router-link to="/">
+                  <span>{{ user.followerCount | toThousand }} 位</span>
+                  <span>跟隨者</span>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -68,16 +74,20 @@
 import { Toast } from '../utils/helper'
 import TopNavbar from './../components/TopNavbar.vue'
 import adminAPI from './../apis/admin'
+import Spinner from './../components/Spinner.vue'
+
 import { shortenNumberFilter, emptyImageFilter } from './../utils/mixins'
 export default {
   components: {
-    TopNavbar
+    TopNavbar,
+    Spinner
   },
   mixins: [shortenNumberFilter, emptyImageFilter],
   data () {
     return {
       users: [],
-      currentPage: '使用者列表'
+      currentPage: '使用者列表',
+      isLoading: true
     }
   },
   created () {
@@ -87,8 +97,8 @@ export default {
     async fetchUsers () {
       try {
         const { data } = await adminAPI.users.get()
-        console.log(data)
         this.users = data
+        this.isLoading = false
       } catch (error) {
         console.log('error', error)
         Toast.fire({
