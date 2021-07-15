@@ -118,6 +118,8 @@ a:hover{
 .profile{
   &__cover{
     width: 100%;
+    height: 200px;
+    background-color: #999999;
     img{
       object-fit: cover;
       width: 600px;
