@@ -117,3 +117,9 @@ $disabled-orange:#FFB685;
 .swal2-container {
   z-index: 9999;
 }
+
+.empty-message{
+  margin: 30px;
+  text-align: center;
+  @include text-style(20px, 700, $disabled-orange )
+}

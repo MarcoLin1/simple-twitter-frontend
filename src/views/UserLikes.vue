@@ -10,12 +10,22 @@
           :user-id="userId"
         />
         <UserPostItem :user-id="userId" />
-        <UserPost
-          v-for="post in userLikes"
-          :key="post.TweetId"
-          :initial-tweet="post"
-          :like-num="post.likeCount"
-        />
+        <template>
+          <div
+            v-if="!post"
+            class="empty-message"
+          >
+            目前沒有喜歡的推文內容哦，快去按讚吧！
+          </div>
+          <template v-else>
+            <UserPost
+              v-for="post in userLikes"
+              :key="post.TweetId"
+              :initial-tweet="post"
+              :like-num="post.likeCoun"
+            />
+          </template>
+        </template>
       </template>
     </div>
   </div>
