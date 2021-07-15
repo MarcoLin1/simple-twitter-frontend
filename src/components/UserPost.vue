@@ -53,7 +53,7 @@
           <span
             class="post__reaction__item__text"
             :class="{liked:post.isLike}"
-          >{{ likeCount }}</span>
+          >{{ post.likeCount }}</span>
         </div>
       </div>
     </div>
@@ -98,6 +98,9 @@ export default {
         ...this.post,
         ...newValue
       }
+    },
+    likeCount (newValue) {
+      this.likeCount = this.post.likeCount
     }
   },
   methods: {
@@ -115,7 +118,8 @@ export default {
         if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,
-            isLike: true
+            isLike: true,
+            likeCount: this.post.likeCount + 1
           }
         }
         this.likeCount += 1
@@ -138,7 +142,8 @@ export default {
         if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,
-            isLike: false
+            isLike: false,
+            likeCount: this.post.likeCount - 1
           }
         }
         this.likeCount -= 1

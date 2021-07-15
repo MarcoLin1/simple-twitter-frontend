@@ -40,29 +40,15 @@ export default {
   },
   watch: {
     newTweet (newValue) {
-      this.tweets.unshift({
-        TweetId: newValue.id,
-        createdAt: new Date(),
-        description: newValue.tweet,
-        User: {
-          account: this.currentUser.account,
-          name: this.currentUser.name,
-          id: this.currentUser.id,
-          avatar: this.currentUser.avatar
-        }
-      })
+      this.fetchTweets()
     }
+
   },
 
   created () {
     this.isProcessing = true
     this.fetchTweets()
     this.isProcessing = false
-  },
-
-  beforeRouteUpdate (to, from, next) {
-    this.fetchTweets()
-    next()
   },
   methods: {
     async fetchTweets () {
@@ -84,18 +70,21 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-
-        this.tweets.unshift({
-          TweetId: data.id,
-          createdAt: new Date(),
-          description: description,
-          User: {
-            account: this.currentUser.account,
-            name: this.currentUser.name,
-            id: this.currentUser.id,
-            avatar: this.currentUser.avatar
-          }
-        })
+        this.fetchTweets()
+        // this.tweets.unshift({
+        //   TweetId: data.id,
+        //   createdAt: new Date(),
+        //   description: description,
+        //   isLike: 0,
+        //   likeCount: 0,
+        //   replyCount: 0,
+        //   User: {
+        //     account: this.currentUser.account,
+        //     name: this.currentUser.name,
+        //     id: this.currentUser.id,
+        //     avatar: this.currentUser.avatar
+        //   }
+        // })
         console.log(data)
       } catch (error) {
         console.log('error', error)

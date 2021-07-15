@@ -119,7 +119,8 @@ a:hover{
   &__cover{
     width: 100%;
     img{
-      width: 598px;
+      object-fit: cover;
+      width: 600px;
       height: 200px;
     }
   }
@@ -241,13 +242,14 @@ export default {
     },
     initialUser: {
       type: [Object, Array],
-      require: true
+      required: true
     },
     initialFollowing: {
       type: Boolean
     },
     userId: {
-      type: [Number, String]
+      type: [Number, String],
+      required: true
     }
   },
   data () {
