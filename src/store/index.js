@@ -36,10 +36,18 @@ export default new Vuex.Store({
       localStorage.removeItem('token')
     },
     addFollowing (state) {
-      state.followingNum++
+      if (state.followingNum > 0) {
+        state.followingNum++
+      } else {
+        state.followingNum = 0
+      }
     },
     minusFollowing (state) {
-      state.followingNum--
+      if (state.followingNum > 0) {
+        state.followingNum--
+      } else {
+        state.followingNum = 0
+      }
     }
   },
   actions: {
