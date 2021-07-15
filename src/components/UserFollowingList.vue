@@ -32,13 +32,16 @@
         :key="following.Followings.id"
         class="users__list__main__wrapper"
       >
-        <div class="users__list__image__wrapper">
+        <router-link
+          class="users__list__image__wrapper"
+          :to="{name: 'user-tweets', params: {id: following.Followings.id}}"
+        >
           <img
             :src="following.Followings.avatar"
             alt=""
             class="users__list__image"
           >
-        </div>
+        </router-link>
         <div class="users__list__content__wrapper">
           <div class="users__list__name__wrapper">
             <div class="users__list__name">

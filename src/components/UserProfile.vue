@@ -241,13 +241,14 @@ export default {
     },
     initialUser: {
       type: [Object, Array],
-      require: true
+      required: true
     },
     initialFollowing: {
       type: Boolean
     },
     userId: {
-      type: [Number, String]
+      type: [Number, String],
+      required: true
     }
   },
   data () {
