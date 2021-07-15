@@ -32,6 +32,8 @@ export default {
   data () {
     return {
       topUsers: [],
+      name: '',
+      userTweetsLength: '',
       newTweet: {}
     }
   },
@@ -67,11 +69,14 @@ export default {
       } catch (e) {
         console.log(e)
       }
+<<<<<<< HEAD
+=======
+    },
+>>>>>>> 43a7415eb450bf9ad61c40f7f4ef689ecb218ea9
     handleAfterSubmit (data) {
       this.newTweet = data
       this.$emit('after-side-submit', data)
     }
-
   }
 }
 </script>
