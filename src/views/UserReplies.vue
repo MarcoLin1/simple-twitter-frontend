@@ -4,12 +4,25 @@
       class="user__replies__main__wrapper"
     >
       <template>
-        <UserPost
-          v-for="post in userReplies"
-          :key="post.TweetId"
-          :initial-tweet="post"
-          :like-num="post.likeCount"
-        />
+      <Spinner v-if="isLoading" />
+      <template v-else>
+        <template>
+          <div
+            v-if="!post"
+            class="empty-message"
+          >
+            目前沒有回覆，快去看看其他人的推文吧！
+          </div>
+          <template v-else>
+          <UserPost
+            v-for="post in userReplies"
+            :key="post.TweetId"
+            :initial-tweet="post"
+            :like-num="post.likeCount"
+          />
+          </template>
+        </template>
+
       </template>
     </div>
   </div>

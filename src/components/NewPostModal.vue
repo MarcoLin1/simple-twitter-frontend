@@ -30,7 +30,7 @@
             <div class="modal__body">
               <div class="modal__body__wrapper">
                 <img
-                  :src="currentUser.avatar"
+                  :src="currentUser.avatar | emptyImage"
                   alt=""
                   class="modal__body__img"
                 >
@@ -46,6 +46,13 @@
               </div>
             </div>
             <div class="modal__footer">
+              <div
+                v-show="tweet"
+                class="alert-text"
+                :class="{hint:tweet.length>130}"
+              >
+                {{ countNum }}
+              </div>
               <label
                 class="side-navbar-button toggle__label"
               >
@@ -132,6 +139,7 @@
       border: none;
       display: flex;
       justify-content: flex-end;
+      align-items: center;
       margin-right: 15px;
       padding-bottom: 15px;
       .modal__footer__button {
@@ -167,7 +175,10 @@
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
 import tweetAPI from './../apis/tweets'
+import { emptyImageFilter } from './../utils/mixins'
+
 export default {
+  mixins: [emptyImageFilter],
   data () {
     return {
       isProcessing: false,
@@ -175,7 +186,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser']),
+    countNum: function () {
+      return 140 - this.tweet.length
+    }
   },
   methods: {
     async handleSubmit () {

@@ -147,28 +147,48 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
+      isProcessing: false,
       newUser: {
         id: -1,
         name: '',
         account: '',
         password: '',
         checkPassword: ''
-      },
-      isProcessing: false
+      }
     }
   },
   computed: {
     ...mapState(['currentUser'])
   },
   methods: {
-    async handleSubmit (e) {
+    async handleSubmit () {
       try {
+        this.isProcessing = true
+        if (!this.newUser.name || !this.newUser.account || !this.newUser.password || !this.newUser.checkPassword) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認所有欄位皆已填寫'
+          })
+          this.isProcessing = false
+          return
+        }
+        if (this.newUser.password !== this.newUser.checkPassword) {
+          Toast.fire({
+            icon: 'warning',
+            title: '兩次密碼輸入不相符，請重新輸入'
+          })
+          this.newUser.password = ''
+          this.newUser.checkPassword = ''
+          this.isProcessing = false
+          return
+        }
+
         this.$emit('after-submit', this.currentUser)
         this.$emit('after-register', this.newUser)
         this.isProcessing = false
-      } catch (e) {
+      } catch (error) {
         this.isProcessing = false
-        console.log(e)
+        console.log(error)
         Toast.fire({
           icon: 'error',
           title: '資料修改失敗，請稍候再試'
@@ -181,6 +201,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+
 .account__detail__form__container {
   height: 100vh;
 
@@ -223,12 +244,12 @@ export default {
 .account__detail__save__button {
   width: 120px;
   height: 50px;
-  background: $orange;
+  background-color: $orange;
   color: #ffffff;
   border-radius: 50px;
   border: none;
-  &:disabled{
-    background-color: $disabled-orange;
+  :disabled{
+    background-color: $disabled-orange
   }
 }
 .account__detail__register__button__wrapper {

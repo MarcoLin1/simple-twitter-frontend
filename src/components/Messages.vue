@@ -4,7 +4,7 @@
       <div class="reply__avatar ">
         <router-link :to="{ name:'user-tweets', params:{id:reply.User.id}}">
           <img
-            :src="reply.User.avatar"
+            :src="reply.User.avatar | emptyImage"
             alt=""
             class="avatar-img"
           >
@@ -12,9 +12,11 @@
       </div>
       <div class="reply__content ml-2">
         <div class="reply__content__title mb-2">
-          <span class="reply__content__title__item user-name">
-            {{ reply.User.name }}
-          </span>
+          <router-link :to="{ name:'user-tweets', params:{id:reply.User.id}}">
+            <span class="reply__content__title__item user-name">
+              {{ reply.User.name }}
+            </span>
+          </router-link>
           <span class="reply__content__title__item">@{{ reply.User.account }}</span>
           <span class="reply__content__title__item">·</span>
           <span
@@ -36,6 +38,9 @@
 </template>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+a{
+  text-decoration: none;
+}
 .liked {
   color: $heart-pink;
 }
@@ -51,7 +56,7 @@
     &__title {
       color: $tx-gray;
       &__item {
-        cursor: pointer;
+        cursor: default;
         &:nth-child(2) {
           margin-right: 3px;
         }
@@ -80,9 +85,9 @@
 </style>
 
 <script>
-import { fromNowFilter } from './../utils/mixins'
+import { fromNowFilter, emptyImageFilter } from './../utils/mixins'
 export default {
-  mixins: [fromNowFilter],
+  mixins: [fromNowFilter, emptyImageFilter],
   props: {
     initialUser: {
       type: Object,

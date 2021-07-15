@@ -61,6 +61,37 @@
     font-style: normal;
     font-weight: 700;
   }
+  .users__list__container {
+    height: 100vh;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 0 auto;
+    .users__list__item__wrapper {
+      display: flex;
+      width: 40%;
+      justify-content: space-around;
+      .users__list__item {
+        width: 100%;
+        text-align: center;
+        @extend %text-normal-style;
+      }
+      .users__list__item__button {
+        width: 100%;
+        border: none;
+        background: none;
+        padding-bottom: 14px;
+        color: $tx-gray;
+        text-decoration: none;
+      &:focus {
+          border-bottom: 1px solid $orange;
+          color: $orange;
+        }
+      &:hover {
+        color: $orange;
+      }
+      }
+    }
+  }
   .users__list__main__wrapper {
     display: flex;
     position: relative;
@@ -127,10 +158,18 @@
 
 <script>
 import { Toast } from '../utils/helper'
+import { emptyImageFilter } from './../utils/mixins'
 import userAPI from './../apis/users'
 import { emptyImageFilter } from './../utils/mixins'
 export default {
   mixins: [emptyImageFilter],
+
+  props: {
+    initialFollowers: {
+      type: [Object, Array],
+      required: true
+    }
+  },
   data () {
     return {
       followers: []

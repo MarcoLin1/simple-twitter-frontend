@@ -1,70 +1,79 @@
 <template>
   <div>
-    <TopNavbar :current-page="currentPage" />
-    <div class="admin__tweets__list__container">
-      <div
-        v-if="$route.path.slice(0, 5) !== '/admin'"
-        class="admin__tweets__list__main__wrapper"
-      >
+    <Spinner
+      v-if="isLoading"
+      class="mt-5"
+    />
+    <template v-else>
+      <TopNavbar :current-page="currentPage" />
+      <div class="admin__tweets__list__container">
         <div
-          v-for="tweet in tweets"
-          :key="tweet.TweetId"
-          class="admin__tweets__list__body__wrapper"
+          v-if="$route.path.slice(0, 5) !== '/admin'"
+          class="admin__tweets__list__main__wrapper"
         >
-          <div class="admin__tweets__list__image__wrapper">
-            <img
-              :src="tweet.User.avatar"
-              alt=""
-              class="admin__tweets__list__image"
-            >
-          </div>
-          <div class="admin__tweets__list__content__wrapper">
-            <div class="admin__tweets__list__name__wrapper">
-              <div class="admin__tweets__list__name">
-                {{ tweet.User.name }}
-              </div>
-              <div class="admin__tweets__list__account">
-                @ {{ tweet.User.account }} ·
-              </div>
-              <div class="admin__tweets__list__time">
-                {{ tweet.createdAt | shortenTime }}
-              </div>
-            </div>
-            <div class="admin__tweets__list__wrapper">
-              {{ tweet.description }}
-            </div>
-            <div class="admin__tweets__list__icon__wrapper">
-              <button
-                :disabled="isProcessing"
-                class="admin__tweets__list__icon"
-                aria-hidden="true"
-                @click.stop.prevent="deleteTweet(tweet.TweetId)"
+          <div
+            v-for="tweet in tweets"
+            :key="tweet.TweetId"
+            class="admin__tweets__list__body__wrapper"
+          >
+            <div class="admin__tweets__list__image__wrapper">
+              <img
+                :src="tweet.User.avatar | emptyImage"
+                alt=""
+                class="admin__tweets__list__image"
               >
-                &times;
-              </button>
+            </div>
+            <div class="admin__tweets__list__content__wrapper">
+              <div class="admin__tweets__list__name__wrapper">
+                <div class="admin__tweets__list__name">
+                  {{ tweet.User.name }}
+                </div>
+                <div class="admin__tweets__list__account">
+                  @ {{ tweet.User.account }} ·
+                </div>
+                <div class="admin__tweets__list__time">
+                  {{ tweet.createdAt | shortenTime }}
+                </div>
+              </div>
+              <div class="admin__tweets__list__wrapper">
+                {{ tweet.description }}
+              </div>
+              <div class="admin__tweets__list__icon__wrapper">
+                <button
+                  :disabled="isProcessing"
+                  class="admin__tweets__list__icon"
+                  aria-hidden="true"
+                  @click.stop.prevent="deleteTweet(tweet.TweetId)"
+                >
+                  &times;
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import adminAPI from './../apis/admin'
-import { shortenTimeFilter } from './../utils/mixins'
+import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 import { Toast } from '../utils/helper'
 import Swal from 'sweetalert2'
 import TopNavbar from './../components/TopNavbar.vue'
+import Spinner from './../components/Spinner.vue'
 
 export default {
   name: 'AdminTweetsList',
   components: {
-    TopNavbar
+    TopNavbar,
+    Spinner
   },
-  mixins: [shortenTimeFilter],
+  mixins: [shortenTimeFilter, emptyImageFilter],
   data () {
     return {
+      isLoading: true,
       isProcessing: false,
       tweets: [],
       user: [],
@@ -79,7 +88,7 @@ export default {
       try {
         const { data } = await adminAPI.tweet.get()
         this.tweets = data
-        console.log(data)
+        this.isLoading = false
       } catch (error) {
         console.log('error', error)
         Toast.fire({

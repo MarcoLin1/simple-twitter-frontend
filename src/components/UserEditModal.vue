@@ -301,7 +301,6 @@ import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
 import Spinner from './../components/Spinner.vue'
 import { emptyImageFilter } from './../utils/mixins'
-
 export default {
   components: {
     Spinner
@@ -309,7 +308,8 @@ export default {
   mixins: [emptyImageFilter],
   props: {
     initialUser: {
-      type: [Array, Object]
+      type: [Array, Object],
+      required: true
     }
   },
   data () {

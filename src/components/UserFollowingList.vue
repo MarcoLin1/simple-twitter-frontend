@@ -131,6 +131,12 @@ import { emptyImageFilter } from './../utils/mixins'
 
 export default {
   mixins: [emptyImageFilter],
+  props: {
+    initialFollowings: {
+      type: [Object, Array],
+      required: true
+    }
+  },
   data () {
     return {
       followings: []

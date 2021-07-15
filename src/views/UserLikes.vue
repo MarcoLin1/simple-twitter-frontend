@@ -1,13 +1,23 @@
 <template>
   <div class="user__likes__container">
     <div class="user__likes__main__wrapper">
-      <template>
-        <UserPost
-          v-for="post in userLikes"
-          :key="post.TweetId"
-          :initial-tweet="post"
-          :like-num="post.likeCount"
-        />
+      <Spinner v-if="isLoading" />
+      <template v-else>
+        <template>
+          <div
+            v-if="!post"
+            class="empty-message"
+          >
+            目前沒有喜歡的推文內容哦，快去按讚吧！
+          </div>
+          <template v-else>
+            <UserPost
+              v-for="post in userLikes"
+              :key="post.TweetId"
+              :initial-tweet="post"
+              :like-num="post.likeCount"
+            />
+          </template>
       </template>
     </div>
   </div>

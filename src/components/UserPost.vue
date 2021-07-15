@@ -6,7 +6,7 @@
         <div class=" post__avatar">
           <img
             class="avatar-img"
-            :src="post.User.avatar"
+            :src="post.User.avatar | emptyImage"
             alt=""
           >
         </div>
@@ -38,22 +38,34 @@
             <span class="post__reaction__item__text">{{ post.replyCount }}</span>
           </div>
         </router-link>
-        <div class="post__reaction__item heart">
+        <div class="post__reaction__item ">
           <div
             v-if="!post.isLike"
-            class="post__reaction__item__heart"
+            class="post__reaction__item__container heart"
             @click="addLiked(post.TweetId)"
-          />
+          >
+            <div
+              class="post__reaction__item__heart"
+            />
+            <span
+              class="post__reaction__item__text"
+              :class="{liked:post.isLike}"
+            >{{ post.likeCount }}</span>
+          </div>
           <div
             v-else
-            class="post__reaction__item__heart--liked"
+            class="post__reaction__item__container"
             @click="removeLiked(post.TweetId)"
-          />
+          >
+            <div
+              class="post__reaction__item__heart--liked"
+            />
 
-          <span
-            class="post__reaction__item__text"
-            :class="{liked:post.isLike}"
-          >{{ post.likeCount }}</span>
+            <span
+              class="post__reaction__item__text"
+              :class="{liked:post.isLike}"
+            >{{ post.likeCount }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -70,15 +82,16 @@
 </template>
 <script>
 import { Toast } from '../utils/helper'
-import { fromNowFilter } from './../utils/mixins'
+import { fromNowFilter, emptyImageFilter } from './../utils/mixins'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
+
 export default {
   name: 'UserPost',
   components: {
     ReplyPostModal
   },
-  mixins: [fromNowFilter],
+  mixins: [fromNowFilter, emptyImageFilter],
   props: {
     initialTweet: {
       type: Object,
@@ -257,7 +270,11 @@ a{
         display: flex;
         align-items: center;
         width: 47px;
-
+        &__container{
+          width: 100%;
+          display: flex;
+          align-items: center;
+        }
         &__text {
           font-size: 13px;
           line-height: 13px;
@@ -265,8 +282,8 @@ a{
           line-height: 20px;
         }
         &__message,&__heart, &__heart--liked{
-          width: 13px;
-          height: 13px;
+          width: 14px;
+          height: 14px;
           @extend %icon-style;
         }
         &__message{

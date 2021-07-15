@@ -1,12 +1,18 @@
 <template>
   <div>
-    <TweetForm @after-submit="handleAfterSubmit" />
-    <template v-if="tweets.length">
-      <UserPost
-        v-for="tweet in tweets"
-        :key="tweet.id"
-        :initial-tweet="tweet"
-      />
+    <Spinner
+      v-if="isLoading"
+      class="mt-5"
+    />
+    <template v-else>
+      <TweetForm @after-submit="handleAfterSubmit" />
+      <template v-if="tweets.length">
+        <UserPost
+          v-for="tweet in tweets"
+          :key="tweet.id"
+          :initial-tweet="tweet"
+        />
+      </template>
     </template>
   </div>
 </template>
@@ -14,6 +20,7 @@
 import TweetForm from './../components/TweetForm.vue'
 import UserPost from './../components/UserPost.vue'
 import tweetAPI from './../apis/tweets'
+import Spinner from './../components/Spinner.vue'
 import { Toast } from '../utils/helper'
 import { mapState } from 'vuex'
 
@@ -21,7 +28,8 @@ export default {
   name: 'Mainpage',
   components: {
     TweetForm,
-    UserPost
+    UserPost,
+    Spinner
   },
   props: {
     newTweet: {
@@ -32,7 +40,7 @@ export default {
   data () {
     return {
       tweets: [],
-      isProcessing: false
+      isLoading: true
     }
   },
   computed: {
@@ -46,21 +54,19 @@ export default {
   },
 
   created () {
-    this.isProcessing = true
     this.fetchTweets()
-    this.isProcessing = false
   },
   methods: {
     async fetchTweets () {
       try {
         const { data } = await tweetAPI.getTweets()
         this.tweets = data
-        this.isProcessing = false
-      } catch (errer) {
+        this.isLoading = false
+      } catch (error) {
+        console.log('errer', error)
         Toast.fire({
           icon: 'error',
           title: '無法顯示Tweets，請稍後再試'
-
         })
       }
     },
@@ -71,20 +77,6 @@ export default {
           throw new Error(data.message)
         }
         this.fetchTweets()
-        // this.tweets.unshift({
-        //   TweetId: data.id,
-        //   createdAt: new Date(),
-        //   description: description,
-        //   isLike: 0,
-        //   likeCount: 0,
-        //   replyCount: 0,
-        //   User: {
-        //     account: this.currentUser.account,
-        //     name: this.currentUser.name,
-        //     id: this.currentUser.id,
-        //     avatar: this.currentUser.avatar
-        //   }
-        // })
         console.log(data)
       } catch (error) {
         console.log('error', error)
