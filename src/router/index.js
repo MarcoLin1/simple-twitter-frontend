@@ -113,6 +113,7 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
+    redirect: '/admin/tweets',
     component: () => import('./../views/Admin.vue'),
     beforeEnter: authorizeIsAdmin,
     children: [
@@ -130,7 +131,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'root'
+    name: 'root',
+    redirect: '/login'
   },
   {
     path: '*',
@@ -147,14 +149,14 @@ router.beforeEach(async (to, from, next) => {
   const tokenInLocalStorage = localStorage.getItem('token')
   const tokenInstore = store.state.token
   let isAuthenticated = store.state.isAuthenticated
-
+  const isAdmin = store.state.currentUser.isAdmin
   // 比較 localStorage 和 store 中的 token 是否一樣
+  console.log('isAdmin', isAdmin === false)
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInstore) {
     isAuthenticated = await store.dispatch('fetchCurrentUser')
   }
-
   const pathsWithoutAuthentication = ['signup', 'login', 'admin-login']
-
+  const pathNeedAdminRole = ['admin', 'admin-tweets', 'admin-users']
   // 如果 token 無效則轉址到登入頁
   if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
     next('/login')
@@ -164,6 +166,13 @@ router.beforeEach(async (to, from, next) => {
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
     next('/mainpage')
     return
+  }
+  // user 不能進入 Admin 頁面，反之亦然
+  if (pathNeedAdminRole.includes(to.name) && !isAdmin) {
+    next('/')
+  }
+  if (!pathNeedAdminRole.includes(to.name) && isAdmin) {
+    next('/admin')
   }
   next()
 })
