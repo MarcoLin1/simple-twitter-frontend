@@ -193,6 +193,7 @@ a{
 .post {
   display: grid;
   grid-template-columns: 50px 1fr;
+  grid-row-gap: 12px;
   max-width: 600px;
   border-bottom: 1px solid $light-gray;
   margin-top: -1px;
@@ -218,6 +219,8 @@ a{
     }
     &__discription {
       line-height: 20px;
+      width: 100%;
+      word-break: break-all;
       @include text-style(15px, normal, $black,pointer);
     }
 

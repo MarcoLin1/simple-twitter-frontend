@@ -41,6 +41,7 @@
   }
 .post__item__container{
   width: 600px;
+  border-bottom: 1px solid $light-gray;
 }
 .post__itwm__wrapper {
   display: flex;

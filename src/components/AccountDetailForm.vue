@@ -227,6 +227,9 @@ export default {
   color: #ffffff;
   border-radius: 50px;
   border: none;
+  &:disabled{
+    background-color: $disabled-orange;
+  }
 }
 .account__detail__register__button__wrapper {
   width: 100%;
