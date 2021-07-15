@@ -47,6 +47,30 @@ const routes = [
   },
   // 以下路由會包含 TopUsersList / SideNavBar
   {
+    path: '/user/:id',
+    name: 'user-personal-page',
+    component: () => import('./../views/UserPersonalPage.vue'),
+    beforeEnter: authorizeIsUser,
+    children: [
+      {
+        path: 'tweets',
+        name: 'user-tweets',
+        component: () => import('./../views/UserTweets.vue')
+      },
+      {
+        path: 'likes',
+        name: 'user-likes',
+        component: () => import('./../views/UserLikes.vue')
+      },
+      {
+        path: 'replies',
+        name: 'user-replies',
+        component: () => import('./../views/UserReplies.vue')
+      }
+    ]
+  },
+  // 以下路由會包含 TopUsersList / SideNavBar
+  {
     path: '/user',
     name: 'user',
     component: () => import('./../views/user.vue'),
@@ -62,21 +86,6 @@ const routes = [
         path: ':id/followers',
         name: 'user-followers',
         component: () => import('./../views/UserFollowers.vue')
-      },
-      {
-        path: ':id/tweets',
-        name: 'user-tweets',
-        component: () => import('./../views/UserTweets.vue')
-      },
-      {
-        path: ':id/likes',
-        name: 'user-likes',
-        component: () => import('./../views/UserLikes.vue')
-      },
-      {
-        path: ':id/replies',
-        name: 'user-replies',
-        component: () => import('./../views/UserReplies.vue')
       },
       {
         path: '/detail/:id',
