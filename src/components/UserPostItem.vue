@@ -52,15 +52,17 @@
     text-decoration: none;
     width: 130px;
     text-align: center;
-    &:hover {
-      border-bottom: 1px solid $orange;
-    }
     .post__item__button {
       color: $tx-gray;
       text-decoration: none;
       padding: 16px 0 16px 0;
       font-weight: 700;
+      width: 120px;
       &:hover {
+        color: $orange;
+      }
+      &:focus {
+        border-bottom: 1px solid $orange;
         color: $orange;
       }
     }

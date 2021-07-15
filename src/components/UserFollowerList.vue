@@ -1,29 +1,5 @@
 <template>
   <div class="users__list__container">
-    <div class="users__list__top__navbar__container">
-      <div class="users__list__item__wrapper">
-        <div class="users__list__item">
-          <!-- 記得改網址 -->
-          <router-link
-            :to="{name: 'user-followers'}"
-            type="button"
-            class="users__list__item__button"
-          >
-            跟隨者
-          </router-link>
-        </div>
-        <div class="users__list__item">
-          <!-- 記得改網址 -->
-          <router-link
-            :to="{name: 'user-followings'}"
-            type="button"
-            class="users__list__item__button"
-          >
-            正在跟隨
-          </router-link>
-        </div>
-      </div>
-    </div>
     <div
       class="users__list__main__container"
     >
@@ -122,7 +98,6 @@
     padding: 10px 15px 10px 15px;
     border-top: 1px solid $light-gray;
     border-bottom: 1px solid $light-gray;
-    margin-top: -1px;
     .users__list__image__wrapper {
       display: flex;
       align-items: center;
@@ -185,9 +160,10 @@
 import { Toast } from '../utils/helper'
 import { emptyImageFilter } from './../utils/mixins'
 import userAPI from './../apis/users'
-
+import { emptyImageFilter } from './../utils/mixins'
 export default {
   mixins: [emptyImageFilter],
+
   props: {
     initialFollowers: {
       type: [Object, Array],
@@ -200,23 +176,38 @@ export default {
     }
   },
   watch: {
-    initialFollowers (newValue) {
-      this.followers = [
-        ...this.followers,
-        ...newValue
-      ]
-    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchFollowers(id)
+    next()
+  },
+  created () {
+    const { id } = this.$route.params
+    this.fetchFollowers(id)
   },
   methods: {
+    async fetchFollowers (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowers({ userId })
+        this.followers = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料讀取失敗，請稍候再試'
+        })
+      }
+    },
     async addFollowing (userId) {
       try {
         const { data } = await userAPI.addFollowShip({ id: userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.followings.filter(user => {
-          if (user.Followings.id === userId) {
-            user.Followings.isFollowing = true
+        this.followers.filter(user => {
+          if (user.Followers.id === userId) {
+            user.Followers.isFollowing = true
           }
         })
       } catch (e) {

@@ -47,37 +47,53 @@ const routes = [
   },
   // 以下路由會包含 TopUsersList / SideNavBar
   {
+    path: '/user/:id',
+    name: 'user-personal-page',
+    component: () => import('./../views/UserPersonalPage.vue'),
+    beforeEnter: authorizeIsUser,
+    children: [
+      {
+        path: 'tweets',
+        name: 'user-tweets',
+        component: () => import('./../views/UserTweets.vue')
+      },
+      {
+        path: 'likes',
+        name: 'user-likes',
+        component: () => import('./../views/UserLikes.vue')
+      },
+      {
+        path: 'replies',
+        name: 'user-replies',
+        component: () => import('./../views/UserReplies.vue')
+      }
+    ]
+  },
+  {
+    path: '/user/:id',
+    name: 'user-follow-page',
+    component: () => import('./../views/UserFollowPage'),
+    beforeEnter: authorizeIsUser,
+    children: [
+      {
+        path: 'followings',
+        name: 'user-followings',
+        component: () => import('./../components/UserFollowingList.vue')
+      },
+      {
+        path: 'followers',
+        name: 'user-followers',
+        component: () => import('./../components/UserFollowerList.vue')
+      }
+    ]
+  },
+  // 以下路由會包含 TopUsersList / SideNavBar
+  {
     path: '/user',
     name: 'user',
     component: () => import('./../views/user.vue'),
     beforeEnter: authorizeIsUser,
     children: [
-
-      {
-        path: ':id/followings',
-        name: 'user-followings',
-        component: () => import('./../views/UserFollowings.vue')
-      },
-      {
-        path: ':id/followers',
-        name: 'user-followers',
-        component: () => import('./../views/UserFollowers.vue')
-      },
-      {
-        path: ':id/tweets',
-        name: 'user-tweets',
-        component: () => import('./../views/UserTweets.vue')
-      },
-      {
-        path: ':id/likes',
-        name: 'user-likes',
-        component: () => import('./../views/UserLikes.vue')
-      },
-      {
-        path: ':id/replies',
-        name: 'user-replies',
-        component: () => import('./../views/UserReplies.vue')
-      },
       {
         path: '/detail/:id',
         name: 'detail-tweet',
