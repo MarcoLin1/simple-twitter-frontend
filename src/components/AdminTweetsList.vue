@@ -1,7 +1,7 @@
 <template>
   <div class="admin__tweets__list__container">
     <div
-      v-if="$route.path.slice(0, 5) !== '/admin'"
+      v-if="$route.path.slice(0, 6) === '/admin'"
       class="admin__tweets__list__main__wrapper"
     >
       <TopNavbar :current-page="currentPage" />

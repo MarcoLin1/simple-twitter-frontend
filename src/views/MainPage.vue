@@ -1,7 +1,6 @@
 <template>
   <div>
     <TweetForm @after-submit="handleAfterSubmit" />
-
     <template v-if="tweets.length">
       <UserPost
         v-for="tweet in tweets"
@@ -48,10 +47,8 @@ export default {
       try {
         const { data } = await tweetAPI.getTweets()
         this.tweets = data
-        console.log('this.tweets', this.tweets)
         this.isProcessing = false
       } catch (errer) {
-        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法顯示Tweets，請稍後再試'

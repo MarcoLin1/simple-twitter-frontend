@@ -24,7 +24,7 @@
       </router-link>
       <router-link
         class="side-navbar-setting-wrapper"
-        to="/setting"
+        :to="{name: $route.path.slice(0, 6) !== '/admin' ? 'setting': ''}"
       >
         <div
           v-if="$route.path.slice(0, 6) !== '/admin'"
@@ -97,6 +97,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+a {
+  cursor: inherit;
+}
 .side-navbar-container {
   width: 100%;
   max-width: 150px;
@@ -121,55 +124,53 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .side-navbar-logout-wrpper, .side-navbar-button-wrapper {
-  width: 40px;
+.side-navbar-setting-wrapper {
   height: 40px;
-  border-radius: 50%;
-  text-decoration: none;
-  &:hover {
-    background: $orange;
-  }
 }
 .side-navbar-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .icon-wrapper {
   width: 40px;
   height: 40px;
-  cursor: pointer;
 }
 .icon-main-wrpper {
   mask-image: url('./../assets/icon/icon_main.svg');
   -webkit-mask-image: url('./../assets/icon/icon_main.svg');
+  cursor: pointer;
   @extend %icon-style;
   &:hover {
-    background: #ffffff;
+    background: $orange;
   }
 }
 .icon-user-wrpper {
   mask-image: url('./../assets/icon/icon_user.svg');
   -webkit-mask-image: url('./../assets/icon/icon_user.svg');
+  cursor: pointer;
   @extend %icon-style;
   &:hover {
-    background: #ffffff;
+    background: $orange;
   }
 }
 .icon-setting-wrpper {
   mask-image: url('./../assets/icon/icon_setting.svg');
   -webkit-mask-image: url('./../assets/icon/icon_setting.svg');
+  cursor: pointer;
   @extend %icon-style;
   &:hover {
-    background: #ffffff;
+    background: $orange;
   }
 }
 .icon-logout-wrapper {
   mask-image: url('./../assets/icon/icon_logout.svg');
   -webkit-mask-image: url('./../assets/icon/icon_logout.svg');
+  cursor: pointer;
   @extend %icon-style;
   &:hover {
-    background: #ffffff;
+    background: $orange;
   }
 }
 .content {
@@ -213,21 +214,21 @@ export default {
     width: 210px;
     align-items: normal;
   }
-  .side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .side-navbar-logout-wrpper {
+  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
+  .side-navbar-setting-wrapper, .side-navbar-logout-wrpper {
     display: flex;
     align-items: center;
     width: auto;
-    border-radius: none;
-    &:hover {
-      background: #ffffff;
-    }
+    text-decoration: none;
   }
-  .side-navbar-main-wrapper, .side-navbar-user-wrapper, .side-navbar-setting-wrapper, .bottom-item-container {
+  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
+  .side-navbar-setting-wrapper, .bottom-item-container {
     &:hover {
       .content {
         color: $orange;
       }
-      .icon-main-wrpper, .icon-user-wrpper, .icon-setting-wrpper, .icon-logout-wrapper {
+      .icon-main-wrpper, .icon-user-wrpper,
+      .icon-setting-wrpper, .icon-logout-wrapper {
         background: $orange;
       }
     }

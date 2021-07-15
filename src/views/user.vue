@@ -6,8 +6,12 @@
     <div class="middle-content">
       <TopNavbar
         :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+        :initial-name="name"
+        :initial-user-tweets-length="userTweetsLength"
       />
-      <router-view />
+      <template>
+        <router-view />
+      </template>
     </div>
     <div class="right-content">
       <TopUsersList :top-users="topUsers" />
@@ -29,17 +33,25 @@ export default {
   },
   data () {
     return {
-      topUsers: []
+      topUsers: [],
+      name: '',
+      userTweetsLength: ''
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchUserData(id)
+    next()
+  },
   created () {
-    // const { id } = this.$route.params
-    // this.fetchUserData(id)
+    const { id } = this.$route.params
     this.fetchTopUser()
+    this.fetchUserData(id)
   },
   methods: {
     async fetchTopUser () {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getTopUsers()
         this.topUsers = data
       } catch (e) {
@@ -48,6 +60,15 @@ export default {
           icon: 'error',
           title: 'TopUser讀取失敗'
         })
+      }
+    },
+    async fetchUserData (userId) {
+      try {
+        const { data } = await userAPI.getUserTweets({ userId })
+        this.name = data[0].User.name
+        this.userTweetsLength = data.length
+      } catch (e) {
+        console.log(e)
       }
     }
   }
@@ -58,11 +79,8 @@ export default {
 @import '../assets/scss/main.scss';
 .main-container{
   display: grid;
-  // grid-template-columns: 100px 1fr 50px 2fr 50px 1fr 100px;
   grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
-
   grid-template-areas: " . left . middle . right .";
-
 }
 .left-content {
   grid-area: left;
@@ -71,6 +89,7 @@ export default {
   grid-area: middle;
   width: 602px;
   border: 1px solid $light-gray;
+  position: relative;
 }
 .right-content {
   grid-area: right;

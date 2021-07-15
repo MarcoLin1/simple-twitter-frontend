@@ -125,6 +125,7 @@ a{
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
+// import { mapState } from 'vuex'
 export default {
   props: {
     topUsers: {
@@ -138,6 +139,9 @@ export default {
       users: this.topUsers
     }
   },
+  // computed: {
+  //   ...mapState(['followingNum', 'followerNum'])
+  // },
   watch: {
     topUsers (newValue) {
       this.users = [
@@ -156,6 +160,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        this.$store.commit('addFollowing')
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -175,6 +180,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        this.$store.commit('minusFollowing')
       } catch (e) {
         console.log(e)
         Toast.fire({

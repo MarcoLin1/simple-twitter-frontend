@@ -105,7 +105,10 @@
             class="account__detail__check__password account__detail__form__control"
           >
         </div>
-        <div class="account__detail__save__button__wrapper">
+        <div
+          v-if="$route.path.slice(0, 8) === '/setting'"
+          class="account__detail__save__button__wrapper"
+        >
           <button
             type="submit"
             class="account__detail__save__button"
@@ -114,6 +117,24 @@
             {{ isProcessing ? '處理中':'儲存' }}
           </button>
         </div>
+        <div
+          v-else
+          class="account__detail__register__button__wrapper"
+        >
+          <button
+            type="submit"
+            class="account__detail__register__button"
+            :disabled="isProcessing"
+          >
+            {{ isProcessing ? '處理中':'註冊' }}
+          </button>
+          <router-link
+            to="/login"
+            class="account__detail__register__text"
+          >
+            取消
+          </router-link>
+        </div>
       </div>
     </form>
   </div>
@@ -121,19 +142,11 @@
 
 <script>
 import { Toast } from './../utils/helper'
-// import userAPI from './../apis/users'
 import { mapState } from 'vuex'
 
 export default {
   data () {
     return {
-      user: {
-        id: -1,
-        name: '',
-        account: '',
-        password: '',
-        checkPassword: ''
-      },
       newUser: {
         id: -1,
         name: '',
@@ -147,28 +160,10 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
-  // created () {
-  //   this.fetchCurrentUser()
-  // },
   methods: {
-    // async fetchCurrentUser () {
-    //   try {
-    //     const { data } = await userAPI.getCurrentUser()
-    //     this.user = data
-    //   } catch (e) {
-    //     console.log(e)
-    //     Toast.fire({
-    //       icon: 'error',
-    //       title: '讀取currentUser失敗'
-    //     })
-    //   }
-    // },
     async handleSubmit (e) {
       try {
-        // 將form資料轉成formData傳父層
-        // const form = e.target
-        // const formData = new FormData(form)
-        this.$emit('after-submit', this.user)
+        this.$emit('after-submit', this.currentUser)
         this.$emit('after-register', this.newUser)
         this.isProcessing = false
       } catch (e) {
@@ -233,4 +228,20 @@ export default {
   border-radius: 50px;
   border: none;
 }
+.account__detail__register__button__wrapper {
+  width: 100%;
+  max-width: 642px;
+  height: 40px;
+  text-align: center;
+  .account__detail__register__button {
+    width: 100%;
+    height: 100%;
+    background-color: $orange;
+    color: #ffffff;
+    border-radius: 50px;
+    border: none;
+    margin-bottom: 20px;
+  }
+}
+
 </style>
