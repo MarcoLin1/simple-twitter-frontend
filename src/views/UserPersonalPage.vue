@@ -3,20 +3,25 @@
     <div class="left__container">
       <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
-    <div class="middle__container">
-      <TopNavbar
-        :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
-        :initial-name="name"
-        :initial-user-tweets-length="userTweetsLength"
-      />
-      <UserProfile
-        :get-current-user="currentUser"
-        :initial-user="initialUser"
-        :initial-following="initialFollowing"
-        :user-id="userId"
-      />
-      <UserPostItem :user-id="userId" />
-      <router-view :new-tweet="newTweet" />
+    <div
+      class="middle__container"
+    >
+      <Spinner v-if="isLoading" />
+      <template v-else>
+        <TopNavbar
+          :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+          :initial-name="name"
+          :initial-user-tweets-length="userTweetsLength"
+        />
+        <UserProfile
+          :get-current-user="currentUser"
+          :initial-user="initialUser"
+          :initial-following="initialFollowing"
+          :user-id="userId"
+        />
+        <UserPostItem :user-id="userId" />
+        <router-view :new-tweet="newTweet" />
+      </template>
     </div>
     <div class="right__container">
       <TopUsersList :top-users="topUsers" />
@@ -33,14 +38,15 @@ import UserProfile from '../components/UserProfile.vue'
 import userAPI from '../apis/users'
 import { Toast } from '../utils/helper'
 import { mapState } from 'vuex'
-// import Spinner from './../components/Spinner.vue'
+import Spinner from './../components/Spinner.vue'
 export default {
   components: {
     SideNavbar,
     TopUsersList,
     TopNavbar,
     UserPostItem,
-    UserProfile
+    UserProfile,
+    Spinner
   },
   data () {
     return {
@@ -77,7 +83,6 @@ export default {
   methods: {
     async fetchTopUser () {
       try {
-        this.isLoading = true
         const { data } = await userAPI.getTopUsers()
         this.topUsers = data
       } catch (e) {
@@ -90,13 +95,16 @@ export default {
     },
     async fetchUserData (userId) {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getUserTweets({ userId })
         this.name = data[0].User.name
         this.userTweetsLength = data.length
         this.posts = data
         this.newTweet = data
+        this.isLoading = false
       } catch (e) {
         console.log(e)
+        this.isLoading = false
       }
     },
     // 取得目前路由的使用者資料
@@ -118,6 +126,7 @@ export default {
     // 取得目前路由的使用者的followers清單，和currentUser比對，如果currentUser在清單中就是following狀態
     async fetUserFollowers (userId) {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getUserFollowers({ userId })
         this.initialFollowers = data
         this.initialFollowers.forEach(item => {
@@ -127,6 +136,7 @@ export default {
             this.initialFollowing = true
           }
         })
+        this.isLoading = false
       } catch (e) {
         console.log(e)
         Toast.fire({

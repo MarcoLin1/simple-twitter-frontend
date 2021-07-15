@@ -13,13 +13,13 @@
     </template>
     <div class="profile__cover">
       <img
-        :src="user.cover"
+        :src="user.cover | emptyImage"
         alt=""
       >
     </div>
     <div class="profile__avatar">
       <img
-        :src="user.avatar ? user.avatar: backupData.avatar"
+        :src="user.avatar | emptyImage"
         alt=""
         class="avatar-img"
       >
@@ -230,11 +230,12 @@ import UserEditModal from './../components/UserEditModal.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
 import { mapState } from 'vuex'
-
+import { emptyImageFilter } from './../utils/mixins'
 export default {
   components: {
     UserEditModal
   },
+  mixins: [emptyImageFilter],
   props: {
     getCurrentUser: {
       type: [Object, Array],
@@ -256,8 +257,6 @@ export default {
     return {
       user: this.initialUser,
       currentUser: this.getCurrentUser,
-      // userFollowers: this.initialFollowers,
-      // currentPage: 'userProfile',
       isFollowing: this.initialFollowing,
       isSubscribe: false,
       backupData: []

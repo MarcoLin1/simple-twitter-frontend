@@ -38,7 +38,7 @@
         </div>
         <div class="user__edit__modal__cover__wrapper">
           <img
-            :src="user.cover"
+            :src="user.cover | emptyImage"
             class="user__edit__modal__cover"
             alt=""
           >
@@ -69,7 +69,7 @@
         </div>
         <div class="user__edit__modal__avatar__wrapper">
           <img
-            :src="user.avatar"
+            :src="user.avatar | emptyImage"
             class="user__edit__modal__avatar"
             alt=""
           >
@@ -88,7 +88,7 @@
           </span>
           <input
             id="name"
-            v-model="name"
+            v-model="user.name"
             type="text"
             name="name"
             class="user__edit__modal__input"
@@ -97,7 +97,7 @@
           >
         </div>
         <div class="user__edit__modal__number">
-          {{ name.length }} / 50
+          {{ user.name ? Number(user.name).length: '0' }} / 50
         </div>
         <div class="user__edit__modal__intro__wrapper">
           <span class="user__edit__modal__intro__title">
@@ -105,7 +105,7 @@
           </span>
           <textarea
             id=""
-            v-model="introduction"
+            v-model="user.introduction"
             name="introduction"
             cols="40"
             rows="6"
@@ -115,7 +115,7 @@
           />
         </div>
         <div class="user__edit__modal__number">
-          {{ introduction.length }} / 160
+          {{ user.introduction ? Number(user.introducation).length: '0' }} / 160
         </div>
       </form>
     </template>
@@ -300,11 +300,13 @@
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
 import Spinner from './../components/Spinner.vue'
+import { emptyImageFilter } from './../utils/mixins'
 
 export default {
   components: {
     Spinner
   },
+  mixins: [emptyImageFilter],
   props: {
     initialUser: {
       type: [Array, Object]
@@ -313,8 +315,6 @@ export default {
   data () {
     return {
       user: this.initialUser,
-      name: this.initialUser.name,
-      introduction: this.initialUser.introduction,
       isLoading: false
     }
   },
@@ -335,7 +335,7 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
         this.user.avatar = imageURL
-        this.avatar = imageURL
+        // this.avatar = imageURL
       }
     },
     // 處理cover預覽圖片
@@ -346,7 +346,7 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
         this.user.cover = imageURL
-        this.cover = imageURL
+        // this.cover = imageURL
       }
     },
     // 處理name, introducation, avatar, cover的資料轉成formData傳給後端
@@ -365,10 +365,10 @@ export default {
         const { data } = await userAPI.update({ userId: this.user.id, formData })
 
         this.$emit('after-submit', {
-          name: this.name,
-          introduction: this.introduction,
-          cover: this.cover,
-          avatar: this.avatar
+          name: this.user.name,
+          introduction: this.user.introduction,
+          cover: this.user.cover,
+          avatar: this.user.avatar
         })
 
         const editModal = document.querySelector('#user__edit__modal')
