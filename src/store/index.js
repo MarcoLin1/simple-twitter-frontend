@@ -14,7 +14,8 @@ export default new Vuex.Store({
       isAdmin: false
     },
     isAuthenticated: false,
-    token: ''
+    token: '',
+    followingNum: 0
   },
   mutations: {
     setCurrentUser (state, currentUser) {
@@ -33,6 +34,12 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ''
       localStorage.removeItem('token')
+    },
+    addFollowing (state) {
+      state.followingNum++
+    },
+    minusFollowing (state) {
+      state.followingNum--
     }
   },
   actions: {

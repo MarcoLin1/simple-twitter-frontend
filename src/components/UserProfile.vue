@@ -91,13 +91,13 @@
       <div class="profile__detail__follow">
         <div class="profile__detail__follow__item">
           <router-link :to="{name: 'user-followings', params: {id: userId || backupData.id}}">
-            <span>{{ user.followingCount ? user.followingCount: backupData.followingCount }} 個</span>
+            <span>{{ user.followingCount + followingNum }} 個</span>
             <span>跟隨中</span>
           </router-link>
         </div>
         <div class="profile__detail__follow__item">
           <router-link :to="{name: 'user-followers', params: {id: userId || backupData.id}}">
-            <span>{{ user.followerCount ? user.followerCount: backupData.followerCount }} 位</span>
+            <span>{{ user.followerCount }} 位</span>
             <span>跟隨者</span>
           </router-link>
         </div>
@@ -131,6 +131,7 @@ a:hover{
       height: 40px;
       display: flex;
       align-items: center;
+      cursor: pointer;
     }
     .btn__following {
       background: $orange;
@@ -228,6 +229,7 @@ a:hover{
 import UserEditModal from './../components/UserEditModal.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -259,6 +261,9 @@ export default {
       isSubscribe: false,
       backupData: []
     }
+  },
+  computed: {
+    ...mapState(['followingNum', 'followerNum'])
   },
   watch: {
     getCurrentUser (newValue) {
