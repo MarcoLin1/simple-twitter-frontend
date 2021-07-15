@@ -16,7 +16,7 @@ export default {
       if (!data.user.isAdmin) {
         Toast.fire({
           icon: 'warning',
-          title: '查無此管理者資料'
+          title: '請確認您輸入了正確的帳號密碼'
         })
       } else {
         localStorage.setItem('token', data.token)

@@ -23,9 +23,10 @@
         <button
           type="submit"
           class="tweet__form__button"
+          :disabled="isProcessing"
           @click.stop.prevent="handleSubmit"
         >
-          推文
+          {{ isProcessing? '處理中' : '推文' }}
         </button>
       </div>
     </form>
@@ -38,7 +39,8 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      description: ''
+      description: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -46,11 +48,13 @@ export default {
   },
   methods: {
     handleSubmit () {
+      this.isProcessing = true
       if (!this.description.trim()) {
         Toast.fire({
           icon: 'warning',
           title: '請輸入推文內容'
         })
+        this.isProcessing = false
         return
       }
       if (this.description.length > 140) {
@@ -58,11 +62,13 @@ export default {
           icon: 'warning',
           title: '字數請限制於 140 字內'
         })
+        this.isProcessing = false
         return
       }
+
       this.$emit('after-submit', this.description)
       this.description = ''
-      console.log('handleSubmit')
+      this.isProcessing = false
     }
   }
 }
@@ -107,8 +113,11 @@ export default {
       height: 40px;
       border: none;
       border-radius: 100px;
-      background: $orange;
+      background-color: $orange;
       color: #ffffff;
+      &:disabled{
+        background-color: $disabled-orange;
+  }
     }
   }
 </style>

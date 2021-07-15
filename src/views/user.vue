@@ -1,13 +1,13 @@
 <template>
   <div class="main-container">
     <div class="left-content">
-      <SideNavbar />
+      <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
     <div class="middle-content">
       <TopNavbar
         :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
       />
-      <router-view />
+      <router-view :new-tweet="newTweet" />
     </div>
     <div class="right-content">
       <TopUsersList :top-users="topUsers" />
@@ -29,7 +29,8 @@ export default {
   },
   data () {
     return {
-      topUsers: []
+      topUsers: [],
+      newTweet: {}
     }
   },
   created () {
@@ -49,7 +50,12 @@ export default {
           title: 'TopUser讀取失敗'
         })
       }
+    },
+    handleAfterSubmit (data) {
+      this.newTweet = data
+      this.$emit('after-side-submit', data)
     }
+
   }
 }
 </script>

@@ -24,6 +24,12 @@ export default {
     TweetForm,
     UserPost
   },
+  props: {
+    newTweet: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       tweets: [],
@@ -33,6 +39,22 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
+  watch: {
+    newTweet (newValue) {
+      this.tweets.unshift({
+        TweetId: newValue.id,
+        createdAt: new Date(),
+        description: newValue.tweet,
+        User: {
+          account: this.currentUser.account,
+          name: this.currentUser.name,
+          id: this.currentUser.id,
+          avatar: this.currentUser.avatar
+        }
+      })
+    }
+  },
+
   created () {
     this.isProcessing = true
     this.fetchTweets()
@@ -66,7 +88,6 @@ export default {
           throw new Error(data.message)
         }
 
-        console.log(this.tweets)
         this.tweets.unshift({
           TweetId: data.id,
           createdAt: new Date(),

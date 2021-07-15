@@ -38,7 +38,9 @@ export const shortenTimeFilter = {
 export const shortenNumberFilter = {
   filters: {
     toThousand (num) {
-      if (Number(num) > 1000) {
+      if (!num) {
+        num = 0
+      } else if (Number(num) > 1000) {
         num = (num / 1000).toFixed(1)
         num = String(num) + 'K'
       }

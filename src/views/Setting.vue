@@ -1,6 +1,8 @@
 <template>
   <div class="main__container">
-    <SideNavbar />
+    <div class="left-content">
+      <SideNavbar />
+    </div>
     <div class="setting__form__wrapper">
       <div class="setting__top__navbar__wrapper">
         <TopNavbar
@@ -75,9 +77,17 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
   .main__container {
-    display: flex;
     height: 100%;
     width: auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
+    grid-template-areas: " . left . right right right right";
+    .left-content {
+      grid-area: left;
+    }
+    .setting__form__wrapper {
+      grid-area: right;
+    }
   }
   .setting__form__wrapper {
     width: 100%;

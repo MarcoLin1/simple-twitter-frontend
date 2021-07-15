@@ -55,7 +55,7 @@
         type="checkbox"
         class="toggle__control"
       >
-      <NewPostModal />
+      <NewPostModal @after-side-submit="handleAfterSubmit" />
     </template>
     <div class="bottom-item-container">
       <div
@@ -83,6 +83,11 @@ export default {
     Logo,
     NewPostModal
   },
+  data () {
+    return {
+      newTweet: {}
+    }
+  },
   computed: {
     ...mapState(['currentUser'])
   },
@@ -90,6 +95,10 @@ export default {
     logout () {
       this.$store.commit('revokeAuthentication')
       this.$router.push('/login')
+    },
+    handleAfterSubmit (data) {
+      this.newTweet = data
+      this.$emit('after-side-submit', data)
     }
   }
 }
@@ -105,7 +114,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 15px;
 }
 .nav-item-container {
   height: 50%;
