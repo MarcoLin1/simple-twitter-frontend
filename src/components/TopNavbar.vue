@@ -39,42 +39,57 @@
 
 <script>
 // import { mapState } from 'vuex'
-import userAPI from './../apis/users'
+// import userAPI from './../apis/users'
 export default {
   props: {
     currentPage: {
       type: String,
       required: true
+    },
+    initialName: {
+      type: [Number, String]
+    },
+    initialUserTweetsLength: {
+      type: [Number, String]
     }
+
   },
   data () {
     return {
-      name: '',
-      userTweetsLength: ''
+      name: this.initialName,
+      userTweetsLength: this.initialUserTweetsLength
+    }
+  },
+  watch: {
+    initialName (newValue) {
+      this.name = newValue
+    },
+    initialUserTweetsLength (newValue) {
+      this.userTweetsLength = newValue
     }
   },
   created () {
-    const { id } = this.$route.params
-    if (!id) {
-      console.log(id)
-    } else {
-      this.fetchUserData(id)
-    }
+    // const { id } = this.$route.params
+    // if (!id) {
+    //   console.log(id)
+    // } else {
+    //   this.fetchUserData(id)
+    // }
   },
   methods: {
-    async fetchUserData (userId) {
-      try {
-        const { data } = await userAPI.getUserTweets({ userId })
-        this.name = data[0].User.name
-        this.userTweetsLength = data.length
-      } catch (e) {
-        console.log(e)
-        // Toast.fire({
-        //   icon: 'error',
-        //   title: 'user data讀取失敗'
-        // })
-      }
-    }
+    // async fetchUserData (userId) {
+    //   try {
+    //     const { data } = await userAPI.getUserTweets({ userId })
+    //     this.name = data[0].User.name
+    //     this.userTweetsLength = data.length
+    //   } catch (e) {
+    //     console.log(e)
+    //     // Toast.fire({
+    //     //   icon: 'error',
+    //     //   title: 'user data讀取失敗'
+    //     // })
+    //   }
+    // }
   }
 }
 </script>
