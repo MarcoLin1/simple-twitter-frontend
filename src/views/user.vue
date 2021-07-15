@@ -32,12 +32,7 @@ export default {
   data () {
     return {
       topUsers: [],
-<<<<<<< HEAD
-      name: '',
-      userTweetsLength: ''
-=======
       newTweet: {}
->>>>>>> develop
     }
   },
   beforeRouteUpdate (to, from, next) {
