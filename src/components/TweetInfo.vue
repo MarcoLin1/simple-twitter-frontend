@@ -4,7 +4,7 @@
       <div class="tweet__info__top__wrapper">
         <div class="tweet__info__image_wrapper">
           <img
-            :src="tweet.User.avatar"
+            :src="tweet.User.avatar | emptyImage"
             alt="使用者的大頭貼"
             class="tweet__info__image"
           >
@@ -80,14 +80,14 @@
 // import ReplyPostModal from './../components/ReplyPostModal.vue'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
-import { localTimeFilter } from './../utils/mixins'
+import { localTimeFilter, emptyImageFilter } from './../utils/mixins'
+
 import { Toast } from '../utils/helper'
 export default {
   components: {
     ReplyPostModal
-    // ReplyPostModal
   },
-  mixins: [localTimeFilter],
+  mixins: [localTimeFilter, emptyImageFilter],
   props: {
     initialTweet: {
       type: Object,

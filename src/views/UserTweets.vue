@@ -12,7 +12,7 @@
         <UserPostItem :user-id="userId" />
         <template>
           <div
-            v-if="!post"
+            v-if="!posts"
             class="empty-message"
           >
             目前沒有推文，快去新增推文吧！

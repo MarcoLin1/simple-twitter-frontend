@@ -14,7 +14,7 @@
             <div class=" user__list__content__avator ">
               <img
                 class="avatar-img"
-                :src="user.avatar"
+                :src="user.avatar | emptyImage"
                 alt=""
               >
             </div>
@@ -127,8 +127,11 @@ a{
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
+import { emptyImageFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
+
 export default {
+  mixins: [emptyImageFilter],
   props: {
     topUsers: {
       type: Array,

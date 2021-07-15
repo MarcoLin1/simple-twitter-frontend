@@ -37,7 +37,7 @@
           :to="{name: 'user-tweets', params: {id: following.Followings.id}}"
         >
           <img
-            :src="following.Followings.avatar"
+            :src="following.Followings.avatar | emptyImage"
             alt=""
             class="users__list__image"
           >
@@ -182,12 +182,14 @@
 <script>
 import { Toast } from '../utils/helper'
 import userAPI from '../apis/users'
+import { emptyImageFilter } from './../utils/mixins'
 
 export default {
+  mixins: [emptyImageFilter],
   props: {
     initialFollowings: {
       type: [Object, Array],
-      require: true
+      required: true
     }
   },
   data () {

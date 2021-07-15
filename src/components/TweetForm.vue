@@ -5,7 +5,7 @@
         <div class="tweet__form__image">
           <img
             class="avatar-img"
-            :src="currentUser.avatar"
+            :src="currentUser.avatar | emptyImage"
             alt=""
           >
         </div>
@@ -19,7 +19,15 @@
           placeholder="有什麼新鮮事?"
         />
       </div>
+
       <div class="tweet__form__button__wrapper">
+        <div
+          v-show="description"
+          class="alert-text"
+          :class="{hint:description.length > 130}"
+        >
+          {{ countNum }}
+        </div>
         <button
           type="submit"
           class="tweet__form__button"
@@ -35,8 +43,10 @@
 
 <script>
 import { Toast } from '../utils/helper'
+import { emptyImageFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 export default {
+  mixins: [emptyImageFilter],
   data () {
     return {
       description: '',
@@ -44,7 +54,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
+    ...mapState(['currentUser', 'isAuthenticated']),
+    countNum: function () {
+      return 140 - this.description.length
+    }
   },
   methods: {
     handleSubmit () {
@@ -76,6 +89,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+
   .tweet__form__wrapper {
     width: 600px;
     height: auto;
@@ -107,7 +121,10 @@ export default {
     }
   }
   .tweet__form__button__wrapper {
-    text-align: end;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
     .tweet__form__button {
       width: 64px;
       height: 40px;
