@@ -1,8 +1,10 @@
 <template>
   <div class="users__list__container">
     <div
+      v-if="followers.Followers.name === null"
       class="users__list__main__container"
-    >
+    />
+    <template v-else>
       <div
         v-for="follower in followers"
         :key="follower.Followers.id"
@@ -50,7 +52,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -160,16 +162,8 @@
 import { Toast } from '../utils/helper'
 import { emptyImageFilter } from './../utils/mixins'
 import userAPI from './../apis/users'
-import { emptyImageFilter } from './../utils/mixins'
 export default {
   mixins: [emptyImageFilter],
-
-  props: {
-    initialFollowers: {
-      type: [Object, Array],
-      required: true
-    }
-  },
   data () {
     return {
       followers: []

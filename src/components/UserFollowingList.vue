@@ -1,8 +1,10 @@
 <template>
   <div class="users__list__container">
     <div
+      v-if="followings.Followings.name === null"
       class="users__list__main__container"
-    >
+    />
+    <template v-else>
       <div
         v-for="following in followings"
         :key="following.Followings.id"
@@ -50,7 +52,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -131,12 +133,6 @@ import { emptyImageFilter } from './../utils/mixins'
 
 export default {
   mixins: [emptyImageFilter],
-  props: {
-    initialFollowings: {
-      type: [Object, Array],
-      required: true
-    }
-  },
   data () {
     return {
       followings: []
