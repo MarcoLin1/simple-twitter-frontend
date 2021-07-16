@@ -20,6 +20,11 @@ const authorizeIsUser = (to, from, next) => {
 
 const routes = [
   {
+    path: '/chatroom',
+    name: 'chatroom',
+    component: () => import('./../views/ChatRoom.vue')
+  },
+  {
     path: '/admin/login',
     name: 'admin-login',
     component: () => import('./../views/AdminLogin.vue')
