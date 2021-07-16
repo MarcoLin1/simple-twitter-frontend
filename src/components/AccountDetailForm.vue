@@ -167,22 +167,40 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        // this.isProcessing = true
-        if (!this.newUser.name || !this.newUser.account || !this.newUser.password || !this.newUser.checkPassword) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請確認所有欄位皆已填寫'
-          })
-          return
-        }
-        if (this.newUser.password !== this.newUser.checkPassword) {
-          Toast.fire({
-            icon: 'warning',
-            title: '兩次密碼輸入不相符，請重新輸入'
-          })
-          this.newUser.password = ''
-          this.newUser.checkPassword = ''
-          return
+        if (this.$route.path.slice(0, 7) === '/signup') {
+          if (!this.newUser.name || !this.newUser.account || !this.newUser.password || !this.newUser.checkPassword) {
+            Toast.fire({
+              icon: 'warning',
+              title: '請確認所有欄位皆已填寫'
+            })
+            return
+          }
+          if (this.newUser.password !== this.newUser.checkPassword) {
+            Toast.fire({
+              icon: 'warning',
+              title: '兩次密碼輸入不相符，請重新輸入'
+            })
+            this.newUser.password = ''
+            this.newUser.checkPassword = ''
+            return
+          }
+        } else if (this.$route.path.includes('/setting')) {
+          if (!this.currentUser.name || !this.currentUser.account || !this.currentUser.password || !this.currentUser.checkPassword) {
+            Toast.fire({
+              icon: 'warning',
+              title: '請確認所有欄位皆已填寫'
+            })
+            return
+          }
+          if (this.currentUser.password !== this.currentUser.checkPassword) {
+            Toast.fire({
+              icon: 'warning',
+              title: '兩次密碼輸入不相符，請重新輸入'
+            })
+            this.newUser.password = ''
+            this.newUser.checkPassword = ''
+            return
+          }
         }
         this.$emit('after-submit', this.currentUser)
         this.$emit('after-register', this.newUser)
