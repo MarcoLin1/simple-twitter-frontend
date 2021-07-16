@@ -135,37 +135,11 @@ export default {
   },
   data () {
     return {
-      newTweet: {},
-      userId: 0,
-      userItems: [
-        {
-          itemId: 1,
-          title: '首頁',
-          link: '/mainpage',
-          icon: 'icon-main-wrapper'
-        },
-        {
-          itemId: 2,
-          title: '個人資料',
-          link: { name: 'user-tweets', params: 0 },
-          icon: 'icon-user-wrapper'
-        },
-        {
-          itemId: 3,
-          title: '設定',
-          link: { name: 'setting' },
-          icon: 'icon-setting-wrapper'
-        }
-      ]
+      newTweet: {}
     }
   },
   computed: {
     ...mapState(['currentUser'])
-  },
-  created () {
-    this.userId = this.currentUser.id
-    console.log(this.userItems[1].link.params)
-    this.userItems[1].link.params = this.currentUser.id
   },
   methods: {
     logout () {
