@@ -4,70 +4,49 @@
       <div class="logo-wrapper">
         <Logo />
       </div>
+      <SideNavBarItem
+        v-for="userItem in userItems"
+        :key="userItem.itemId"
+        :initial-nav-item="userItem"
+      />
       <!-- user 畫面 -->
-      <template v-if="!$route.path.includes('admin')">
+      <template>
         <router-link
-          class="side-navbar-item"
-          to="/mainpage"
+          class="side-navbar-main-wrapper"
+          :to="$route.path.slice(0, 6) === '/admin' ?'/admin/tweets':'/mainpage'"
         >
           <div class="icon-wrapper icon-main-wrapper" />
           <div class="content">
-            首頁
+            {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
-          to="/mainpage"
-        >
-          <div class="icon-wrapper icon-notify-wrapper" />
-          <div class="content">
-            <div class="notify-point" />
-            通知
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/mainpage"
-        >
-          <div class="icon-wrapper icon-mail-wrapper" />
-          <div class="content">
-            <div class="notify-point" />
-            公開聊天室
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/mainpage"
-        >
-          <div class="icon-wrapper icon-mail-wrapper" />
-
-          <div class="content">
-            私人訊息
-            <div class="notify-point" />
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          :to="{name: 'user-tweets', params: {id: currentUser.id}}"
+          class="side-navbar-user-wrapper"
+          :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets', params: {id: currentUser.id}}"
         >
           <div class="icon-wrapper icon-user-wrapper" />
           <div class="content">
-            個人資料
+            {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
-          to="/setting"
+          class="side-navbar-setting-wrapper"
+          :to="{name: $route.path.slice(0, 6) !== '/admin' ? 'setting': ''}"
         >
           <div
+            v-if="$route.path.slice(0, 6) !== '/admin'"
             class="icon-wrapper icon-setting-wrapper"
           />
-          <div class="content">
+          <div
+            v-if="$route.path.slice(0, 6) !== '/admin'"
+            class="content"
+          >
             設定
           </div>
         </router-link>
         <div
-          class="side-navbar-item"
+          v-if="$route.path.slice(0, 6) !== '/admin'"
+          class="side-navbar-button-wrapper"
         >
           <label
             class="side-navbar-button toggle__label"
@@ -76,27 +55,6 @@
             推文
           </label>
         </div>
-      </template>
-      <!-- admin畫面 -->
-      <template v-else>
-        <router-link
-          class="side-navbar-item"
-          to="/admin/tweets"
-        >
-          <div class="icon-wrapper icon-main-wrapper" />
-          <div class="content">
-            推文清單
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/admin-users"
-        >
-          <div class="icon-wrapper icon-user-wrapper" />
-          <div class="content">
-            使用者列表
-          </div>
-        </router-link>
       </template>
     </div>
     <template>
@@ -124,14 +82,16 @@
 </template>
 
 <script>
-import Logo from './../assets/icon/logo.vue'
-import NewPostModal from './../components/NewPostModal.vue'
+import Logo from '../assets/icon/logo.vue'
+import NewPostModal from './NewPostModal.vue'
+import SideNavBarItem from './SideNavBarItem.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     Logo,
-    NewPostModal
+    NewPostModal,
+    SideNavBarItem
   },
   data () {
     return {
@@ -184,59 +144,34 @@ export default {
 @import '../assets/scss/main.scss';
 a {
   cursor: inherit;
-  text-decoration: none;
 }
-
 .side-navbar-container {
   width: 100%;
+  max-width: 150px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  margin: 0 15px;
 }
 .nav-item-container {
+  height: 50%;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
   width: 50px;
-  margin: 15px auto;
-}
-.side-navbar-item{
-  display: flex;
-  align-items: center;
-  margin: 14px 0;
-  &:hover{
-    .icon-wrapper{
-      background: $orange;
-    }
-    .content{
-      color: $orange
-    }
-  }
-
-}
-
-.logo-wrapper{
-  margin-bottom:30px;
+  margin: 0 auto;
 }
 .bottom-item-container {
   display: flex;
-  .side-navbar-logout-wrapper{
-    display: flex;
-    align-items: center;
-    &:hover{
-      .icon-wrapper{
-      background: $orange;
-    }
-      .content{
-      color: $orange
-    }
-    }
-  }
+  justify-content: center;
+  align-items: center;
 }
-
+.side-navbar-setting-wrapper {
+  height: 40px;
+}
 .side-navbar-button {
   display: flex;
   align-items: center;
@@ -246,67 +181,51 @@ a {
 .icon-wrapper {
   width: 40px;
   height: 40px;
-
 }
 .icon-main-wrapper {
   mask-image: url('./../assets/icon/icon_main.svg');
   -webkit-mask-image: url('./../assets/icon/icon_main.svg');
   cursor: pointer;
   @extend %icon-style;
+  &:hover {
+    background: $orange;
+  }
 }
 .icon-user-wrapper {
   mask-image: url('./../assets/icon/icon_user.svg');
   -webkit-mask-image: url('./../assets/icon/icon_user.svg');
   cursor: pointer;
   @extend %icon-style;
-
+  &:hover {
+    background: $orange;
+  }
 }
 .icon-setting-wrapper {
   mask-image: url('./../assets/icon/icon_setting.svg');
   -webkit-mask-image: url('./../assets/icon/icon_setting.svg');
   cursor: pointer;
   @extend %icon-style;
-
+  &:hover {
+    background: $orange;
+  }
 }
 .icon-logout-wrapper {
   mask-image: url('./../assets/icon/icon_logout.svg');
   -webkit-mask-image: url('./../assets/icon/icon_logout.svg');
   cursor: pointer;
   @extend %icon-style;
-
-}
-.icon-notify-wrapper{
-    mask-image: url('./../assets/icon/icon_subscribe.svg');
-    -webkit-mask-image: url('./../assets/icon/icon_subscribe.svg');
-    cursor: pointer;
-    @extend %icon-style;
-
+  &:hover {
+    background: $orange;
   }
-.icon-mail-wrapper{
-    mask-image: url('./../assets/icon/icon_email.svg');
-    -webkit-mask-image: url('./../assets/icon/icon_email.svg');
-    cursor: pointer;
-    @extend %icon-style;
-
 }
 .content {
   display: none;
   cursor: pointer;
   color: $black;
   text-decoration: none;
-  position: relative;
-
-  .notify-point{
-    position: absolute;
-    top: -2px;
-    left: -29px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 1px solid  white;
-    background-color: $orange;
+  &:hover {
+    text-decoration: none;
   }
-
 }
 .side-navbar-button {
   width: auto;
@@ -340,7 +259,25 @@ a {
     width: 210px;
     align-items: normal;
   }
-
+  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
+  .side-navbar-setting-wrapper, .side-navbar-logout-wrapper {
+    display: flex;
+    align-items: center;
+    width: auto;
+    text-decoration: none;
+  }
+  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
+  .side-navbar-setting-wrapper, .bottom-item-container {
+    &:hover {
+      .content {
+        color: $orange;
+      }
+      .icon-main-wrapper, .icon-user-wrapper,
+      .icon-setting-wrapper, .icon-logout-wrapper {
+        background: $orange;
+      }
+    }
+  }
   .content {
     display: block;
     width: 100%;
