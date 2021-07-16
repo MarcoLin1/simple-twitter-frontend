@@ -1,16 +1,29 @@
 <template>
-  <div>
+  <div class="m-5">
     <h1>123</h1>
-    <button
-      type="button"
-      @click="clickButton('ooooo')"
-    >
-      test
-    </button>
+    <form action="">
+      <textarea
+        v-model="content"
+        rows="8"
+        cols="40"
+        type="text"
+      />
+      <button
+        type="submit"
+        @click="clickButton"
+      >
+        test
+      </button>
+    </form>
   </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      content: ''
+    }
+  },
   sockets: {
     connect: function () {
       console.log('socket connected')

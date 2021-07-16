@@ -4,50 +4,58 @@
       <div class="logo-wrapper">
         <Logo />
       </div>
-      <router-link
-        class="side-navbar-main-wrapper"
-        :to="$route.path.slice(0, 6) === '/admin' ?'/admin/tweets':'/mainpage'"
-      >
-        <div class="icon-wrapper icon-main-wrpper" />
-        <div class="content">
-          {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
-        </div>
-      </router-link>
-      <router-link
-        class="side-navbar-user-wrapper"
-        :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets', params: {id: currentUser.id}}"
-      >
-        <div class="icon-wrapper icon-user-wrpper" />
-        <div class="content">
-          {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
-        </div>
-      </router-link>
-      <router-link
-        class="side-navbar-setting-wrapper"
-        :to="{name: $route.path.slice(0, 6) !== '/admin' ? 'setting': ''}"
-      >
+      <SideNavBarItem
+        v-for="userItem in userItems"
+        :key="userItem.itemId"
+        :initial-nav-item="userItem"
+      />
+      <!-- user 畫面 -->
+      <template>
+        <router-link
+          class="side-navbar-main-wrapper"
+          :to="$route.path.slice(0, 6) === '/admin' ?'/admin/tweets':'/mainpage'"
+        >
+          <div class="icon-wrapper icon-main-wrapper" />
+          <div class="content">
+            {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
+          </div>
+        </router-link>
+        <router-link
+          class="side-navbar-user-wrapper"
+          :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets', params: {id: currentUser.id}}"
+        >
+          <div class="icon-wrapper icon-user-wrapper" />
+          <div class="content">
+            {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
+          </div>
+        </router-link>
+        <router-link
+          class="side-navbar-setting-wrapper"
+          :to="{name: $route.path.slice(0, 6) !== '/admin' ? 'setting': ''}"
+        >
+          <div
+            v-if="$route.path.slice(0, 6) !== '/admin'"
+            class="icon-wrapper icon-setting-wrapper"
+          />
+          <div
+            v-if="$route.path.slice(0, 6) !== '/admin'"
+            class="content"
+          >
+            設定
+          </div>
+        </router-link>
         <div
           v-if="$route.path.slice(0, 6) !== '/admin'"
-          class="icon-wrapper icon-setting-wrpper"
-        />
-        <div
-          v-if="$route.path.slice(0, 6) !== '/admin'"
-          class="content"
+          class="side-navbar-button-wrapper"
         >
-          設定
+          <label
+            class="side-navbar-button toggle__label"
+            for="toggle__control"
+          >
+            推文
+          </label>
         </div>
-      </router-link>
-      <div
-        v-if="$route.path.slice(0, 6) !== '/admin'"
-        class="side-navbar-button-wrapper"
-      >
-        <label
-          class="side-navbar-button toggle__label"
-          for="toggle__control"
-        >
-          推文
-        </label>
-      </div>
+      </template>
     </div>
     <template>
       <input
@@ -59,7 +67,7 @@
     </template>
     <div class="bottom-item-container">
       <div
-        class="side-navbar-logout-wrpper"
+        class="side-navbar-logout-wrapper"
         @click="logout"
       >
         <div
@@ -76,20 +84,48 @@
 <script>
 import Logo from './../assets/icon/logo.vue'
 import NewPostModal from './../components/NewPostModal.vue'
+import SideNavBarItem from './../components/SideNavBarItem.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     Logo,
-    NewPostModal
+    NewPostModal,
+    SideNavBarItem
   },
   data () {
     return {
-      newTweet: {}
+      newTweet: {},
+      userId: 0,
+      userItems: [
+        {
+          itemId: 1,
+          title: '首頁',
+          link: '/mainpage',
+          icon: 'icon-main-wrapper'
+        },
+        {
+          itemId: 2,
+          title: '個人資料',
+          link: { name: 'user-tweets', params: 0 },
+          icon: 'icon-user-wrapper'
+        },
+        {
+          itemId: 3,
+          title: '設定',
+          link: { name: 'setting' },
+          icon: 'icon-setting-wrapper'
+        }
+      ]
     }
   },
   computed: {
     ...mapState(['currentUser'])
+  },
+  created () {
+    this.userId = this.currentUser.id
+    console.log(this.userItems[1].link.params)
+    this.userItems[1].link.params = this.currentUser.id
   },
   methods: {
     logout () {
@@ -146,7 +182,7 @@ a {
   width: 40px;
   height: 40px;
 }
-.icon-main-wrpper {
+.icon-main-wrapper {
   mask-image: url('./../assets/icon/icon_main.svg');
   -webkit-mask-image: url('./../assets/icon/icon_main.svg');
   cursor: pointer;
@@ -155,7 +191,7 @@ a {
     background: $orange;
   }
 }
-.icon-user-wrpper {
+.icon-user-wrapper {
   mask-image: url('./../assets/icon/icon_user.svg');
   -webkit-mask-image: url('./../assets/icon/icon_user.svg');
   cursor: pointer;
@@ -164,7 +200,7 @@ a {
     background: $orange;
   }
 }
-.icon-setting-wrpper {
+.icon-setting-wrapper {
   mask-image: url('./../assets/icon/icon_setting.svg');
   -webkit-mask-image: url('./../assets/icon/icon_setting.svg');
   cursor: pointer;
@@ -224,7 +260,7 @@ a {
     align-items: normal;
   }
   .side-navbar-main-wrapper, .side-navbar-user-wrapper,
-  .side-navbar-setting-wrapper, .side-navbar-logout-wrpper {
+  .side-navbar-setting-wrapper, .side-navbar-logout-wrapper {
     display: flex;
     align-items: center;
     width: auto;
@@ -236,8 +272,8 @@ a {
       .content {
         color: $orange;
       }
-      .icon-main-wrpper, .icon-user-wrpper,
-      .icon-setting-wrpper, .icon-logout-wrapper {
+      .icon-main-wrapper, .icon-user-wrapper,
+      .icon-setting-wrapper, .icon-logout-wrapper {
         background: $orange;
       }
     }

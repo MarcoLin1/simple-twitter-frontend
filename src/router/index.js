@@ -60,7 +60,8 @@ const routes = [
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: () => import('./../views/UserTweets.vue')
+        component: () => import('./../views/UserTweets.vue'),
+        props: true
       },
       {
         path: 'likes',
@@ -96,6 +97,7 @@ const routes = [
   {
     path: '/user',
     name: 'user',
+    props: true,
     component: () => import('./../views/user.vue'),
     beforeEnter: authorizeIsUser,
     children: [
