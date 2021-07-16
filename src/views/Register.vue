@@ -29,6 +29,7 @@ export default {
     async handleAfterSubmit (formData) {
       try {
         this.isProcessing = true
+        console.log('after')
         const { data } = await authorizationAPI.register({
           name: formData.name,
           account: formData.account,
@@ -36,6 +37,7 @@ export default {
           password: formData.password,
           checkPassword: formData.checkPassword
         })
+        console.log('data.message', data.status)
         if (data.message.includes('帳號重複')) {
           Toast.fire({
             icon: 'warning',
@@ -50,7 +52,7 @@ export default {
           })
           this.isProcessing = false
           return
-        } else if (data.status !== 'success') {
+        } else if (data.status === 'error') {
           this.isProcessing = false
           throw new Error(data.message)
         }
@@ -60,13 +62,28 @@ export default {
         })
         this.isProcessing = false
         this.$router.push({ name: 'login' })
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log(error)
         this.isProcessing = false
-        Toast.fire({
-          icon: 'error',
-          title: '註冊失敗，請確認註冊的帳號密碼'
-        })
+        console.log('wrong', error.response.data)
+        if (error.response.data.message.includes('帳號重複')) {
+          Toast.fire({
+            icon: 'warning',
+            title: '此帳號已有人註冊，請重新輸入'
+          })
+          this.isProcessing = false
+        } else if (error.response.data.message.includes('信箱重複')) {
+          Toast.fire({
+            icon: 'warning',
+            title: '此信箱已被註冊，請重新輸入'
+          })
+          this.isProcessing = false
+        } else {
+          Toast.fire({
+            icon: 'error',
+            title: '註冊失敗，請確認註冊的帳號密碼'
+          })
+        }
       }
     }
   }

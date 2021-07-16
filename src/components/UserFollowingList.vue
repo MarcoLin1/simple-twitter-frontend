@@ -1,7 +1,7 @@
 <template>
   <div class="users__list__container">
     <div
-      v-if="followings.Followings.name === null"
+      v-if="followings.length===0"
       class="users__list__main__container"
     />
     <template v-else>
@@ -151,6 +151,7 @@ export default {
     async fetchUser (userId) {
       try {
         const { data } = await userAPI.getUserFollowing({ userId })
+        console.log(data)
         this.followings = data
         console.log('this followings:', this.followings)
       } catch (e) {
