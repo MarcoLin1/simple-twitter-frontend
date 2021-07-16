@@ -145,9 +145,13 @@ import { Toast } from './../utils/helper'
 import { mapState } from 'vuex'
 
 export default {
+  props: {
+    isProcessing: {
+      type: Boolean
+    }
+  },
   data () {
     return {
-      isProcessing: false,
       newUser: {
         id: -1,
         name: '',
@@ -163,13 +167,12 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        this.isProcessing = true
+        // this.isProcessing = true
         if (!this.newUser.name || !this.newUser.account || !this.newUser.password || !this.newUser.checkPassword) {
           Toast.fire({
             icon: 'warning',
             title: '請確認所有欄位皆已填寫'
           })
-          this.isProcessing = false
           return
         }
         if (this.newUser.password !== this.newUser.checkPassword) {
@@ -179,15 +182,12 @@ export default {
           })
           this.newUser.password = ''
           this.newUser.checkPassword = ''
-          this.isProcessing = false
           return
         }
 
         this.$emit('after-submit', this.currentUser)
         this.$emit('after-register', this.newUser)
-        this.isProcessing = false
       } catch (error) {
-        this.isProcessing = false
         console.log(error)
         Toast.fire({
           icon: 'error',

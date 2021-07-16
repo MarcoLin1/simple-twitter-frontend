@@ -55,12 +55,14 @@ export default {
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
     this.fetchUserData(id)
+    this.fetchUser(id)
     next()
   },
   created () {
     const { id } = this.$route.params
     this.fetchTopUser()
     this.fetchUserData(id)
+    this.fetchUser(id)
   },
   methods: {
     async fetchTopUser () {
@@ -79,12 +81,27 @@ export default {
       try {
         this.isLoading = true
         const { data } = await userAPI.getUserTweets({ userId })
-        this.name = data[0].User.name
         this.userTweetsLength = data.length
         this.isLoading = false
       } catch (e) {
         console.log(e)
         this.isLoading = false
+      }
+    },
+    async fetchUser (userId) {
+      try {
+        this.isLoading = true
+        const { data } = await userAPI.getUser({ userId })
+        // this.initialUser = data
+        this.name = data.name
+        this.isLoading = false
+      } catch (e) {
+        console.log(e)
+        this.isLoading = false
+        Toast.fire({
+          icon: 'error',
+          title: 'user頁面資料讀取失敗'
+        })
       }
     },
     handleAfterSubmit (data) {

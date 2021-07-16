@@ -3,7 +3,10 @@
     <Logo />
     <h1>建立你的帳號</h1>
     <div class="form-wrapper">
-      <AccountDetailForm @after-register="handleAfterSubmit" />
+      <AccountDetailForm
+        :is-processing="isProcessing"
+        @after-register="handleAfterSubmit"
+      />
     </div>
   </div>
 </template>
@@ -19,12 +22,13 @@ export default {
   },
   data () {
     return {
-      try: ''
+      isProcessing: false
     }
   },
   methods: {
     async handleAfterSubmit (formData) {
       try {
+        this.isProcessing = true
         const { data } = await authorizationAPI.register({
           name: formData.name,
           account: formData.account,
@@ -37,24 +41,28 @@ export default {
             icon: 'warning',
             title: '此帳號已有人註冊，請重新輸入'
           })
+          this.isProcessing = false
           return
         } else if (data.message.includes('信箱重複')) {
           Toast.fire({
             icon: 'warning',
             title: '此信箱已被註冊，請重新輸入'
           })
+          this.isProcessing = false
           return
         } else if (data.status !== 'success') {
+          this.isProcessing = false
           throw new Error(data.message)
         }
         Toast.fire({
           icon: 'success',
           title: '註冊成功'
         })
-
+        this.isProcessing = false
         this.$router.push({ name: 'login' })
       } catch (e) {
         console.log(e)
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '註冊失敗，請確認註冊的帳號密碼'

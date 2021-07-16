@@ -97,7 +97,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await userAPI.getUserTweets({ userId })
-        this.name = data[0].User.name
         this.userTweetsLength = data.length
         this.posts = data
         this.newTweet = data
@@ -113,6 +112,7 @@ export default {
         this.isLoading = true
         const { data } = await userAPI.getUser({ userId })
         this.initialUser = data
+        this.name = data.name
         this.isLoading = false
       } catch (e) {
         console.log(e)
