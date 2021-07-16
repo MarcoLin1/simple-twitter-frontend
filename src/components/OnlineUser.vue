@@ -1,115 +1,87 @@
 <template>
-  <div class="online__user__container">
-    <div class="online__user__top__wrapper">
-      <div class="online__user__title">
-        上線使用者 (3)
-      </div>
+  <div class="online_container">
+    <div class="online_container__title">
+      上線使用者 ({{ users.length || 0 }})
     </div>
-    <div class="online__user__list__wrapper">
-      <div class="online__user__image">
+    <div
+      v-for="user in users"
+      :key="user.id"
+      class="online_container__list"
+    >
+      <div class="online_container__list__avatar">
         <img
-          src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+          :src="user.avatar"
           alt=""
-          class="online__user__image"
+          class="avatar-img"
         >
       </div>
-      <div class="online__user__name">
-        Johnny Wade Apple
-      </div>
-      <div class="online__user__account">
-        @JWA
-      </div>
-    </div>
-    <div class="online__user__list__wrapper">
-      <div class="online__user__image">
-        <img
-          src="https://media.gq.com.tw/photos/60618e268f400a3df8cf9c1a/master/pass/lgtxGlA.png"
-          alt=""
-          class="online__user__image"
-        >
-      </div>
-      <div class="online__user__name">
-        Running Man
-      </div>
-      <div class="online__user__account">
-        @Runner
-      </div>
-    </div>
-    <div class="online__user__list__wrapper">
-      <div class="online__user__image">
-        <img
-          src="https://www.mings-fashion.com/wp-content/uploads/2020/04/jordan-air-logo-png-transparent.png"
-          alt=""
-          class="online__user__image"
-        >
-      </div>
-      <div class="online__user__name">
-        Jordam Apple
-      </div>
-      <div class="online__user__account">
-        @Japp
+      <div class="online_container__list__info">
+        <span class="online_container__list__info__name user-name">{{ user.name }}</span>
+        <span class="online_container__list__info__account">@{{ user.account }}</span>
       </div>
     </div>
   </div>
 </template>
-
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .online__user__container {
-    border: 1px solid $light-gray;
-    height: 100vh;
-    width: 500px;
-    margin: 0 auto;
-    background: #ecf0f3;
-    .online__user__top__wrapper {
-      border-bottom: 1px solid $light-gray;
-      display: flex;
-      align-items: center;
-      font-size: 18px;
-      font-weight: 700;
-      padding: 13px 0 14px 16px;
-    }
-    .online__user__list__wrapper {
-      border-bottom: 1px solid $light-gray;
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      &:hover {
-        box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
-        border-radius: 20px;
-        padding: 10px;
-        cursor: pointer;
-      }
-      .online__user__image {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 10px;
-        cursor: pointer;
-      }
-      .online__user__name {
-        font-weight: 700;
-        margin-right: 10px;
-      }
-      .online__user__account {
-        font-size: 0.8rem;
+.online_container{
+  border: 1px solid $light-gray;
+  min-height: 100vh;
+  width: 400px;
+  &__title{
+    height: 55px;
+    line-height: 55px;
+    @include text-style(18px, 700, $black);
+    padding: 0  15px;
+    border-bottom: 1px solid $light-gray;
+  }
+  &__list{
+    display: flex;
+    padding: 15px;
+    align-items: center;
+    border-bottom: 1px solid $light-gray;
+    &__info{
+      margin: 0 10px;
+      @include text-style(15px, 700, $black);
+      &__account{
+        margin-left: 6px;
         color: $tx-gray;
       }
     }
   }
+}
 </style>
-
 <script>
-const socket = null
+const dummyUser = [
+  {
+    id: 1,
+    name: 'tina',
+    account: 'tina',
+    avatar: 'https://i.imgur.com/S1Qaqcb.jpeg'
+  },
+  {
+    id: 2,
+    name: 'Marco',
+    account: 'marco',
+    avatar: 'https://i.imgur.com/S1Qaqcb.jpeg'
+  },
+  {
+    id: 3,
+    name: 'YJ',
+    account: 'yj',
+    avatar: 'https://i.imgur.com/S1Qaqcb.jpeg'
+  },
+  {
+    id: 4,
+    name: 'Tim',
+    account: 'tim',
+    avatar: 'https://i.imgur.com/S1Qaqcb.jpeg'
+  }
+]
 export default {
   data () {
     return {
-      message: '555'
-    }
-  },
-  methods: {
-    sendMessage () {
-      socket.emit('user', this.message)
+      users: dummyUser
     }
   }
 }

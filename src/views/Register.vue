@@ -29,6 +29,7 @@ export default {
     async handleAfterSubmit (formData) {
       try {
         this.isProcessing = true
+        console.log('after')
         const { data } = await authorizationAPI.register({
           name: formData.name,
           account: formData.account,

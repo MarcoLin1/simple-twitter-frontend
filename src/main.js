@@ -3,21 +3,21 @@ import App from './App.vue'
 import router from './router'
 import './assets/scss/reset.scss'
 import store from './store'
-import VueSocketIo from 'vue-socket.io'
-import SocketIo from 'socket.io-client'
+import VueSocketIO from 'vue-socket.io'
+import { io } from 'socket.io-client'
 
-Vue.use(new VueSocketIo({
+Vue.config.productionTip = false
+
+Vue.use(new VueSocketIO({
   debug: true,
-  connection: SocketIo('infinite-mountain-11239.herokuapp.com/socket.io/?EIO=4&transport=websocket', { transports: ['websocket'] }),
+  connection: io('https://infinite-mountain-11239.herokuapp.com/', { transports: ['websocket', 'polling'] }),
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
     mutationPrefix: 'SOCKET_'
   },
-  options: { path: '' }
+  options: { path: '/chatroom' }
 }))
-
-Vue.config.productionTip = false
 
 new Vue({
   router,

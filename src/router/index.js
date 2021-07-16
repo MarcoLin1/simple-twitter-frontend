@@ -20,14 +20,13 @@ const authorizeIsUser = (to, from, next) => {
 
 const routes = [
   {
-    path: '/chat',
-    name: 'chat-room',
-    component: () => import('./../components/ChatRoom.vue')
-  },
   {
     path: '/online',
     name: 'online-user',
     component: () => import('./../components/OnlineUser.vue')
+    path: '/chatroom',
+    name: 'chatroom',
+    component: () => import('./../views/ChatRoom.vue')
   },
   {
     path: '/admin/login',
@@ -65,7 +64,8 @@ const routes = [
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: () => import('./../views/UserTweets.vue')
+        component: () => import('./../views/UserTweets.vue'),
+        props: true
       },
       {
         path: 'likes',
@@ -101,6 +101,7 @@ const routes = [
   {
     path: '/user',
     name: 'user',
+    props: true,
     component: () => import('./../views/user.vue'),
     beforeEnter: authorizeIsUser,
     children: [
