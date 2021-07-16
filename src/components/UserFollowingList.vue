@@ -1,9 +1,15 @@
 <template>
   <div class="users__list__container">
     <div
-      v-if="followings.Followings.name === null"
+      v-if="followings[0].Followings.name === null"
       class="users__list__main__container"
-    />
+    >
+      <div
+        class="empty-message"
+      >
+        目前沒有正在跟隨的對象哦！
+      </div>
+    </div>
     <template v-else>
       <div
         v-for="following in followings"
@@ -133,6 +139,12 @@ import { emptyImageFilter } from './../utils/mixins'
 
 export default {
   mixins: [emptyImageFilter],
+  // props: {
+  //   initialFollowings: {
+  //     type: [Object, Array],
+  //     required: true
+  //   }
+  // },
   data () {
     return {
       followings: []
