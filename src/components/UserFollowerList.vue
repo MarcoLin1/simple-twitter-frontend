@@ -160,16 +160,8 @@
 import { Toast } from '../utils/helper'
 import { emptyImageFilter } from './../utils/mixins'
 import userAPI from './../apis/users'
-import { emptyImageFilter } from './../utils/mixins'
 export default {
   mixins: [emptyImageFilter],
-
-  props: {
-    initialFollowers: {
-      type: [Object, Array],
-      required: true
-    }
-  },
   data () {
     return {
       followers: []
@@ -179,6 +171,7 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
+    console.log(id)
     this.fetchFollowers(id)
     next()
   },

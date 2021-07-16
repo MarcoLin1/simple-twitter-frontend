@@ -27,8 +27,8 @@ export const localTimeFilter = {
 export const shortenTimeFilter = {
   filters: {
     shortenTime (datatime) {
-      let time = moment(datatime).locale('zh-tw').startOf('day').fromNow()
-      if (time.includes('天')) {
+      let time = moment(datatime).locale('zh-tw').fromNow()
+      if (time.includes('天', '月', '年')) {
         time = moment(datatime).locale('zh-tw').format('MMMDo')
       }
       return (time || '-')

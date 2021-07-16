@@ -5,7 +5,7 @@
       <template v-else>
         <template>
           <div
-            v-if="!post"
+            v-if="!userLikes"
             class="empty-message"
           >
             目前沒有喜歡的推文內容哦，快去按讚吧！
@@ -18,6 +18,7 @@
               :like-num="post.likeCount"
             />
           </template>
+        </template>
       </template>
     </div>
   </div>
@@ -28,11 +29,13 @@ import UserPost from './../components/UserPost.vue'
 import { Toast } from '../utils/helper'
 import userAPI from './../apis/users'
 import { mapState } from 'vuex'
+import Spinner from './../components/Spinner.vue'
 
 export default {
   name: 'UserLikes',
   components: {
-    UserPost
+    UserPost,
+    Spinner
   },
   data () {
     return {
@@ -40,7 +43,8 @@ export default {
       userId: '',
       initialUser: [],
       initialFollowers: [],
-      initialFollowing: false
+      initialFollowing: false,
+      isLoading: true
     }
   },
   computed: {
@@ -62,6 +66,7 @@ export default {
         const { data } = await userAPI.getUserLikes({ userId })
         this.userLikes = data
         console.log(data)
+        this.isLoading = false
       } catch (e) {
         console.log(e)
         Toast.fire({
