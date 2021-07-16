@@ -1,7 +1,6 @@
 <template>
   <div class="user__tweet__container">
     <div class="user__tweet__main__wrapper">
-      <template>
       <Spinner v-if="isLoading" />
       <template v-else>
         <template>
@@ -12,15 +11,14 @@
             目前沒有推文，快去新增推文吧！
           </div>
           <template v-else>
-          <UserPost
-            v-for="post in posts"
-            :key="post.TweetId"
-            :initial-tweet="post"
-            :like-num="post.likeCount"
-          />
+            <UserPost
+              v-for="post in posts"
+              :key="post.TweetId"
+              :initial-tweet="post"
+              :like-num="post.likeCount"
+            />
           </template>
         </template>
-
       </template>
     </div>
   </div>
@@ -31,10 +29,12 @@ import UserPost from './../components/UserPost.vue'
 import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
 import { mapState } from 'vuex'
+import Spinner from './../components/Spinner.vue'
 export default {
   name: 'UserTweets',
   components: {
-    UserPost
+    UserPost,
+    Spinner
   },
   data () {
     return {
@@ -42,7 +42,8 @@ export default {
       userId: '',
       initialUser: [],
       initialFollowers: [],
-      initialFollowing: false
+      initialFollowing: false,
+      isLoading: true
     }
   },
   computed: {
@@ -61,10 +62,13 @@ export default {
   methods: {
     async fetchTweets (userId) {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getUserTweets({ userId })
         this.posts = data
+        this.isLoading = false
       } catch (e) {
         console.log(e)
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '推文資料讀取失敗，請稍後再試'

@@ -3,26 +3,24 @@
     <div
       class="user__replies__main__wrapper"
     >
-      <template>
       <Spinner v-if="isLoading" />
       <template v-else>
         <template>
           <div
-            v-if="!post"
+            v-if="!userReplies"
             class="empty-message"
           >
             目前沒有回覆，快去看看其他人的推文吧！
           </div>
           <template v-else>
-          <UserPost
-            v-for="post in userReplies"
-            :key="post.TweetId"
-            :initial-tweet="post"
-            :like-num="post.likeCount"
-          />
+            <UserPost
+              v-for="post in userReplies"
+              :key="post.TweetId"
+              :initial-tweet="post"
+              :like-num="post.likeCount"
+            />
           </template>
         </template>
-
       </template>
     </div>
   </div>
@@ -33,11 +31,13 @@ import { Toast } from '../utils/helper'
 import { mapState } from 'vuex'
 import userAPI from './../apis/users'
 import UserPost from './../components/UserPost.vue'
+import Spinner from './../components/Spinner.vue'
 
 export default {
   name: 'UserReplies',
   components: {
-    UserPost
+    UserPost,
+    Spinner
   },
   data () {
     return {
@@ -45,7 +45,8 @@ export default {
       userId: '',
       initialUser: [],
       initialFollowers: [],
-      initialFollowing: false
+      initialFollowing: false,
+      isLoading: true
     }
   },
   computed: {
@@ -64,10 +65,13 @@ export default {
   methods: {
     async fetchUserReplies (userId) {
       try {
+        this.isLoading = true
         const { data } = await userAPI.getUserReplies({ userId })
         this.userReplies = data
+        this.isLoading = false
       } catch (e) {
         console.log(e)
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '有回覆訊息的資料讀取失敗，請稍候再試'
