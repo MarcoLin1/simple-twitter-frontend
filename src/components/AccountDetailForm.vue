@@ -182,7 +182,6 @@ export default {
           this.isProcessing = false
           return
         }
-
         this.$emit('after-submit', this.currentUser)
         this.$emit('after-register', this.newUser)
         this.isProcessing = false

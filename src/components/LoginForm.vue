@@ -111,8 +111,6 @@ export default {
         }
         this.$emit('after-submit', data)
         this.isProcessing = false
-        this.password = ''
-        this.account = ''
       } catch (error) {
         console.log('error', error)
         this.isProcessing = false

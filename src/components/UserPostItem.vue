@@ -7,6 +7,7 @@
           :to="{name: 'user-tweets', params:{id: id}}"
           type="button"
           class="post__item__button"
+          :class="{checked:$route.path.includes('tweets')}"
         >
           推文
         </router-link>
@@ -17,16 +18,18 @@
           :to="{name: 'user-replies', params:{id: id}}"
           type="button"
           class="post__item__button"
+          :class="{checked:$route.path.includes('replies')}"
         >
           推文回覆
         </router-link>
       </div>
-      <div class="post__item">
+      <div class="post__item ">
         <!-- 記得改網址 -->
         <router-link
           :to="{name: 'user-likes', params:{id: id}}"
           type="button"
-          class="post__item__button"
+          class="post__item__button "
+          :class="{checked:$route.path.includes('likes')}"
         >
           喜歡的內容
         </router-link>
@@ -36,6 +39,7 @@
 </template>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+
 .liked{
   color: $heart-pink;
   }
@@ -60,8 +64,13 @@
       width: 120px;
       &:hover {
         color: $orange;
+        border-bottom: 1px solid $orange;
       }
       &:focus {
+        border-bottom: 1px solid $orange;
+        color: $orange;
+      }
+      &.checked {
         border-bottom: 1px solid $orange;
         color: $orange;
       }
