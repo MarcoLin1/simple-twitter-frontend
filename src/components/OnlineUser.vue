@@ -50,7 +50,6 @@
     }
   }
 }
-
 </style>
 <script>
 const dummyUser = [
