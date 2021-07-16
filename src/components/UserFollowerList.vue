@@ -10,7 +10,7 @@
         目前沒有跟隨者內容哦！
       </div>
     </div>
-    <template>
+    <template v-else>
       <div
         v-for="follower in followers"
         :key="follower.Followers.id"
