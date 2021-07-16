@@ -37,44 +37,29 @@ export default {
           password: formData.password,
           checkPassword: formData.checkPassword
         })
-        console.log('data.message', data.status)
-        if (data.message.includes('帳號重複')) {
-          Toast.fire({
-            icon: 'warning',
-            title: '此帳號已有人註冊，請重新輸入'
-          })
-          this.isProcessing = false
-          return
-        } else if (data.message.includes('信箱重複')) {
-          Toast.fire({
-            icon: 'warning',
-            title: '此信箱已被註冊，請重新輸入'
-          })
-          this.isProcessing = false
-          return
-        } else if (data.status === 'error') {
+        if (data.status !== 'success') {
           this.isProcessing = false
           throw new Error(data.message)
+        } else {
+          Toast.fire({
+            icon: 'success',
+            title: '註冊成功'
+          })
         }
-        Toast.fire({
-          icon: 'success',
-          title: '註冊成功'
-        })
         this.isProcessing = false
         this.$router.push({ name: 'login' })
       } catch (error) {
         console.log(error)
         this.isProcessing = false
-        console.log('wrong', error.response.data)
         if (error.response.data.message.includes('帳號重複')) {
           Toast.fire({
-            icon: 'warning',
+            icon: 'error',
             title: '此帳號已有人註冊，請重新輸入'
           })
           this.isProcessing = false
         } else if (error.response.data.message.includes('信箱重複')) {
           Toast.fire({
-            icon: 'warning',
+            icon: 'error',
             title: '此信箱已被註冊，請重新輸入'
           })
           this.isProcessing = false

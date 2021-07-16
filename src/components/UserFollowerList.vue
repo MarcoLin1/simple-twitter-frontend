@@ -1,10 +1,16 @@
 <template>
   <div class="users__list__container">
     <div
-      v-if="followers.Followers.name === null"
+      v-if="followers[0].Followers.name === null"
       class="users__list__main__container"
-    />
-    <template v-else>
+    >
+      <div
+        class="empty-message"
+      >
+        目前沒有跟隨者內容哦！
+      </div>
+    </div>
+    <template>
       <div
         v-for="follower in followers"
         :key="follower.Followers.id"

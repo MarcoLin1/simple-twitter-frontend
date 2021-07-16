@@ -167,7 +167,6 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        // this.isProcessing = true
         if (this.$route.path.slice(0, 7) === '/signup') {
           if (!this.newUser.name || !this.newUser.account || !this.newUser.password || !this.newUser.checkPassword) {
             Toast.fire({
