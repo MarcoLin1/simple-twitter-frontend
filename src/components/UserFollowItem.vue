@@ -7,6 +7,7 @@
           :to="{name: 'user-followers'}"
           type="button"
           class="users__list__item__button"
+          :class="{checked:$route.path.includes('followers')}"
         >
           跟隨者
         </router-link>
@@ -17,6 +18,7 @@
           :to="{name: 'user-followings'}"
           type="button"
           class="users__list__item__button"
+          :class="{checked:$route.path.includes('followings')}"
         >
           正在跟隨
         </router-link>
@@ -55,7 +57,7 @@
         border-bottom: 1px solid $orange;
         color: $orange;
       }
-      &:active {
+      &.checked {
         color: $orange;
         border-bottom: 1px solid $orange;
       }

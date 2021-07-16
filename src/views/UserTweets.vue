@@ -23,7 +23,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import UserPost from './../components/UserPost.vue'
 import userAPI from './../apis/users'

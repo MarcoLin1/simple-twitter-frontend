@@ -173,6 +173,7 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
+    console.log(id)
     this.fetchFollowers(id)
     next()
   },

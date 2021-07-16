@@ -184,7 +184,6 @@ export default {
           this.newUser.checkPassword = ''
           return
         }
-
         this.$emit('after-submit', this.currentUser)
         this.$emit('after-register', this.newUser)
       } catch (error) {

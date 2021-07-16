@@ -111,6 +111,7 @@ export default {
       try {
         this.isLoading = true
         const { data } = await userAPI.getUser({ userId })
+        console.log('initialUser', data)
         this.initialUser = data
         this.name = data.name
         this.isLoading = false

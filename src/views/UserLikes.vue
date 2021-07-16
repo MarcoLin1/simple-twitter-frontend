@@ -68,6 +68,7 @@ export default {
         this.userLikes = data
         this.isLoading = false
         console.log(data)
+        this.isLoading = false
       } catch (e) {
         console.log(e)
         this.isLoading = false
