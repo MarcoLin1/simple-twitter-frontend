@@ -163,6 +163,7 @@ export default {
     async fetchUser (userId) {
       try {
         const { data } = await userAPI.getUserFollowing({ userId })
+        console.log(data)
         this.followings = data
         console.log('this followings:', this.followings)
       } catch (e) {
