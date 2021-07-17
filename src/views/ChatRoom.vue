@@ -24,7 +24,8 @@ export default {
   data () {
     return {
       content: '',
-      isConnected: false
+      isConnected: false,
+      users: []
     }
   },
   computed: {
@@ -33,9 +34,12 @@ export default {
   sockets: {
     connect () {
       console.log('socket connected')
-      this.$socket.emit('users', { ...this.currentUser, socketId: this.$socket.id })
+      this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
       console.log(this.$socket.id)
       console.log({ ...this.currentUser, socketsId: this.$socket.id })
+      this.sockets.subscribe('users', (data) => {
+        this.users = data.message
+      })
     },
     disconnect () {
       console.log('socket disconnected')
