@@ -20,6 +20,12 @@ const authorizeIsUser = (to, from, next) => {
 
 const routes = [
   {
+    // Tina 測試
+    path: '/testchat',
+    name: 'testchat',
+    component: () => import('./../views/ChatRoom.vue')
+  },
+  {
     path: '/publicchat',
     name: 'public-chat',
     component: () => import('./../views/PublicChat.vue')

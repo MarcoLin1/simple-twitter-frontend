@@ -1,49 +1,52 @@
 <template>
   <div class="m-5">
-    <OnlineUser>
-      <h1>123</h1>
-      <form action="">
-        <textarea
-          v-model="content"
-          rows="8"
-          cols="40"
-          type="text"
-        />
-        <button
-          type="submit"
-          @click="clickButton"
-        >
-          test
-        </button>
-      </form>
-    </onlineuser>
+    <h1>123</h1>
+    <form action="">
+      <textarea
+        v-model="content"
+        rows="8"
+        cols="40"
+        type="text"
+      />
+      <button
+        type="submit"
+        @click.stop.prevent="clickButton"
+      >
+        test
+      </button>
+    </form>
   </div>
 </template>
 <script>
-import OnlineUser from './../components/OnlineUser.vue'
+import { mapState } from 'vuex'
 export default {
-  components: {
-    OnlineUser
-  },
+  name: 'Chatroom',
   data () {
     return {
-      content: ''
+      content: '',
+      isConnected: false
     }
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   sockets: {
-    connect: function () {
+    connect () {
       console.log('socket connected')
+      this.$socket.emit('users', { ...this.currentUser, socketId: this.$socket.id })
+      console.log(this.$socket.id)
+      console.log({ ...this.currentUser, socketsId: this.$socket.id })
     },
-    customEmit: function (data) {
-      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+    disconnect () {
+      console.log('socket disconnected')
     }
 
   },
   methods: {
-    clickButton: function (data) {
+    clickButton () {
       // $socket is socket.io-client instance
-      this.$socket.emit('emit_method', data)
-      console.log(data)
+      this.$socket.emit('public message', this.content)
+      console.log(this.content)
     }
   }
 }
