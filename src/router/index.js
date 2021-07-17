@@ -19,17 +19,7 @@ const authorizeIsUser = (to, from, next) => {
 }
 
 const routes = [
-  {
-    // Tina 測試
-    path: '/testchat',
-    name: 'testchat',
-    component: () => import('./../views/ChatRoom.vue')
-  },
-  {
-    path: '/publicchat',
-    name: 'public-chat',
-    component: () => import('./../views/PublicChat.vue')
-  },
+
   {
     path: '/admin/login',
     name: 'admin-login',
@@ -51,11 +41,31 @@ const routes = [
     name: 'reply',
     component: () => import('./../components/ReplyPostModal.vue')
   },
+
+  // 以下路由僅有 SideNavBar
   {
-    path: '/setting',
-    name: 'setting',
-    component: () => import('./../views/Setting.vue')
+    path: '/personal',
+    name: 'personal',
+    component: () => import('./../views/Personal.vue'),
+    children: [
+      {
+        path: '/privatechat',
+        name: 'private-chat',
+        component: () => import('./../views/PrivateChat.vue')
+      },
+      {
+        path: '/publicchat',
+        name: 'public-chat',
+        component: () => import('./../views/PublicChat.vue')
+      },
+      {
+        path: '/setting',
+        name: 'setting',
+        component: () => import('./../views/Setting.vue')
+      }
+    ]
   },
+
   // 以下路由會包含 TopUsersList / SideNavBar
   {
     path: '/user/:id',
@@ -66,8 +76,7 @@ const routes = [
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: () => import('./../views/UserTweets.vue'),
-        props: true
+        component: () => import('./../views/UserTweets.vue')
       },
       {
         path: 'likes',
@@ -107,6 +116,11 @@ const routes = [
     component: () => import('./../views/user.vue'),
     beforeEnter: authorizeIsUser,
     children: [
+      {
+        path: '/notifications',
+        name: 'notifications',
+        component: () => import('./../views/Notifications.vue')
+      },
       {
         path: '/detail/:id',
         name: 'detail-tweet',

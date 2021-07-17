@@ -25,7 +25,7 @@ export default {
     return {
       content: '',
       isConnected: false,
-      user: []
+      users: []
     }
   },
   computed: {
@@ -33,10 +33,13 @@ export default {
   },
   sockets: {
     connect () {
-      // console.log('socket connected')
-    },
-    user (data) {
-      console.log('這包是user data', data)
+      console.log('socket connected')
+      this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
+      console.log(this.$socket.id)
+      console.log({ ...this.currentUser, socketsId: this.$socket.id })
+      this.sockets.subscribe('users', (data) => {
+        this.users = data.message
+      })
     },
     disconnect () {
       console.log('socket disconnected')

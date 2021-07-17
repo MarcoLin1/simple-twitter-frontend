@@ -1,10 +1,7 @@
 <template>
-  <div class="main__container">
-    <div class="left__content">
-      <SideNavBar />
-    </div>
+  <div class="main_container">
     <div class="middle__content">
-      <OnlineUser :all-users="allUsers" />
+      <OnlineUser :initial-users="users" />
     </div>
     <div
       class="right__content"
@@ -17,23 +14,19 @@
 <script>
 import OnlineUser from './../components/OnlineUser.vue'
 import ChatRoom from './../components/ChatRoom.vue'
-import SideNavBar from './../components/SideNavbar.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'PublicChatViews',
   components: {
     OnlineUser,
-    ChatRoom,
-    SideNavBar
+    ChatRoom
   },
   data () {
     return {
       // 還沒用到
       isConnected: false,
-      allUsers: [],
-      message: [],
-      newUser: []
+      users: []
     }
   },
   computed: {
@@ -43,11 +36,12 @@ export default {
     connect () {
       console.log('socket connected')
       this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
-      // this.sockets.subscribe('user connected', (data) => {
-      //   console.log('這是connected', data)
-      // })
       this.sockets.subscribe('users', (data) => {
-        this.allUsers = data
+        this.users = data
+        console.log('data', data)
+      })
+      this.sockets.subscribe('user connected', (data) => {
+        console.log('user connected', data)
       })
     },
     disconnect () {
@@ -77,13 +71,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .main__container {
+  .main_container {
     display: grid;
-    grid-template-columns: 1fr 4fr 30px 4fr  11fr ;
-    grid-template-areas: " . left . middle right";
-    .left__content{
-      grid-area: left;
-    }
+    grid-template-columns: 2fr 4fr ;
+    grid-template-areas: "middle right";
     .right__content{
       grid-area: right;
     }
