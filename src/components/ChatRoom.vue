@@ -96,12 +96,12 @@
     border-left: 1px solid $light-gray;
     .chat__room__top__wrapper {
       border-bottom: 1px solid $line-gray;
-      height: 100%;
+      height: 55px;
       display: flex;
       align-items: center;
       font-size: 18px;
       font-weight: 700;
-      padding: 13px 0 14px 16px;
+      padding: 14px 0 14px 16px;
     }
     .chat__room__main__wrapper {
       display: flex;
