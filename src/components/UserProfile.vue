@@ -28,12 +28,14 @@
       class="profile__edit-btn"
     >
       <!-- 當現在頁面的user 不是 currentUser，就顯示icon -->
-      <div
-        v-if="(currentUser.id !== user.id)"
-        class="profile__icon__wrapper"
-      >
-        <div class="profile__icon profile__icon__email" />
-      </div>
+      <router-link to="/privatechat">
+        <div
+          v-if="(currentUser.id !== user.id)"
+          class="profile__icon__wrapper"
+        >
+          <div class="profile__icon profile__icon__email" />
+        </div>
+      </router-link>
       <div
         v-if="(currentUser.id !== user.id) && (!isSubscribe)"
         class="profile__icon__wrapper"
