@@ -1,8 +1,5 @@
 <template>
-  <div class="main__container">
-    <div class="left-content">
-      <SideNavbar />
-    </div>
+  <div class="main_container">
     <div class="setting__form__wrapper">
       <div class="setting__top__navbar__wrapper">
         <TopNavbar
@@ -17,7 +14,6 @@
 </template>
 
 <script>
-import SideNavbar from './../components/SideNavbar.vue'
 import TopNavbar from './../components/TopNavbar.vue'
 import AccountDetailForm from './../components/AccountDetailForm.vue'
 import { Toast } from '../utils/helper'
@@ -25,7 +21,6 @@ import userAPI from './../apis/users'
 import { mapState } from 'vuex'
 export default {
   components: {
-    SideNavbar: SideNavbar,
     TopNavbar: TopNavbar,
     AccountDetailForm: AccountDetailForm
   },
@@ -62,18 +57,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .main__container {
+  .main_container {
     height: 100%;
-    width: auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
-    grid-template-areas: " . left . right right right right";
-    .left-content {
-      grid-area: left;
-    }
-    .setting__form__wrapper {
-      grid-area: right;
-    }
+    width: 100%;
+
   }
   .setting__form__wrapper {
     width: 100%;

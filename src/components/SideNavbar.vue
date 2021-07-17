@@ -17,7 +17,7 @@
         </router-link>
         <router-link
           class="side-navbar-item"
-          to="/mainpage"
+          to="/notifications"
         >
           <div class="icon-wrapper icon-notify-wrapper" />
           <div class="content">
@@ -27,7 +27,7 @@
         </router-link>
         <router-link
           class="side-navbar-item"
-          to="/mainpage"
+          to="/publicchat"
         >
           <div class="icon-wrapper icon-mail-wrapper" />
           <div class="content">
@@ -37,7 +37,7 @@
         </router-link>
         <router-link
           class="side-navbar-item"
-          to="/mainpage"
+          to="/privatechat"
         >
           <div class="icon-wrapper icon-mail-wrapper" />
 
