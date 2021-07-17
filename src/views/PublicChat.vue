@@ -4,13 +4,13 @@
       <SideNavBar />
     </div>
     <div class="middle__content">
-      <OnlineUser />
+      <OnlineUser :all-users="allUsers" />
     </div>
     <div
       class="right__content"
       @after-submit="handleAfterSubmit"
     >
-      <ChatRoom />
+      <ChatRoom :new-user="newUser" />
     </div>
   </div>
 </template>
@@ -30,7 +30,10 @@ export default {
   data () {
     return {
       // 還沒用到
-      isConnected: false
+      isConnected: false,
+      allUsers: [],
+      message: [],
+      newUser: []
     }
   },
   computed: {
@@ -39,14 +42,26 @@ export default {
   sockets: {
     connect () {
       console.log('socket connected')
-      this.$socket.emit('users', { ...this.currentUser, socketId: this.$socket.id })
-      console.log(this.$socket.id)
-      console.log({ ...this.currentUser, socketsId: this.$socket.id })
+      this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
+      // this.sockets.subscribe('user connected', (data) => {
+      //   console.log('這是connected', data)
+      // })
+      this.sockets.subscribe('users', (data) => {
+        this.allUsers = data
+      })
     },
     disconnect () {
       console.log('socket disconnected')
+    },
+    users: function (data) {
+      console.log('這包是data', data)
+    },
+    'user connected': function (data) {
+      this.newUser = data
+    },
+    'chat message': function (data) {
+      console.log('這是message', data)
     }
-
   },
   methods: {
     // 從component傳回來資料，再傳送給後端

@@ -5,70 +5,77 @@
         公開聊天室
       </div>
     </div>
-    <div class="chat__room__main__wrapper">
-      <div class="chat__room__main__info__wraaper">
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            Marco 上線囉
+    <div
+      class="chat__room__main__wrapper"
+    >
+      <div
+        v-for="data in allData"
+        :key="data.id"
+      >
+        <div
+          v-if="data.online"
+          class="chat__room__main__info__wraaper"
+        >
+          <div class="chat__room__info">
+            <div class="chat__room__info__text">
+              {{ data.name }} 上線囉
+            </div>
           </div>
         </div>
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            Tina 上線囉
-          </div>
-        </div>
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            YJ 上線囉
-          </div>
-        </div>
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            翊廷 上線囉
-          </div>
-        </div>
-      </div>
-      <div class="chat__room__message__wrapper">
-        <div class="chat__room__left__wrapper">
-          <div class="chat__room__user">
-            <img
-              src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
-              alt=""
-              class="user__image"
-            >
-            <div class="chat__room__text__container">
-              <div class="chat__room__text__wrapper">
-                <div class="chat__room__text">
-                  今天天氣好好，但是要一直coding不能睡覺
+        <div
+          class="chat__room__message__wrapper"
+        >
+          <div
+            v-if="data.id !== currentUser.id"
+            class="chat__room__left__wrapper"
+          >
+            <div class="chat__room__user">
+              <img
+                src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                alt=""
+                class="user__image"
+              >
+              <div class="chat__room__text__container">
+                <div class="chat__room__text__wrapper">
+                  <div class="chat__room__text">
+                    {{ data.content }}
+                  </div>
+                </div>
+                <div class="chat__room__time">
+                  {{ data.createdAt }}
                 </div>
               </div>
-              <div class="chat__room__time">
-                下午4:21
+            </div>
+          </div>
+          <div
+            v-if="data.id === currentUser.id"
+            class="chat__room__right__wrapper"
+          >
+            <div class="chat__room__right__text__wrapper">
+              <div class="chat__room__right__text">
+                {{ data.content }}
               </div>
             </div>
-          </div>
-        </div>
-        <div class="chat__room__right__wrapper">
-          <div class="chat__room__right__text__wrapper">
-            <div class="chat__room__right__text">
-              最近還好嗎？跟你沒什麼好聊的
+            <div class="chat__room__time">
+              {{ data.createdAt }}
             </div>
           </div>
-          <div class="chat__room__time">
-            下午5:59
-          </div>
         </div>
-      </div>
-      <div class="chat__room__main__leave__wraaper">
-        <div class="chat__room__leave">
-          <div class="chat__room__leave__text">
-            Bernard 離線了 QQ
+        <div
+          v-if="!data.online"
+          class="chat__room__main__leave__wraaper"
+        >
+          <div class="chat__room__leave">
+            <div class="chat__room__leave__text">
+              {{ data.name }} 離線了 QQ
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="chat__room__bottom__wrapper">
       <input
+        v-model="message"
         type="text"
         class="chat__room__input"
         placeholder="請輸入訊息..."
@@ -214,17 +221,43 @@
 </style>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'ChatRoom',
+  props: {
+    newUser: {
+      type: [Object, Array],
+      required: true
+    }
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   data () {
     return {
-      message: ''
+      message: '',
+      allData: [
+        // 上線提醒
+        {
+          id: 98,
+          name: 'user2',
+          online: true
+        },
+        // message
+        {
+          account: 'goal',
+          avatar: '',
+          name: 'Goal',
+          id: 55,
+          content: 'what happen ????'
+        },
+        // 離線提醒
+        {
+          name: 'Bernard',
+          online: false
+        }
+      ]
     }
   }
-  // sockets: {
-  //   connect () {
-  //     console.log('connect!!!!!!!!!')
-  //   }
-  // }
 }
 </script>
