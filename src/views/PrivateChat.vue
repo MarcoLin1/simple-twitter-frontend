@@ -1,7 +1,7 @@
 <template>
   <div class="main_container">
     <div class="middle__content">
-      <OnlineUser :initial-users="users" />
+      <ChatList :initial-chats="chats" />
     </div>
     <div
       class="right__content"
@@ -11,14 +11,14 @@
   </div>
 </template>
 <script>
-import OnlineUser from './../components/OnlineUser.vue'
+import ChatList from './../components/ChatList.vue'
 import ChatRoom from './../components/ChatRoom.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'PrivateChatViews',
   components: {
-    OnlineUser,
+    ChatList,
     ChatRoom
   },
   data () {

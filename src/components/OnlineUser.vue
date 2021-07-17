@@ -1,24 +1,10 @@
 <template>
   <div class="online_container">
-    <template v-if="$route.path.includes('public')">
-      <div
-
-        class="online_container__title"
-      >
-        上線使用者 ({{ initialUsers.length || 0 }})
-      </div>
-    </template>
-    <template v-else>
-      <div
-        class="online_container__title"
-      >
-        訊息
-        <div class="icon-image" />
-        <div class="plus">
-          +
-        </div>
-      </div>
-    </template>
+    <div
+      class="online_container__title"
+    >
+      上線使用者 ({{ initialUsers.length || 0 }})
+    </div>
     <div
       v-for="user in initialUsers"
       :key="user.user_id"
@@ -51,34 +37,7 @@
     @include text-style(18px, 700, $black);
     padding: 0  15px;
     border-bottom: 1px solid $light-gray;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    .plus{
-        position: absolute;
-        top: 14px;
-        right: 16px;
-        font-size: 1px;
-        width: 10px;
-        height: 10px;
-        color: black;
-        background-color: white;
-        line-height: 8px;
-        border-radius: 50%;
-        text-align: center;
-        border: 1px solid white;
 
-      }
-    .icon-image{
-      width: 30px;
-      height: 30px;
-      mask-image: url('./../assets/icon/icon_email.svg');
-      -webkit-mask-image: url('./../assets/icon/icon_email.svg');
-      cursor: pointer;
-      @extend %icon-style;
-
-    }
   }
   &__list{
     display: flex;

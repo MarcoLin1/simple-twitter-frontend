@@ -143,3 +143,33 @@ button:disabled,button[disabled]{
     color: $orange;
     font-weight: 600;
   }
+
+
+  //////post /////
+  .post {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    max-width: 600px;
+    border: solid 1px $light-gray;
+    padding: 15px;
+  }
+  .post-content {
+    margin-left: 10px;
+    }
+  .post-title {
+      color: $tx-gray;
+    }
+  .post-title-item {
+        cursor: pointer;
+      }
+  .post-title-item-account{
+          margin-right: 3px;
+        }
+  .post-title-item-time {
+          font-size: 14px;
+          margin-left: -1px;
+        }
+  .post-discription {
+      line-height: 20px;
+      @include text-style(15px, normal, $black);
+    }
