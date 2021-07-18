@@ -23,7 +23,7 @@
         >
           <div class="icon-wrapper icon-notify-wrapper" />
           <div class="content">
-            <div class="notify-point" />
+            <!-- <div class="notify-point" /> -->
             通知
           </div>
         </router-link>
@@ -34,7 +34,7 @@
         >
           <div class="icon-wrapper icon-mail-wrapper" />
           <div class="content">
-            <div class="notify-point" />
+            <!-- <div class="notify-point" /> -->
             公開聊天室
           </div>
         </router-link>
@@ -50,7 +50,9 @@
             <div
               v-show="getPrivateNotify"
               class="notify-point"
-            />
+            >
+              {{ getPrivateNotifyCount }}
+            </div>
           </div>
         </router-link>
         <router-link
@@ -150,7 +152,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'getPrivateNotify'])
+    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount'])
   },
   methods: {
     logout () {
@@ -261,9 +263,10 @@ a {
 
 }
 .icon-notify-wrapper{
-    mask-image: url('./../assets/icon/icon_subscribe.svg');
-    -webkit-mask-image: url('./../assets/icon/icon_subscribe.svg');
+    mask-image: url('./../assets/icon/icon_ring.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_ring.svg');
     cursor: pointer;
+    mask-size: 25px;
     @extend %icon-style;
 
   }
@@ -282,13 +285,18 @@ a {
   position: relative;
   .notify-point{
     position: absolute;
-    top: -2px;
-    left: -29px;
-    width: 8px;
-    height: 8px;
+    top: -8px;
+    left: -32px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: 1px solid  white;
     background-color: $orange;
+    font-size: 1px;
+    line-height: 15px;
+    color: white;
+    text-align: center;
+    font-weight: 400;
   }
 
 }

@@ -46,8 +46,8 @@
   min-height: 100vh;
   width: 400px;
   &__title{
-    height: 55px;
-    line-height: 55px;
+    height: 45px;
+    line-height: 45px;
     @include text-style(18px, 700, $black);
     padding: 0  15px;
     border-bottom: 1px solid $light-gray;
@@ -57,7 +57,7 @@
     position: relative;
     .plus{
         position: absolute;
-        top: 14px;
+        top: 9px;
         right: 16px;
         font-size: 1px;
         width: 10px;

@@ -38,11 +38,6 @@ export default {
   computed: {
     ...mapState(['currentUser', 'privateChatUser'])
   },
-  beforeRouteEnter (to, from, next) {
-    const id = from.params.id || -1
-    // 不能直接用this
-    next(vm => { vm.listener.id = id })
-  },
   watch: {
     listener (newValue, oldValue) {
       // 如果id有正常變化才會傳給後端離開聊天室的訊息
@@ -50,6 +45,11 @@ export default {
         this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: oldValue.id })
       }
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    const id = from.params.id || -1
+    // 不能直接用this
+    next(vm => { vm.listener.id = id })
   },
   created () {
     this.$socket.connect()

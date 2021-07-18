@@ -17,6 +17,7 @@ export default new Vuex.Store({
     token: '',
     followingNum: 0,
     getPrivateNotify: false,
+    getPrivateNotifyCount: 0,
     privateChatUser: {
       id: -1,
       name: '',
@@ -40,6 +41,7 @@ export default new Vuex.Store({
       } else {
         state.getPrivateNotify = false
       }
+      state.getPrivateNotifyCount = data.unreadCount
       console.log('state.getPrivateNotify', data)
     },
     // 登出狀態
