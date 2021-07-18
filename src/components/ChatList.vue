@@ -17,7 +17,11 @@
       @click.stop.prevent="enterRoom(chat.id)"
     >
       <div class=" post__avatar">
-        <div class="avatar-img" />
+        <img
+          :src="chat.avatar"
+          alt=""
+          class="avatar-img"
+        >
       </div>
       <div class="post-content">
         <div class="post-title mb-2">
@@ -30,7 +34,7 @@
           </span>
         </div>
         <div class="post-discription">
-          {{ chat.last_content }}
+          {{ chat.content }}
         </div>
       </div>
     </div>
@@ -100,28 +104,6 @@
 </style>
 <script>
 import { shortenTimeFilter } from './../utils/mixins'
-// const dummyData = [
-//   {
-//     id: '1',
-//     account: '@apple',
-//     name: 'Apple',
-//     last_content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-//     last_createdAt: '2021-05-01 00:00:00'
-//   },
-//   {
-//     id: '2',
-//     account: '@apple',
-//     name: 'Apple',
-//     last_content: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-//     last_createdAt: '2021-06-02 00:00:00'
-//   },
-//   {
-//     id: '3',
-//     account: '@apple',
-//     name: 'Apple',
-//     last_content: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-//     last_createdAt: '2021-07-17 21:00:00'
-//   }
 
 export default {
   name: 'OnlineUser',
@@ -134,7 +116,7 @@ export default {
   },
   data () {
     return {
-      chats: this.initialChats
+      chats: []
     }
   },
   watch: {

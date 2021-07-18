@@ -10,11 +10,12 @@
         </div>
       </div>
       <div
+        ref="main"
         class="chat__room__main__wrapper"
       >
         <div
           v-for="data in allData"
-          :key="data.id"
+          :key="data.messageId"
         >
           <div
             class="chat__room__message__wrapper"
@@ -25,7 +26,7 @@
             >
               <div class="chat__room__user">
                 <img
-                  :src="data.avatar"
+                  :src="data.avatar | emptyImage"
                   alt=""
                   class="user__image"
                 >
@@ -36,7 +37,7 @@
                     </div>
                   </div>
                   <div class="chat__room__time">
-                    {{ data.createdAt }}
+                    {{ data.createdAt | shortenTime }}
                   </div>
                 </div>
               </div>
@@ -51,7 +52,7 @@
                 </div>
               </div>
               <div class="chat__room__time">
-                {{ data.createdAt }}
+                {{ data.createdAt | shortenTime }}
               </div>
             </div>
           </div>
@@ -200,8 +201,10 @@
 <script>
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
+import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 export default {
-  name: 'ChatRoom',
+  name: 'PrivateChatRoom',
+  mixins: [shortenTimeFilter, emptyImageFilter],
   props: {
     initialListener: {
       type: [Array, Object]
@@ -213,23 +216,20 @@ export default {
   data () {
     return {
       message: '',
-      allData: this.initialMessages,
-      listener: this.initialListener
+      allData: this.initialMessages
     }
   },
-  // watch: {
-  //   initialMessages (newValue) {
-  //     this.allData = {
-  //       ...this.allData,
-  //       newValue
-  //     }
-  //   }
-  // },
   computed: {
     ...mapState(['currentUser'])
   },
-
+  created () {
+    this.scrollToEnd()
+  },
   mounted () {
+    this.scrollToEnd()
+  },
+  updated () {
+    this.scrollToEnd()
   },
   methods: {
     handleSubmit () {
@@ -249,12 +249,16 @@ export default {
       }
       this.$socket.emit('privateMessage', {
         id: this.currentUser.id,
-        listenerId: this.listener.id,
+        listenerId: this.initialListener.id,
         content: this.message,
-        createdAt: new Date()
+        createdAt: new Date(),
+        avatar: this.currentUser.avatar
       })
       this.message = ''
-      // this.allData.push(this.messages)
+    },
+    // 捲軸到最底部
+    scrollToEnd () {
+      this.$refs.main.scrollTop = this.$refs.main.scrollHeight
     }
   }
 }

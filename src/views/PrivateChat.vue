@@ -82,10 +82,23 @@ export default {
     },
     chattedUsers: function (data) {
       this.chats = data // 不確定
-      console.log('chattedUsers', data)
+      console.log('chattedUser 有成功嗎？')
+    },
+    getMessages: function (data) {
+      if (this.messages.length === 0) {
+        data.forEach(item => {
+          if (item.id === this.chats[0].id) {
+            this.messages.push(item)
+          }
+          if (item.id === this.currentUser.id) {
+            this.messages.push(item)
+          }
+        })
+      }
+      console.log('這是getMessages in private', data)
     },
     privateMessage: function (data) {
-      // this.messages.push(data)
+      this.messages.push(data)
       console.log('這是privateMessage:', data)
     }
   },
@@ -93,8 +106,13 @@ export default {
     // enter room事件傳送給後端
     handelAfterEnter (data) {
       console.log('handelAfterEnter', data)
-      // 將資料存在listener中，傳遞給chatroom
+
+      // 避免重複抓取歷史訊息
       this.listener = data
+      const length = this.messages.length
+      this.messages.splice(0, length)
+
+      // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
     }
   }
