@@ -162,7 +162,6 @@
               .chat__room__text__wrapper {
                 background: #9494944b;
                 width: 100%;
-                min-width: 200px;
                 padding: 10px;
                 border-radius: 10px;
                 border-bottom-left-radius: 0px;
@@ -253,14 +252,6 @@ export default {
     return {
       message: '',
       allData: this.messages
-    }
-  },
-  watch: {
-    messages (newValue) {
-      this.allData = [
-        ...this.allData,
-        ...newValue
-      ]
     }
   },
   computed: {
