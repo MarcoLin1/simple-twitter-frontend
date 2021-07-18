@@ -93,14 +93,12 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
   .main_container {
-    display: grid;
-    grid-template-columns: 2fr 4fr ;
-    grid-template-areas: "middle right";
+      display: flex;
     .right__content{
-      grid-area: right;
+      width: 65%;
     }
     .middle__content{
-      grid-area: middle
+      width: 35%;
     }
   }
 </style>

@@ -30,7 +30,7 @@
 @import '../assets/scss/main.scss';
 .online_container{
   min-height: 100vh;
-  width: 400px;
+  width: 100%;
   &__title{
     height: 45px;
     line-height: 45px;

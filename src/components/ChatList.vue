@@ -44,7 +44,6 @@
 @import '../assets/scss/main.scss';
 .chat_container{
   min-height: 100vh;
-  width: 400px;
   &__title{
     height: 45px;
     line-height: 45px;

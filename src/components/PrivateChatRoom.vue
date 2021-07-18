@@ -78,7 +78,6 @@
 @import '../assets/scss/main.scss';
   .chat__room__container {
     width: 100%;
-    max-width: 700px;
     height: 100vh;
     display: grid;
     grid-template-rows: 5% 85% 10%;
