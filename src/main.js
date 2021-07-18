@@ -11,7 +11,7 @@ const socketOptions = {
   autoConnect: true,
   reconnection: true,
   reconnectionAttempts: 5,
-  reconnectionDelay: 6000
+  reconnectionDelay: 1000
 }
 
 const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
@@ -46,8 +46,9 @@ new Vue({
       console.log('socket connected in main.js')
     },
     messageNotify: function (data) {
-      console.log('messageNotify', data)
+      console.log('messageNotifydata', data)
     }
+
   },
   render: (h) => h(App)
 }).$mount('#app')

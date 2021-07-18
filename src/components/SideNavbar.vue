@@ -9,6 +9,7 @@
         <router-link
           class="side-navbar-item"
           to="/mainpage"
+          :class="{selected:this.$route.path.includes('mainpage')}"
         >
           <div class="icon-wrapper icon-main-wrapper" />
           <div class="content">
@@ -18,37 +19,46 @@
         <router-link
           class="side-navbar-item"
           to="/notifications"
+          :class="{selected:this.$route.path.includes('notifications')}"
         >
           <div class="icon-wrapper icon-notify-wrapper" />
           <div class="content">
-            <div class="notify-point" />
+            <!-- <div class="notify-point" /> -->
             通知
           </div>
         </router-link>
         <router-link
           class="side-navbar-item"
           to="/publicchat"
+          :class="{selected:this.$route.path.includes('publicchat')}"
         >
           <div class="icon-wrapper icon-mail-wrapper" />
           <div class="content">
-            <div class="notify-point" />
+            <!-- <div class="notify-point" /> -->
             公開聊天室
           </div>
         </router-link>
         <router-link
           class="side-navbar-item"
           to="/privatechat"
+          :class="{selected:this.$route.path.includes('privatechat')}"
         >
           <div class="icon-wrapper icon-mail-wrapper" />
 
           <div class="content">
             私人訊息
-            <div class="notify-point" />
+            <div
+              v-show="getPrivateNotify"
+              class="notify-point"
+            >
+              {{ getPrivateNotifyCount }}
+            </div>
           </div>
         </router-link>
         <router-link
           class="side-navbar-item"
           :to="{name: 'user-tweets', params: {id: currentUser.id}}"
+          :class="{selected:this.$route.path.includes('/tweets')}"
         >
           <div class="icon-wrapper icon-user-wrapper" />
           <div class="content">
@@ -58,6 +68,7 @@
         <router-link
           class="side-navbar-item"
           to="/setting"
+          :class="{selected:this.$route.path.includes('/setting')}"
         >
           <div
             class="icon-wrapper icon-setting-wrapper"
@@ -82,6 +93,7 @@
         <router-link
           class="side-navbar-item"
           to="/admin/tweets"
+          :class="{selected:this.$route.path.includes('/admin/tweets')}"
         >
           <div class="icon-wrapper icon-main-wrapper" />
           <div class="content">
@@ -90,7 +102,8 @@
         </router-link>
         <router-link
           class="side-navbar-item"
-          to="/admin-users"
+          to="/admin/users"
+          :class="{selected:this.$route.path.includes('/admin/users')}"
         >
           <div class="icon-wrapper icon-user-wrapper" />
           <div class="content">
@@ -139,7 +152,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount'])
   },
   methods: {
     logout () {
@@ -181,7 +194,7 @@ a {
   display: flex;
   align-items: center;
   margin: 14px 0;
-  &:hover{
+  &:hover, &.selected{
     .icon-wrapper{
       background: $orange;
     }
@@ -250,9 +263,10 @@ a {
 
 }
 .icon-notify-wrapper{
-    mask-image: url('./../assets/icon/icon_subscribe.svg');
-    -webkit-mask-image: url('./../assets/icon/icon_subscribe.svg');
+    mask-image: url('./../assets/icon/icon_ring.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_ring.svg');
     cursor: pointer;
+    mask-size: 25px;
     @extend %icon-style;
 
   }
@@ -269,16 +283,20 @@ a {
   color: $black;
   text-decoration: none;
   position: relative;
-
   .notify-point{
     position: absolute;
-    top: -2px;
-    left: -29px;
-    width: 8px;
-    height: 8px;
+    top: -8px;
+    left: -32px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: 1px solid  white;
     background-color: $orange;
+    font-size: 1px;
+    line-height: 15px;
+    color: white;
+    text-align: center;
+    font-weight: 400;
   }
 
 }

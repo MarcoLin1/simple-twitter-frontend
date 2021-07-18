@@ -33,13 +33,16 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
+  beforeRouteUpdate () {
+    this.$socket.connect()
+  },
   created () {
     // connect () {
     this.$socket.connect()
     this.$socket.emit('currentUser', { ...this.currentUser })
-    this.sockets.subscribe('users', (data) => {
-      console.log('這是sockets的user connected', data)
-    })
+    // this.sockets.subscribe('users', (data) => {
+    //   console.log('這是sockets的user connected', data)
+    // })
   },
   sockets: {
     connect () {
@@ -82,6 +85,9 @@ export default {
   beforeDestroy () {
     console.log('leave')
     this.$socket.disconnect()
+  },
+  destroyed () {
+    this.$socket.connect()
   },
   methods: {
     // // 從component傳回來資料，再傳送給後端
