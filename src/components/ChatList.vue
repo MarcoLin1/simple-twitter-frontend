@@ -17,7 +17,11 @@
       @click.stop.prevent="enterRoom(chat.id)"
     >
       <div class=" post__avatar">
-        <div class="avatar-img" />
+        <img
+          class="avatar-img"
+          :src="chat.avatar | emptyImage"
+          alt=""
+        >
       </div>
       <div class="post-content">
         <div class="post-title mb-2">
@@ -26,11 +30,11 @@
           </span>
           <span class="post-title-item post-title-item-account">{{ chat.account }}</span>
           <span class="post-title-item post-title-item-time">
-            {{ chat.last_createdAt | shortenTime }}
+            {{ chat.createdAt | shortenTime }}
           </span>
         </div>
         <div class="post-discription">
-          {{ chat.last_content }}
+          {{ chat.content }}
         </div>
       </div>
     </div>

@@ -46,8 +46,9 @@ new Vue({
       console.log('socket connected in main.js')
     },
     messageNotify: function (data) {
-      console.log('messageNotify', data)
+      console.log('messageNotifydata', data)
     }
+
   },
   render: (h) => h(App)
 }).$mount('#app')

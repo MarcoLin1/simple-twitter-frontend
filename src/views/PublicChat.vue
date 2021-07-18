@@ -81,7 +81,6 @@ export default {
   },
   beforeDestroy () {
     console.log('leave')
-    this.$socket.disconnect()
   },
   methods: {
     // // 從component傳回來資料，再傳送給後端

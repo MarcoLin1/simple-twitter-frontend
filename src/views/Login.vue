@@ -24,6 +24,8 @@ export default {
       } else {
         localStorage.setItem('token', data.token)
         this.$store.commit('setCurrentUser', data.user)
+        this.$socket.emit('messageNotify', { id: data.id })
+        console.log('messageNotify', data.user.id)
         this.$router.push('/mainpage')
       }
     }
