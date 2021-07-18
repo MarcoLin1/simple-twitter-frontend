@@ -69,6 +69,9 @@ export default {
       console.log(this.messages)
     },
     getMessages: function (data) {
+      // data.forEach(item => {
+
+      // })
       if (this.messages.length > 100) {
         this.messages = []
         data.forEach(item => {
@@ -84,7 +87,11 @@ export default {
   },
   beforeDestroy () {
     console.log('leave')
-    this.$socket.disconnect()
+    // this.$socket.disconnect()
+  },
+  destroyed () {
+    console.log('請重新連接')
+    this.$socket.connect()
   },
   destroyed () {
     this.$socket.connect()
