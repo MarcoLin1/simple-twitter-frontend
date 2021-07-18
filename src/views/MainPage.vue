@@ -56,6 +56,12 @@ export default {
   created () {
     this.fetchTweets()
   },
+  sockets: {
+    connect () {
+      console.log('socket connected in component')
+      this.socket.subscribe()
+    }
+  },
   methods: {
     async fetchTweets () {
       try {
