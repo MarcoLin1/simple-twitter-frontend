@@ -14,7 +14,7 @@
       >
         <div
           v-for="data in allData"
-          :key="data.message.messageId"
+          :key="data.id"
         >
           <div
             v-if="data.isOnline === 1"
@@ -31,7 +31,7 @@
             class="chat__room__message__wrapper"
           >
             <div
-              v-if="data.message.id !== currentUser.id"
+              v-if="data.id !== currentUser.id"
               class="chat__room__left__wrapper"
             >
               <div class="chat__room__user">
@@ -43,26 +43,26 @@
                 <div class="chat__room__text__container">
                   <div class="chat__room__text__wrapper">
                     <div class="chat__room__text">
-                      {{ data.message.content }}
+                      {{ data.content }}
                     </div>
                   </div>
                   <div class="chat__room__time">
-                    {{ data.message.createdAt }}
+                    {{ data.createdAt }}
                   </div>
                 </div>
               </div>
             </div>
             <div
-              v-if="data.message.id === currentUser.id"
+              v-if="data.id === currentUser.id"
               class="chat__room__right__wrapper"
             >
               <div class="chat__room__right__text__wrapper">
                 <div class="chat__room__right__text">
-                  {{ data.message.content }}
+                  {{ data.content }}
                 </div>
               </div>
               <div class="chat__room__time">
-                {{ data.message.createdAt }}
+                {{ data.createdAt }}
               </div>
             </div>
           </div>
@@ -119,7 +119,10 @@
     .chat__room__main__wrapper {
       display: flex;
       flex-direction: column;
+      max-height: fit-content;
+      overflow-y: scroll;
       justify-content: flex-end;
+      margin-top: 20px;
       .chat__room__main__info__wraaper, .chat__room__main__leave__wraaper {
         width: 100%;
         text-align: center;
@@ -140,6 +143,12 @@
           line-height: 25px;
           font-size: 0.8rem;
         }
+      }
+      .chat__room__main__wrapper {
+        max-height: fit-content;
+        overflow-y: scroll;
+        justify-content: center;
+        margin-top: 20px;
       }
       .chat__room__message__wrapper {
         .chat__room__left__wrapper {
@@ -167,6 +176,8 @@
                 .chat__room__text {
                   font-size: 0.9rem;
                   color: $black;
+                  word-break: break-all;
+                  line-height: 1.2rem;
                 }
               }
             }
@@ -186,6 +197,8 @@
               text-align: right;
               color: #ffffff;
               font-size: 0.9rem;
+              word-break: break-all;
+              line-height: 1.2rem;
             }
           }
         }
@@ -228,16 +241,16 @@
 
 <script>
 import { mapState } from 'vuex'
+import { Toast } from '../utils/helper'
 export default {
   name: 'ChatRoom',
   props: {
-    // newUser: {
-    //   type: [Object, Array],
-    //   required: true
-    // },
     messages: {
-      type: [Object, Array]
+      type: Array
     }
+  },
+  created () {
+
   },
   computed: {
     ...mapState(['currentUser'])
@@ -246,22 +259,29 @@ export default {
     return {
       message: '',
       allData: this.messages,
-      msgId: 0
+      getAllMessage: []
       // nowUser: this.currentUser
     }
   },
   mounted () {
-    this.$socket.on('get messages', (data) => {
-      console.log('這是mounted 的 get messages', data)
-    })
   },
   methods: {
     handleSubmit () {
       if (!this.message) {
-        console.log('不能是空的')
+        Toast.fire({
+          icon: 'warning',
+          title: '沒有話要說，就不要亂按'
+        })
         return
       }
-      this.$socket.emit('chat message', { ...this.currentUser, content: this.message, createdAt: new Date(), messageId: this.msgId++ })
+      if (!this.message.trim()) {
+        Toast.fire({
+          icon: 'warning',
+          title: '送一堆空格要幹嘛!?'
+        })
+        return
+      }
+      this.$socket.emit('chatMessage', { ...this.currentUser, content: this.message, createdAt: new Date() })
       this.message = ''
       // this.allData.push(this.messages)
     }

@@ -21,7 +21,12 @@ socket.onAny((event, ...args) => {
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: socket
+  connection: socket,
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
 }))
 
 new Vue({
