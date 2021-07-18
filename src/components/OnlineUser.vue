@@ -7,7 +7,7 @@
     </div>
     <div
       v-for="user in initialUsers"
-      :key="user.user_id"
+      :key="user.id"
       class="online_container__list"
     >
       <router-link :to="{ name:'user-tweets', params:{id: user.id} }">

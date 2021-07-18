@@ -6,7 +6,7 @@
     <div class="chat__room__container">
       <div class="chat__room__top__wrapper">
         <div class="chat__room__title">
-          公開聊天室
+          {{ initialListener.name ? initialListener.name: '聊天室' }}
         </div>
       </div>
       <div
@@ -17,17 +17,6 @@
           :key="data.id"
         >
           <div
-            v-if="data.isOnline === 1"
-            class="chat__room__main__info__wraaper"
-          >
-            <div class="chat__room__info">
-              <div class="chat__room__info__text">
-                {{ data.name }} 上線囉
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="data.id"
             class="chat__room__message__wrapper"
           >
             <div
@@ -63,16 +52,6 @@
               </div>
               <div class="chat__room__time">
                 {{ data.createdAt }}
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="data.isOnline === 0"
-            class="chat__room__main__leave__wraaper"
-          >
-            <div class="chat__room__leave">
-              <div class="chat__room__leave__text">
-                {{ data.name }} 離線了 QQ
               </div>
             </div>
           </div>
@@ -123,27 +102,6 @@
       overflow-y: scroll;
       justify-content: flex-end;
       margin-top: 20px;
-      .chat__room__main__info__wraaper, .chat__room__main__leave__wraaper {
-        width: 100%;
-        text-align: center;
-        width: auto;
-        margin: 20px auto;
-        .chat__room__info, .chat__room__leave {
-          display: flex;
-          justify-content: center;
-          margin: 10px 0;
-          width: auto;
-          height: 25px;
-        }
-        .chat__room__info__text, .chat__room__leave__text {
-          background: #a5a5a55b;
-          color: $tx-gray;
-          padding: 0 10px;
-          border-radius: 10px;
-          line-height: 25px;
-          font-size: 0.8rem;
-        }
-      }
       .chat__room__main__wrapper {
         max-height: fit-content;
         overflow-y: scroll;
@@ -245,21 +203,32 @@ import { Toast } from '../utils/helper'
 export default {
   name: 'ChatRoom',
   props: {
-    messages: {
-      type: Array
+    initialListener: {
+      type: [Array, Object]
+    },
+    initialMessages: {
+      type: [Array, Object]
     }
   },
   data () {
     return {
       message: '',
-      allData: this.messages,
-      getAllMessage: []
-      // nowUser: this.currentUser
+      allData: this.initialMessages,
+      listener: this.initialListener
     }
   },
+  // watch: {
+  //   initialMessages (newValue) {
+  //     this.allData = {
+  //       ...this.allData,
+  //       newValue
+  //     }
+  //   }
+  // },
   computed: {
     ...mapState(['currentUser'])
   },
+
   mounted () {
   },
   methods: {
@@ -278,7 +247,12 @@ export default {
         })
         return
       }
-      this.$socket.emit('chatMessage', { ...this.currentUser, content: this.message, createdAt: new Date() })
+      this.$socket.emit('privateMessage', {
+        id: this.currentUser.id,
+        listenerId: this.listener.id,
+        content: this.message,
+        createdAt: new Date()
+      })
       this.message = ''
       // this.allData.push(this.messages)
     }

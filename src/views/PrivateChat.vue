@@ -10,25 +10,29 @@
       class="right__content"
     >
       <!-- 如果有id的話就在room標題顯示id ， -->
-      <ChatRoom :initial-listener="listener" />
+      <PrivateChatRoom
+        :initial-listener="listener"
+        :initial-messages="messages"
+      />
     </div>
   </div>
 </template>
 <script>
 import ChatList from './../components/ChatList.vue'
-import ChatRoom from './../components/ChatRoom.vue'
+import PrivateChatRoom from './../components/PrivateChatRoom.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'PrivateChatViews',
   components: {
     ChatList,
-    ChatRoom
+    PrivateChatRoom
   },
   data () {
     return {
       listener: {},
-      chats: []
+      chats: [],
+      messages: []
     }
   },
   computed: {
@@ -85,7 +89,12 @@ export default {
       console.log('users data', data)
     },
     chattedUsers: function (data) {
+      this.chats = data // 不確定
       console.log('chattedUsers', data)
+    },
+    privateMessage: function (data) {
+      // this.messages.push(data)
+      console.log('這是privateMessage:', data)
     }
   },
   methods: {

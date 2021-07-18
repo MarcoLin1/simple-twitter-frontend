@@ -16,7 +16,6 @@
 import OnlineUser from './../components/OnlineUser.vue'
 import ChatRoom from './../components/ChatRoom.vue'
 import { mapState } from 'vuex'
-
 export default {
   name: 'PublicChatViews',
   components: {
@@ -38,7 +37,6 @@ export default {
     // connect () {
     this.$socket.connect()
     this.$socket.emit('currentUser', { ...this.currentUser })
-
     this.sockets.subscribe('users', (data) => {
       console.log('這是sockets的user connected', data)
     })
@@ -94,7 +92,6 @@ export default {
     // }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
