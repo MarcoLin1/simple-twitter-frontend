@@ -16,10 +16,9 @@ const socketOptions = {
 
 const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
 
-
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: socket
+  connection: socket,
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
