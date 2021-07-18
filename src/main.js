@@ -16,12 +16,6 @@ const socketOptions = {
 
 const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
 
-const socketOptions = {
-  autoConnect: true,
-  reconnection: true,
-  reconnectionAttempts: 10,
-  reconnectionDelay: 6000
-}
 
 Vue.use(new VueSocketIO({
   debug: true,
