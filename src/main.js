@@ -15,17 +15,13 @@ const socketOptions = {
 }
 
 const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
-
-const socketOptions = {
-  autoConnect: true,
-  reconnection: true,
-  reconnectionAttempts: 10,
-  reconnectionDelay: 6000
-}
+socket.onAny((event, ...args) => {
+  console.log('main.js', event, args)
+})
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: socket
+  connection: socket,
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
@@ -52,3 +48,5 @@ new Vue({
   },
   render: (h) => h(App)
 }).$mount('#app')
+
+export default socket

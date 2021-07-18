@@ -28,7 +28,9 @@
       class="profile__edit-btn"
     >
       <!-- 當現在頁面的user 不是 currentUser，就顯示icon -->
-      <router-link to="/privatechat">
+      <router-link
+        to="/privatechat"
+      >
         <div
           v-if="(currentUser.id !== user.id)"
           class="profile__icon__wrapper"
@@ -266,7 +268,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['followingNum'])
+    ...mapState(['followingNum', 'privateChatUser'])
   },
   watch: {
     getCurrentUser (newValue) {
@@ -280,12 +282,23 @@ export default {
         ...this.user,
         ...newValue
       }
+      this.getUserInfo()
     },
     initialFollowing (newValue) {
       this.isFollowing = newValue
     }
   },
+  created () {
+    this.getUserInfo()
+  },
   methods: {
+    getUserInfo () {
+      this.privateChatUser.id = this.user.id
+      this.privateChatUser.name = this.user.name
+      this.privateChatUser.account = this.user.account
+
+      console.log(this.user)
+    },
     // 新增訂閱
     addSubscribe () {
       this.isSubscribe = true
