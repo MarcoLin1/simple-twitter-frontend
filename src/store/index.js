@@ -15,7 +15,12 @@ export default new Vuex.Store({
     },
     isAuthenticated: false,
     token: '',
-    followingNum: 0
+    followingNum: 0,
+    privateChatUser: {
+      id: -1,
+      name: '',
+      account: ''
+    }
   },
   mutations: {
     setCurrentUser (state, currentUser) {
@@ -40,6 +45,12 @@ export default new Vuex.Store({
     },
     minusFollowing (state) {
       state.followingNum--
+    },
+    getUserInfo (state, privateChatUser) {
+      state.privateChatUser = {
+        ...state.privateChatUser,
+        ...privateChatUser
+      }
     }
   },
   actions: {

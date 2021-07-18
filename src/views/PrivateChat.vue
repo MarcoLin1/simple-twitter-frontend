@@ -32,7 +32,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser', 'privateChatUser'])
   },
   beforeRouteEnter (to, from, next) {
     const { id } = from.params
@@ -41,9 +41,13 @@ export default {
   },
   created () {
     this.$socket.connect()
-    // 傳給後端兩人的ＩＤ
+    this.listener = this.privateChatUser
   },
   mounted () {
+    // 傳給後端兩人的ＩＤ
+    this.sockets.subscribe('users', (data) => {
+      console.log('users', data)
+    })
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
     console.log('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
   },
@@ -69,7 +73,7 @@ export default {
   methods: {
     // enter room事件傳送給後端
     handelAfterEnter (data) {
-      console.log('handelAfterEnter', data.id)
+      console.log('handelAfterEnter', data)
       // 將資料存在listener中，傳遞給chatroom
       this.listener = data
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
