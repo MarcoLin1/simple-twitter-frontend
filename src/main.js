@@ -34,13 +34,13 @@ new Vue({
   store,
   sockets: {
     connecting () {
-      console.log('正在连接')
+      console.log('Socket connecting')
     },
     disconnect () {
-      console.log('Socket 断开')
+      console.log('Socket Disconnect')
     },
     connect_failed () {
-      console.log('连接失败')
+      console.log('Socket connect failed')
     },
     connect () {
       console.log('socket connected')
