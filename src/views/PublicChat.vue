@@ -38,9 +38,13 @@ export default {
     // connect () {
     this.$socket.connect()
     this.$socket.emit('currentUser', { ...this.currentUser })
-    // this.sockets.subscribe('users', (data) => {
-    //   console.log('這是sockets的user connected', data)
-    // })
+  },
+  mounted () {
+    this.sockets.subscribe('getMessages', data => {
+      data.forEach(item => {
+        this.messages.push(item)
+      })
+    })
   },
   sockets: {
     connect () {
@@ -65,23 +69,13 @@ export default {
       console.log('這是message', data)
       this.messages.push(data)
       console.log(this.messages)
-    },
-    getMessages: function (data) {
-      // data.forEach(item => {
-
-      // })
-      if (this.messages.length > 100) {
-        this.messages = []
-        data.forEach(item => {
-          this.messages.push(item)
-        })
-      } else {
-        data.forEach(item => {
-          this.messages.push(item)
-        })
-        console.log('這是get message', data)
-      }
     }
+    // getMessages: function (data) {
+    //   console.log('這是公開的歷史訊息', data)
+    //   data.forEach(item => {
+    //     this.messages.push(item)
+    //   })
+    // }
   },
   beforeDestroy () {
     console.log('leave')
@@ -92,12 +86,6 @@ export default {
     this.$socket.connect()
   },
   methods: {
-    // // 從component傳回來資料，再傳送給後端
-    // handleAfterSubmit () {
-    //   // this.sockets.subscribe('chatMessage', data => {
-    //   //   this.messages.push(data)
-    //   // })
-    // }
   }
 }
 </script>

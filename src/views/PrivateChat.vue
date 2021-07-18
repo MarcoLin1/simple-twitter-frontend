@@ -93,8 +93,8 @@ export default {
       console.log('users data', data)
     },
     chattedUsers: function (data) {
-      this.chats = data // 不確定
-      console.log('chattedUser 有成功嗎？', data)
+      this.chats = data
+      console.log('chattedUser 有成功嗎？')
     },
     getMessages: function (data) {
       if (this.messages.length === 0) {
