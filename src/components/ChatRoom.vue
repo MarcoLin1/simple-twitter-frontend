@@ -264,7 +264,6 @@ export default {
     }
   },
   mounted () {
-
   },
   methods: {
     handleSubmit () {

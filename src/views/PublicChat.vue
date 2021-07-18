@@ -51,7 +51,8 @@ export default {
       console.log('socket disconnected!!!!!!!!!!!')
     },
     users: function (data) {
-      console.log('這包是usrs data', data)
+      console.log('這包是user data', data)
+      this.users = data
     },
     userConnected: function (data) {
       this.messages.push(data)

@@ -10,7 +10,7 @@
       :key="user.user_id"
       class="online_container__list"
     >
-      <router-link :to="{ name:'user-tweets', params:{id: user.user_id} }">
+      <router-link :to="{ name:'user-tweets', params:{id: user.id} }">
         <div class="online_container__list__avatar">
           <img
             :src="user.avatar"

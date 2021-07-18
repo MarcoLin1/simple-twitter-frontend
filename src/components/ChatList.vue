@@ -14,6 +14,7 @@
       v-for="chat in chats"
       :key="chat.id"
       class="post"
+      @click.stop.prevent="enterRoom(chat.id)"
     >
       <div class=" post__avatar">
         <div class="avatar-img" />
@@ -25,11 +26,11 @@
           </span>
           <span class="post-title-item post-title-item-account">{{ chat.account }}</span>
           <span class="post-title-item post-title-item-time">
-            {{ chat.createdTime | shortenTime }}
+            {{ chat.last_createdAt | shortenTime }}
           </span>
         </div>
         <div class="post-discription">
-          {{ chat.discription }}
+          {{ chat.last_content }}
         </div>
       </div>
     </div>
@@ -76,6 +77,7 @@
     }
   }
   .post{
+    cursor: pointer;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -103,49 +105,53 @@ const dummyData = [
     id: '1',
     account: '@apple',
     name: 'Apple',
-    discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-    createdTime: '2021-05-01 00:00:00',
-    isLiked: true
+    last_content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
+    last_createdAt: '2021-05-01 00:00:00'
   },
   {
     id: '2',
     account: '@apple',
     name: 'Apple',
-    discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-    createdTime: '2021-06-02 00:00:00',
-    isLiked: false
+    last_content: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+    last_createdAt: '2021-06-02 00:00:00'
   },
   {
     id: '3',
     account: '@apple',
     name: 'Apple',
-    discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-    createdTime: '2021-07-17 21:00:00',
-    isLiked: true
+    last_content: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
+    last_createdAt: '2021-07-17 21:00:00'
   }
 
 ]
 export default {
   name: 'OnlineUser',
   mixins: [shortenTimeFilter],
-  // props: {
-  //   initialUsers: {
-  //     type: Array,
-  //     required: true
-  //   }
-  // },
+  props: {
+    initialChats: {
+      type: Array,
+      required: true
+    }
+  },
   data () {
     return {
       chats: dummyData
     }
+  },
+  watch: {
+    initialChats (newValue) {
+      this.chats = [
+        ...this.chats,
+        ...newValue
+      ]
+    }
+  },
+  methods: {
+    enterRoom (id) {
+      const data = this.chats.filter((chat) => chat.id === id)
+
+      this.$emit('after-enter', data[0])
+    }
   }
-  // watch: {
-  //   initialUsers (newValue) {
-  //     this.users = [
-  //       ...this.users,
-  //       ...newValue
-  //     ]
-  //   }
-  // }
 }
 </script>
