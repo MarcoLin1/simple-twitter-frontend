@@ -24,8 +24,6 @@ export default {
   },
   data () {
     return {
-      // 還沒用到
-      isConnected: false,
       users: [],
       messages: []
     }
@@ -87,13 +85,10 @@ export default {
   },
   beforeDestroy () {
     console.log('leave')
-    // this.$socket.disconnect()
+    this.$socket.disconnect()
   },
   destroyed () {
     console.log('請重新連接')
-    this.$socket.connect()
-  },
-  destroyed () {
     this.$socket.connect()
   },
   methods: {

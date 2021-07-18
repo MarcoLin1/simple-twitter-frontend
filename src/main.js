@@ -16,7 +16,7 @@ const socketOptions = {
 
 const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
 socket.onAny((event, ...args) => {
-  console.log('main.js', event, args)
+  console.log('main.js收到的資訊', event, args)
 })
 
 Vue.use(new VueSocketIO({

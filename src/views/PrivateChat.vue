@@ -58,9 +58,11 @@ export default {
   mounted () {
     // 傳給後端兩人的ＩＤ
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listener.id })
+    console.log('this.listener.id', this.listener.id)
     // 進房間傳給後端，如果listener id === -1 則不傳送
     if (this.listener.id !== -1) {
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listener.id })
+      console.log('確定有人再傳')
     }
   },
   beforeRouteUpdate () {
@@ -72,7 +74,13 @@ export default {
     this.privateChatUser.id = -1
     this.privateChatUser.name = ''
     this.privateChatUser.account = ''
+    this.$sockets.disconnect()
   },
+  destroyed () {
+    console.log('重新連接')
+    this.$socket.connect()
+  },
+
   sockets: {
     connect () {
       console.log('socket connected in component')
@@ -86,7 +94,7 @@ export default {
     },
     chattedUsers: function (data) {
       this.chats = data // 不確定
-      console.log('chattedUser 有成功嗎？')
+      console.log('chattedUser 有成功嗎？', data)
     },
     getMessages: function (data) {
       if (this.messages.length === 0) {
