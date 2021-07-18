@@ -30,6 +30,7 @@
       <!-- 當現在頁面的user 不是 currentUser，就顯示icon -->
       <router-link
         to="/privatechat"
+        @click.stop.prevent.native="getUserInfo"
       >
         <div
           v-if="(currentUser.id !== user.id)"
@@ -282,15 +283,11 @@ export default {
         ...this.user,
         ...newValue
       }
-      // this.getUserInfo()
     },
     initialFollowing (newValue) {
       this.isFollowing = newValue
     }
   },
-  // created () {
-  //   this.getUserInfo()
-  // },
   methods: {
     getUserInfo () {
       this.privateChatUser.id = this.user.id

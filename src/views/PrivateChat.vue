@@ -45,11 +45,10 @@ export default {
   },
   watch: {
     listener (newValue, oldValue) {
-      console.log('這是new', newValue)
-      console.log('這是old', oldValue)
-      // 傳送資料給後端
-      if (newValue !== -1 || oldValue !== -1) {
-        console.log('還沒換人')
+      // 如果id有正常變化才會傳給後端離開聊天室的訊息
+      if (newValue.id !== -1 && oldValue.id !== -1) {
+        this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: oldValue.id })
+        console.log('old', oldValue.id, 'old', newValue.id)
       }
     }
   },
@@ -63,10 +62,19 @@ export default {
       console.log('users', data)
     })
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
-    console.log('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
+    // 進房間傳給後端
+    this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listenerId })
+  },
+  beforeRouteUpdate () {
+    console.log(this.user)
+    this.$socket.connect()
   },
   beforeDestroy () {
     console.log('leave')
+    // state 清空
+    this.privateChatUser.id = -1
+    this.privateChatUser.name = ''
+    this.privateChatUser.account = ''
     this.$socket.disconnect()
   },
   sockets: {
