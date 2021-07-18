@@ -293,11 +293,6 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.$store.commit('getUserInfo', {
-        id: this.user.id,
-        name: this.user.name,
-        account: this.user.account
-      })
       this.privateChatUser.id = this.user.id
       this.privateChatUser.name = this.user.name
       this.privateChatUser.account = this.user.account
