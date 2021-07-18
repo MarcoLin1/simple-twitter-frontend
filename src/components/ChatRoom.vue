@@ -1,93 +1,99 @@
 <template>
-  <div class="chat__room__container">
-    <div class="chat__room__top__wrapper">
-      <div class="chat__room__title">
-        公開聊天室
+  <form
+    action=""
+    @submit.stop.prevent="handleSubmit"
+  >
+    <div class="chat__room__container">
+      <div class="chat__room__top__wrapper">
+        <div class="chat__room__title">
+          公開聊天室
+        </div>
       </div>
-    </div>
-    <div
-      class="chat__room__main__wrapper"
-    >
       <div
-        v-for="data in allData"
-        :key="data.id"
+        class="chat__room__main__wrapper"
       >
         <div
-          v-if="data.online"
-          class="chat__room__main__info__wraaper"
-        >
-          <div class="chat__room__info">
-            <div class="chat__room__info__text">
-              {{ data.name }} 上線囉
-            </div>
-          </div>
-        </div>
-        <div
-          class="chat__room__message__wrapper"
+          v-for="data in allData"
+          :key="data.id"
         >
           <div
-            v-if="data.id !== currentUser.id"
-            class="chat__room__left__wrapper"
+            v-if="data.isOnline === 1"
+            class="chat__room__main__info__wraaper"
           >
-            <div class="chat__room__user">
-              <img
-                src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
-                alt=""
-                class="user__image"
-              >
-              <div class="chat__room__text__container">
-                <div class="chat__room__text__wrapper">
-                  <div class="chat__room__text">
-                    {{ data.content }}
+            <div class="chat__room__info">
+              <div class="chat__room__info__text">
+                {{ data.name }} 上線囉
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="data.id"
+            class="chat__room__message__wrapper"
+          >
+            <div
+              v-if="data.id !== currentUser.id"
+              class="chat__room__left__wrapper"
+            >
+              <div class="chat__room__user">
+                <img
+                  src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                  alt=""
+                  class="user__image"
+                >
+                <div class="chat__room__text__container">
+                  <div class="chat__room__text__wrapper">
+                    <div class="chat__room__text">
+                      {{ data.content }}
+                    </div>
+                  </div>
+                  <div class="chat__room__time">
+                    {{ data.createdAt }}
                   </div>
                 </div>
-                <div class="chat__room__time">
-                  {{ data.createdAt }}
+              </div>
+            </div>
+            <div
+              v-if="data.id === currentUser.id"
+              class="chat__room__right__wrapper"
+            >
+              <div class="chat__room__right__text__wrapper">
+                <div class="chat__room__right__text">
+                  {{ data.content }}
                 </div>
+              </div>
+              <div class="chat__room__time">
+                {{ data.createdAt }}
               </div>
             </div>
           </div>
           <div
-            v-if="data.id === currentUser.id"
-            class="chat__room__right__wrapper"
+            v-if="data.isOnline === 0"
+            class="chat__room__main__leave__wraaper"
           >
-            <div class="chat__room__right__text__wrapper">
-              <div class="chat__room__right__text">
-                {{ data.content }}
+            <div class="chat__room__leave">
+              <div class="chat__room__leave__text">
+                {{ data.name }} 離線了 QQ
               </div>
-            </div>
-            <div class="chat__room__time">
-              {{ data.createdAt }}
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="!data.online"
-          class="chat__room__main__leave__wraaper"
-        >
-          <div class="chat__room__leave">
-            <div class="chat__room__leave__text">
-              {{ data.name }} 離線了 QQ
             </div>
           </div>
         </div>
       </div>
+      <div class="chat__room__bottom__wrapper">
+        <input
+          v-model="message"
+          type="text"
+          class="chat__room__input"
+          placeholder="請輸入訊息..."
+        >
+        <button
+          type="submit"
+          class="chat__room__button"
+        >
+          PUSH
+        </button>
+      </div>
     </div>
-    <div class="chat__room__bottom__wrapper">
-      <input
-        v-model="message"
-        type="text"
-        class="chat__room__input"
-        placeholder="請輸入訊息..."
-      >
-      <button
-        type="submit"
-        class="chat__room__button"
-      >
-        PUSH
-      </button>
-    </div>
-  </div>
+  </form>
 </template>
 
 <style lang="scss" scoped>
@@ -113,7 +119,10 @@
     .chat__room__main__wrapper {
       display: flex;
       flex-direction: column;
+      max-height: fit-content;
+      overflow-y: scroll;
       justify-content: flex-end;
+      margin-top: 20px;
       .chat__room__main__info__wraaper, .chat__room__main__leave__wraaper {
         width: 100%;
         text-align: center;
@@ -134,6 +143,12 @@
           line-height: 25px;
           font-size: 0.8rem;
         }
+      }
+      .chat__room__main__wrapper {
+        max-height: fit-content;
+        overflow-y: scroll;
+        justify-content: center;
+        margin-top: 20px;
       }
       .chat__room__message__wrapper {
         .chat__room__left__wrapper {
@@ -161,6 +176,8 @@
                 .chat__room__text {
                   font-size: 0.9rem;
                   color: $black;
+                  word-break: break-all;
+                  line-height: 1.2rem;
                 }
               }
             }
@@ -180,6 +197,8 @@
               text-align: right;
               color: #ffffff;
               font-size: 0.9rem;
+              word-break: break-all;
+              line-height: 1.2rem;
             }
           }
         }
@@ -222,13 +241,16 @@
 
 <script>
 import { mapState } from 'vuex'
+import { Toast } from '../utils/helper'
 export default {
   name: 'ChatRoom',
   props: {
-    newUser: {
-      type: [Object, Array],
-      required: true
+    messages: {
+      type: Array
     }
+  },
+  created () {
+
   },
   computed: {
     ...mapState(['currentUser'])
@@ -236,27 +258,33 @@ export default {
   data () {
     return {
       message: '',
-      allData: [
-        // 上線提醒
-        {
-          id: 98,
-          name: 'user2',
-          online: true
-        },
-        // message
-        {
-          account: 'goal',
-          avatar: '',
-          name: 'Goal',
-          id: 55,
-          content: 'what happen ????'
-        },
-        // 離線提醒
-        {
-          name: 'Bernard',
-          online: false
-        }
-      ]
+      allData: this.messages,
+      getAllMessage: []
+      // nowUser: this.currentUser
+    }
+  },
+  mounted () {
+
+  },
+  methods: {
+    handleSubmit () {
+      if (!this.message) {
+        Toast.fire({
+          icon: 'warning',
+          title: '沒有話要說，就不要亂按'
+        })
+        return
+      }
+      if (!this.message.trim()) {
+        Toast.fire({
+          icon: 'warning',
+          title: '送一堆空格要幹嘛!?'
+        })
+        return
+      }
+      this.$socket.emit('chatMessage', { ...this.currentUser, content: this.message, createdAt: new Date() })
+      this.message = ''
+      // this.allData.push(this.messages)
     }
   }
 }
