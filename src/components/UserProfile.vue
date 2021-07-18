@@ -282,15 +282,15 @@ export default {
         ...this.user,
         ...newValue
       }
-      this.getUserInfo()
+      // this.getUserInfo()
     },
     initialFollowing (newValue) {
       this.isFollowing = newValue
     }
   },
-  created () {
-    this.getUserInfo()
-  },
+  // created () {
+  //   this.getUserInfo()
+  // },
   methods: {
     getUserInfo () {
       this.privateChatUser.id = this.user.id

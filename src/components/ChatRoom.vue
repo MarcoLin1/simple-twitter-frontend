@@ -36,7 +36,7 @@
             >
               <div class="chat__room__user">
                 <img
-                  src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                  :src="data.avatar"
                   alt=""
                   class="user__image"
                 >
@@ -249,12 +249,6 @@ export default {
       type: Array
     }
   },
-  created () {
-
-  },
-  computed: {
-    ...mapState(['currentUser'])
-  },
   data () {
     return {
       message: '',
@@ -262,6 +256,9 @@ export default {
       getAllMessage: []
       // nowUser: this.currentUser
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   mounted () {
   },
