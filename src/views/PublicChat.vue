@@ -33,13 +33,16 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
+  beforeRouteUpdate () {
+    this.$socket.connect()
+  },
   created () {
     // connect () {
     this.$socket.connect()
     this.$socket.emit('currentUser', { ...this.currentUser })
-    this.sockets.subscribe('users', (data) => {
-      console.log('這是sockets的user connected', data)
-    })
+    // this.sockets.subscribe('users', (data) => {
+    //   console.log('這是sockets的user connected', data)
+    // })
   },
   sockets: {
     connect () {
@@ -88,6 +91,9 @@ export default {
   },
   destroyed () {
     console.log('請重新連接')
+    this.$socket.connect()
+  },
+  destroyed () {
     this.$socket.connect()
   },
   methods: {

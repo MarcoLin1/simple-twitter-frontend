@@ -16,6 +16,8 @@ export default new Vuex.Store({
     isAuthenticated: false,
     token: '',
     followingNum: 0,
+    getPrivateNotify: false,
+    getPrivateNotifyCount: 0,
     privateChatUser: {
       id: -1,
       name: '',
@@ -32,6 +34,15 @@ export default new Vuex.Store({
       state.token = localStorage.getItem('token')
       // 將使用者的登入狀態改為 true
       state.isAuthenticated = true
+    },
+    SOCKET_messageNotify (state, data) {
+      if (data.unreadCount > 0) {
+        state.getPrivateNotify = true
+      } else {
+        state.getPrivateNotify = false
+      }
+      state.getPrivateNotifyCount = data.unreadCount
+      console.log('state.getPrivateNotify', data)
     },
     // 登出狀態
     revokeAuthentication (state) {
