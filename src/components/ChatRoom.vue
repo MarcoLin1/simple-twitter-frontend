@@ -10,11 +10,12 @@
         </div>
       </div>
       <div
+        ref="main"
         class="chat__room__main__wrapper"
       >
         <div
           v-for="data in allData"
-          :key="data.id"
+          :key="data.messageId"
         >
           <div
             v-if="data.isOnline === 1"
@@ -36,7 +37,7 @@
             >
               <div class="chat__room__user">
                 <img
-                  :src="data.avatar"
+                  :src="data.avatar | emptyImage"
                   alt=""
                   class="user__image"
                 >
@@ -47,7 +48,7 @@
                     </div>
                   </div>
                   <div class="chat__room__time">
-                    {{ data.createdAt }}
+                    {{ data.createdAt | shortenTime }}
                   </div>
                 </div>
               </div>
@@ -62,7 +63,7 @@
                 </div>
               </div>
               <div class="chat__room__time">
-                {{ data.createdAt }}
+                {{ data.createdAt | shortenTime }}
               </div>
             </div>
           </div>
@@ -121,7 +122,7 @@
       flex-direction: column;
       max-height: fit-content;
       overflow-y: scroll;
-      justify-content: flex-end;
+      // justify-content: flex-end;
       margin-top: 20px;
       .chat__room__main__info__wraaper, .chat__room__main__leave__wraaper {
         width: 100%;
@@ -143,12 +144,6 @@
           line-height: 25px;
           font-size: 0.8rem;
         }
-      }
-      .chat__room__main__wrapper {
-        max-height: fit-content;
-        overflow-y: scroll;
-        justify-content: center;
-        margin-top: 20px;
       }
       .chat__room__message__wrapper {
         .chat__room__left__wrapper {
@@ -242,8 +237,10 @@
 <script>
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
+import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 export default {
   name: 'ChatRoom',
+  mixins: [shortenTimeFilter, emptyImageFilter],
   props: {
     messages: {
       type: Array
@@ -252,15 +249,29 @@ export default {
   data () {
     return {
       message: '',
-      allData: this.messages,
-      getAllMessage: []
-      // nowUser: this.currentUser
+      allData: this.messages
+    }
+  },
+  watch: {
+    messages (newValue) {
+      this.allData = [
+        ...this.allData,
+        ...newValue
+      ]
     }
   },
   computed: {
     ...mapState(['currentUser'])
   },
+  created () {
+    this.scrollToEnd()
+    console.log(this.$refs.main)
+  },
   mounted () {
+    this.scrollToEnd()
+  },
+  updated () {
+    this.scrollToEnd()
   },
   methods: {
     handleSubmit () {
@@ -278,10 +289,15 @@ export default {
         })
         return
       }
-      this.$socket.emit('chatMessage', { ...this.currentUser, content: this.message, createdAt: new Date() })
+      this.$socket.emit('chatMessage', { ...this.currentUser, content: this.message, createdAt: new Date(), avatar: this.currentUser.avatar })
       this.message = ''
       // this.allData.push(this.messages)
+    },
+    // 捲軸到最底部
+    scrollToEnd () {
+      this.$refs.main.scrollTop = this.$refs.main.scrollHeight
     }
   }
+
 }
 </script>
