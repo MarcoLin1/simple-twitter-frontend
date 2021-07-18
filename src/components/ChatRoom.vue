@@ -88,9 +88,7 @@
         <button
           type="submit"
           class="chat__room__button"
-        >
-          PUSH
-        </button>
+        />
       </div>
     </div>
   </form>
@@ -234,6 +232,11 @@
         color: #a7a7a7;
         font-size: 0.6rem;
         box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+        mask-image: url('./../assets/icon/icon_sendMsg.svg');
+        -webkit-mask-image: url('./../assets/icon/icon_sendMsg.svg');
+        @extend %icon-style;
+        mask-size: 25px;
+        background: $orange;
       }
     }
   }
