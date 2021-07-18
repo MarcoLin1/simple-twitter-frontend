@@ -32,9 +32,11 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
+  mounted: {
+  },
   sockets: {
     connect () {
-      console.log('socket connected')
+      console.log('socket connected in component')
       this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
       this.sockets.subscribe('users', (data) => {
         this.users = data

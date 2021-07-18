@@ -165,57 +165,7 @@ export default {
   },
   data () {
     return {
-      posts: [
-        {
-          id: '1',
-          account: '@apple',
-          name: 'Apple',
-          discription: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-          createdTime: '3 小時',
-          isLiked: true
-        }
-        // },
-        // {
-        //   id: '2',
-        //   account: '@apple',
-        //   name: 'Apple',
-        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-        //   createdTime: '6月25日',
-        //   isLiked: false
-        // },
-        // {
-        //   id: '3',
-        //   account: '@apple',
-        //   name: 'Apple',
-        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-        //   createdTime: '3 小時',
-        //   isLiked: true
-        // },
-        // {
-        //   id: '6',
-        //   account: '@apple',
-        //   name: 'Apple',
-        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-        //   createdTime: '3 小時',
-        //   isLiked: true
-        // },
-        // {
-        //   id: '4',
-        //   account: '@apple',
-        //   name: 'Apple',
-        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-        //   createdTime: '3 小時',
-        //   isLiked: true
-        // },
-        // {
-        //   id: '5',
-        //   account: '@apple',
-        //   name: 'Apple',
-        //   discription: 'Nulla Lorem mollit cupidatatirure. Laborum magna nulla duis ullamcocillum dolor. Voluptate exerc',
-        //   createdTime: '3 小時',
-        //   isLiked: true
-        // }
-      ]
+      posts: ''
     }
   },
   created () {
