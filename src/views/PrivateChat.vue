@@ -72,10 +72,6 @@ export default {
     this.privateChatUser.id = -1
     this.privateChatUser.name = ''
     this.privateChatUser.account = ''
-    this.$socket.disconnect()
-  },
-  destroyed () {
-    this.$socket.connect()
   },
   sockets: {
     connect () {

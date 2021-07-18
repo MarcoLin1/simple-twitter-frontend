@@ -109,7 +109,7 @@
     border-left: 1px solid $light-gray;
     .chat__room__top__wrapper {
       border-bottom: 1px solid $line-gray;
-      height: 55px;
+      height: 45px;
       display: flex;
       align-items: center;
       font-size: 18px;
