@@ -58,7 +58,8 @@ export default {
       console.log('users', data)
     })
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
-    console.log('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
+    // 進房間傳給後端
+    this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listenerId })
   },
   beforeRouteUpdate () {
     console.log(this.user)

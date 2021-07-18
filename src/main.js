@@ -43,7 +43,10 @@ new Vue({
       console.log('Socket connect failed')
     },
     connect () {
-      console.log('socket connected')
+      console.log('socket connected in main.js')
+    },
+    messageNotify: function (data) {
+      console.log('messageNotify', data)
     }
   },
   render: (h) => h(App)

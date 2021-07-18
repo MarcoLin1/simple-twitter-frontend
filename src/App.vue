@@ -9,9 +9,15 @@
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { mapState } from 'vuex'
 
 export default {
-  components: {
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  created () {
+    console.log('app.vue created')
   }
+
 }
 </script>
