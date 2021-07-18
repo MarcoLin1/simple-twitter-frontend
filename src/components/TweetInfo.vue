@@ -3,11 +3,13 @@
     <div class="tweet__info__container">
       <div class="tweet__info__top__wrapper">
         <div class="tweet__info__image_wrapper">
-          <img
-            :src="tweet.User.avatar | emptyImage"
-            alt="使用者的大頭貼"
-            class="tweet__info__image"
-          >
+          <router-link :to="{name:'user-tweets', params:{id: tweet.User.id}}">
+            <img
+              :src="tweet.User.avatar | emptyImage"
+              alt="使用者的大頭貼"
+              class="tweet__info__image"
+            >
+          </router-link>
         </div>
         <div class="tweet__info__title__wrapper">
           <div class="tweet__info__name">

@@ -1,6 +1,8 @@
 <template>
   <div class="online_container">
-    <div class="online_container__title">
+    <div
+      class="online_container__title"
+    >
       上線使用者 ({{ initialUsers.length || 0 }})
     </div>
     <div
@@ -35,6 +37,7 @@
     @include text-style(18px, 700, $black);
     padding: 0  15px;
     border-bottom: 1px solid $light-gray;
+
   }
   &__list{
     display: flex;
@@ -64,6 +67,19 @@ export default {
     initialUsers: {
       type: Array,
       required: true
+    }
+  },
+  data () {
+    return {
+      users: this.initialUsers
+    }
+  },
+  watch: {
+    initialUsers (newValue) {
+      this.users = [
+        ...this.users,
+        ...newValue
+      ]
     }
   }
 }

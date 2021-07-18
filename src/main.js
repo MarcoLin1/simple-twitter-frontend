@@ -7,6 +7,14 @@ import VueSocketIO from 'vue-socket.io'
 import { io } from 'socket.io-client'
 
 Vue.config.productionTip = false
+const socketOptions = {
+  autoConnect: true,
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 6000
+}
+
+const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
 
 const socketOptions = {
   autoConnect: true,
@@ -17,7 +25,7 @@ const socketOptions = {
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { transports: ['websocket', 'polling'] }),
+  connection: socket
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
@@ -28,5 +36,19 @@ Vue.use(new VueSocketIO({
 new Vue({
   router,
   store,
+  sockets: {
+    connecting () {
+      console.log('正在连接')
+    },
+    disconnect () {
+      console.log('Socket 断开')
+    },
+    connect_failed () {
+      console.log('连接失败')
+    },
+    connect () {
+      console.log('socket connected')
+    }
+  },
   render: (h) => h(App)
 }).$mount('#app')
