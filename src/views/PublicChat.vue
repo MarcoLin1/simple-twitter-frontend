@@ -7,7 +7,9 @@
       class="right__content"
       @after-submit="handleAfterSubmit"
     >
-      <ChatRoom />
+      <ChatRoom
+        :messages="messages"
+      />
     </div>
   </div>
 </template>
@@ -26,37 +28,101 @@ export default {
     return {
       // 還沒用到
       isConnected: false,
-      users: []
+      users: [],
+      messages: []
     }
   },
   computed: {
     ...mapState(['currentUser'])
   },
-  mounted: {
+  created () {
+    // connect () {
+    // console.log('socket connected')
+    this.$socket.connect()
+    this.$socket.emit('currentUser', { ...this.currentUser, socketId: this.$socket.id })
+
+    // this.sockets.subscribe('users', (data) => {
+    //   this.users = data
+    //   console.log('data', data)
+    // })
+    this.sockets.subscribe('users', (data) => {
+      console.log('users', data)
+    })
+
+    // this.sockets.subscribe('user connected', (data) => {
+    //   console.log('user connected', data)
+    // })
+
+    // this.sockets.subscribe('user disconnected', (data) => {
+    //   console.log('user dis connect', data)
+    // })
+    // },
+    // disconnect () {
+    //   console.log('socket disconnected!!!!!!!!!!!')
+    // },
+    // users: function (data) {
+    //   console.log('這包是data', data)
+    // },
+    // 'user connected': function (data) {
+    //   this.newUser = data
+    // },
+    // 'chat message': function (data) {
+    //   console.log('這是message', data)
+    // }
   },
   sockets: {
     connect () {
-      console.log('socket connected in component')
-      this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
-      this.sockets.subscribe('users', (data) => {
-        this.users = data
-        console.log('data', data)
-      })
-      this.sockets.subscribe('user connected', (data) => {
-        console.log('user connected', data)
-      })
+      console.log('socket connected')
+      // this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
+      // this.sockets.subscribe('users', (data) => {
+      //   this.users = data
+      //   console.log('這是sockets的users data', data)
+      // })
+      // this.$socket.on('users', data => {
+      //   console.log('$socket: ', data)
+      // })
+      // this.sockets.on('users', data => {
+      //   console.log('sockets:', data)
+      // })
+      // this.$sockets.on('users', data => {
+      //   console.log('$sockets', data)
+      // })
+      // this.sockets.subscribe('user connected', (data) => {
+      //   console.log('這是sockets的user connected', data)
+      // })
     },
     disconnect () {
-      console.log('socket disconnected')
+      console.log('socket disconnected!!!!!!!!!!!')
+    },
+    users: function (data) {
+      console.log('這包是usrs data', data)
+      this.users = data
+    },
+    userConnected: function (data) {
+      this.newUser = data
+      console.log('這是外面的user connected', data)
+    },
+    chatMessage: function (data) {
+      console.log('這是message', data)
+      this.messages.push(data)
+      console.log(this.messages)
+    },
+    getMessages: function (data) {
+      console.log('這是get message', data)
     }
-
+  },
+  beforeDestroy () {
+    console.log('leave')
+    this.$socket.disconnect()
   },
   methods: {
     // 從component傳回來資料，再傳送給後端
     handleAfterSubmit () {
       // $socket is socket.io-client instance
-      this.$socket.emit('public message', this.content)
-      console.log(this.content)
+      // this.$socket.emit('public message', this.content)
+      this.sockets.subscribe('chat message', data => {
+        this.messages.push(data)
+      })
     }
   }
 }

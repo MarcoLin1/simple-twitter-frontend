@@ -1,86 +1,99 @@
 <template>
-  <div class="chat__room__container">
-    <div class="chat__room__top__wrapper">
-      <div class="chat__room__title">
-        公開聊天室
-      </div>
-    </div>
-    <div class="chat__room__main__wrapper">
-      <div class="chat__room__main__info__wraaper">
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            Marco 上線囉
-          </div>
-        </div>
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            Tina 上線囉
-          </div>
-        </div>
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            YJ 上線囉
-          </div>
-        </div>
-        <div class="chat__room__info">
-          <div class="chat__room__info__text">
-            翊廷 上線囉
-          </div>
+  <form
+    action=""
+    @submit.stop.prevent="handleSubmit"
+  >
+    <div class="chat__room__container">
+      <div class="chat__room__top__wrapper">
+        <div class="chat__room__title">
+          公開聊天室
         </div>
       </div>
-      <div class="chat__room__message__wrapper">
-        <div class="chat__room__left__wrapper">
-          <div class="chat__room__user">
-            <img
-              src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
-              alt=""
-              class="user__image"
+      <div
+        class="chat__room__main__wrapper"
+      >
+        <div
+          v-for="data in allData"
+          :key="data.message.messageId"
+        >
+          <div
+            v-if="data.isOnline === 1"
+            class="chat__room__main__info__wraaper"
+          >
+            <div class="chat__room__info">
+              <div class="chat__room__info__text">
+                {{ data.name }} 上線囉
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="data.id"
+            class="chat__room__message__wrapper"
+          >
+            <div
+              v-if="data.message.id !== currentUser.id"
+              class="chat__room__left__wrapper"
             >
-            <div class="chat__room__text__container">
-              <div class="chat__room__text__wrapper">
-                <div class="chat__room__text">
-                  今天天氣好好，但是要一直coding不能睡覺
+              <div class="chat__room__user">
+                <img
+                  src="https://www.holoface.photos/static/images/products/figurephotohalf01.jpg"
+                  alt=""
+                  class="user__image"
+                >
+                <div class="chat__room__text__container">
+                  <div class="chat__room__text__wrapper">
+                    <div class="chat__room__text">
+                      {{ data.message.content }}
+                    </div>
+                  </div>
+                  <div class="chat__room__time">
+                    {{ data.message.createdAt }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="data.message.id === currentUser.id"
+              class="chat__room__right__wrapper"
+            >
+              <div class="chat__room__right__text__wrapper">
+                <div class="chat__room__right__text">
+                  {{ data.message.content }}
                 </div>
               </div>
               <div class="chat__room__time">
-                下午4:21
+                {{ data.message.createdAt }}
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="data.isOnline === 0"
+            class="chat__room__main__leave__wraaper"
+          >
+            <div class="chat__room__leave">
+              <div class="chat__room__leave__text">
+                {{ data.name }} 離線了 QQ
               </div>
             </div>
           </div>
         </div>
-        <div class="chat__room__right__wrapper">
-          <div class="chat__room__right__text__wrapper">
-            <div class="chat__room__right__text">
-              最近還好嗎？跟你沒什麼好聊的
-            </div>
-          </div>
-          <div class="chat__room__time">
-            下午5:59
-          </div>
-        </div>
       </div>
-      <div class="chat__room__main__leave__wraaper">
-        <div class="chat__room__leave">
-          <div class="chat__room__leave__text">
-            Bernard 離線了 QQ
-          </div>
-        </div>
+      <div class="chat__room__bottom__wrapper">
+        <input
+          v-model="message"
+          type="text"
+          class="chat__room__input"
+          placeholder="請輸入訊息..."
+        >
+        <button
+          type="submit"
+          class="chat__room__button"
+        >
+          PUSH
+        </button>
       </div>
     </div>
-    <div class="chat__room__bottom__wrapper">
-      <input
-        type="text"
-        class="chat__room__input"
-        placeholder="請輸入訊息..."
-      >
-      <button
-        type="submit"
-        class="chat__room__button"
-      >
-        PUSH
-      </button>
-    </div>
-  </div>
+  </form>
 </template>
 
 <style lang="scss" scoped>
@@ -214,17 +227,44 @@
 </style>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'ChatRoom',
+  props: {
+    // newUser: {
+    //   type: [Object, Array],
+    //   required: true
+    // },
+    messages: {
+      type: [Object, Array]
+    }
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   data () {
     return {
-      message: ''
+      message: '',
+      allData: this.messages,
+      msgId: 0
+      // nowUser: this.currentUser
+    }
+  },
+  mounted () {
+    this.$socket.on('get messages', (data) => {
+      console.log('這是mounted 的 get messages', data)
+    })
+  },
+  methods: {
+    handleSubmit () {
+      if (!this.message) {
+        console.log('不能是空的')
+        return
+      }
+      this.$socket.emit('chat message', { ...this.currentUser, content: this.message, createdAt: new Date(), messageId: this.msgId++ })
+      this.message = ''
+      // this.allData.push(this.messages)
     }
   }
-  // sockets: {
-  //   connect () {
-  //     console.log('connect!!!!!!!!!')
-  //   }
-  // }
 }
 </script>

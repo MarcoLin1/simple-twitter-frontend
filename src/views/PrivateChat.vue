@@ -1,12 +1,16 @@
 <template>
   <div class="main_container">
     <div class="middle__content">
-      <ChatList :initial-chats="chats" />
+      <ChatList
+        :initial-chats="chats"
+        @after-enter="handelAfterEnter"
+      />
     </div>
     <div
       class="right__content"
     >
-      <ChatRoom />
+      <!-- 如果有id的話就在room標題顯示id ， -->
+      <ChatRoom :initial-listener="listener" />
     </div>
   </div>
 </template>
@@ -23,24 +27,33 @@ export default {
   },
   data () {
     return {
-      // 還沒用到
-      isConnected: false,
-      users: []
+      listener: {},
+      chats: []
     }
   },
   computed: {
     ...mapState(['currentUser'])
   },
+  beforeRouteEnter (to, from, next) {
+    const { id } = from.params
+    // 不能直接用this
+    next(vm => { vm.listenerId = id })
+  },
   created () {
     this.$socket.connect()
-    this.$socket.emit('current user', { ...this.currentUser, socketId: this.$socket.id })
+    // 傳給後端兩人的ＩＤ
+  },
+  mounted () {
+    this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
+    console.log('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listenerId })
+  },
+  beforeDestroy () {
+    console.log('leave')
+    this.$socket.disconnect()
   },
   sockets: {
     connect () {
       console.log('socket connected in component')
-      this.sockets.subscribe('user connected', (data) => {
-        console.log('user connected', data)
-      })
     },
     disconnect () {
       console.log('socket disconnected')
@@ -48,11 +61,19 @@ export default {
     users: function (data) {
       this.users = data
       console.log('users data', data)
+    },
+    chattedUsers: function (data) {
+      console.log('chattedUsers', data)
     }
   },
-  beforeDestroy () {
-    console.log('leave')
-    this.$socket.disconnect()
+  methods: {
+    // enter room事件傳送給後端
+    handelAfterEnter (data) {
+      console.log('handelAfterEnter', data.id)
+      // 將資料存在listener中，傳遞給chatroom
+      this.listener = data
+      this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
+    }
   }
 }
 
