@@ -209,10 +209,12 @@ export default {
   mixins: [shortenTimeFilter, emptyImageFilter],
   props: {
     initialListener: {
-      type: [Array, Object]
+      type: [Array, Object],
+      required: true
     },
     initialMessages: {
-      type: [Array, Object]
+      type: [Array, Object],
+      required: true
     }
   },
   data () {
