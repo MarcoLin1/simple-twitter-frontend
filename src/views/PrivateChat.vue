@@ -62,10 +62,13 @@ export default {
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listener.id })
 
     console.log('this.listener.id', this.listener.id)
+
     // 進房間傳給後端，如果listener id === -1 則不傳送
     if (this.listener.id !== -1) {
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listener.id })
     }
+    this.historyMessage()
+    this.chattedUser()
   },
   beforeRouteUpdate () {
     this.$socket.connect()
@@ -89,19 +92,6 @@ export default {
     disconnect () {
       console.log('socket disconnected')
     },
-    getMessages: function (data) {
-      if (this.messages.length === 0) {
-        data.forEach(item => {
-          if (item.id === this.chats[0].id) {
-            this.messages.push(item)
-          }
-          if (item.id === this.currentUser.id) {
-            this.messages.push(item)
-          }
-        })
-      }
-      console.log('這是getMessages in private', data)
-    },
     privateMessage: function (data) {
       this.messages.push(data)
       console.log('這是privateMessage:', data)
@@ -121,6 +111,26 @@ export default {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
       console.log('getPrivateUsers data', data)
       this.chats = data
+      this.historyMessage(data.id)
+    },
+    // 和私訊對象的歷史訊息
+    async historyMessage (listener) {
+      try {
+        const { data } = await chatAPI.messages({ isPrivate: true, id: this.currentUser.id, listenerId: listener })
+        console.log(data)
+        if (this.messages.length === 0) {
+          data.forEach(item => {
+            if (item.id === this.chats[0].id) {
+              this.messages.push(item)
+            }
+            if (item.id === this.currentUser.id) {
+              this.messages.push(item)
+            }
+          })
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

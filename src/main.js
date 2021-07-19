@@ -35,38 +35,27 @@ Vue.use(new VueSocketIO({
   }
 }))
 
-const tryReconnect = () => {
-  setTimeout(() => {
-    socket.io.open((err) => {
-      if (err) {
-        tryReconnect()
-      }
-    })
-  }, 2000)
-}
 new Vue({
   router,
   store,
   sockets: {
     connecting () {
-      console.log('Socket connecting')
+      console.log('main.js Socket connecting')
     },
     disconnect () {
-      console.log('Socket Disconnect')
-      tryReconnect()
+      console.log('main.js Socket Disconnect')
     },
     connect_failed () {
-      console.log('Socket connect failed')
+      console.log('main.js Socket connect failed')
     },
     connect () {
-      console.log('socket connected in main.js')
-      console.log(socket.id)
+      console.log('main.js socket connected in main.js')
       this.sockets.subscribe('messageNotify', (data) => {
         console.log('messageNotifydata in main.js', data)
       })
     },
     messageNotify: function (data) {
-      console.log('messageNotifydata', data)
+      console.log('main.js messageNotifydata', data)
     }
 
   },
