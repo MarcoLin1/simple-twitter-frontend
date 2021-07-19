@@ -34,19 +34,19 @@ new Vue({
   store,
   sockets: {
     connecting () {
-      console.log('Socket connecting')
+      console.log('main.js Socket connecting')
     },
     disconnect () {
-      console.log('Socket Disconnect')
+      console.log('main.js Socket Disconnect')
     },
     connect_failed () {
-      console.log('Socket connect failed')
+      console.log('main.js Socket connect failed')
     },
     connect () {
-      console.log('socket connected in main.js')
+      console.log('main.js socket connected in main.js')
     },
     messageNotify: function (data) {
-      console.log('messageNotifydata', data)
+      console.log('main.js messageNotifydata', data)
     }
 
   },

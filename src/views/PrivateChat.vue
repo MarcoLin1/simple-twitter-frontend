@@ -21,6 +21,7 @@
 import ChatList from './../components/ChatList.vue'
 import PrivateChatRoom from './../components/PrivateChatRoom.vue'
 import { mapState } from 'vuex'
+import chatAPI from './../apis/chat'
 
 export default {
   name: 'PrivateChatViews',
@@ -59,11 +60,14 @@ export default {
     // 傳給後端兩人的ＩＤ
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listener.id })
     console.log('this.listener.id', this.listener.id)
+
     // 進房間傳給後端，如果listener id === -1 則不傳送
     if (this.listener.id !== -1) {
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listener.id })
       console.log('確定有人再傳')
     }
+    this.historyMessage()
+    this.chattedUser()
   },
   beforeRouteUpdate () {
     this.$socket.connect()
@@ -92,23 +96,6 @@ export default {
       this.users = data
       console.log('users data', data)
     },
-    chattedUsers: function (data) {
-      this.chats = data
-      console.log('chattedUser 有成功嗎？')
-    },
-    getMessages: function (data) {
-      if (this.messages.length === 0) {
-        data.forEach(item => {
-          if (item.id === this.chats[0].id) {
-            this.messages.push(item)
-          }
-          if (item.id === this.currentUser.id) {
-            this.messages.push(item)
-          }
-        })
-      }
-      console.log('這是getMessages in private', data)
-    },
     privateMessage: function (data) {
       this.messages.push(data)
       console.log('這是privateMessage:', data)
@@ -126,6 +113,35 @@ export default {
 
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
+      this.historyMessage(data.id)
+    },
+    //  私訊過的對象
+    async chattedUser () {
+      try {
+        const { data } = await chatAPI.chattedUser({ id: this.currentUser.id })
+        this.chats = data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 和私訊對象的歷史訊息
+    async historyMessage (listener) {
+      try {
+        const { data } = await chatAPI.messages({ isPrivate: true, id: this.currentUser.id, listenerId: listener })
+        console.log(data)
+        if (this.messages.length === 0) {
+          data.forEach(item => {
+            if (item.id === this.chats[0].id) {
+              this.messages.push(item)
+            }
+            if (item.id === this.currentUser.id) {
+              this.messages.push(item)
+            }
+          })
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

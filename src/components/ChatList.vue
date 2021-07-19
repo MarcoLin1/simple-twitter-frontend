@@ -105,7 +105,7 @@
 import { shortenTimeFilter } from './../utils/mixins'
 
 export default {
-  name: 'OnlineUser',
+  name: 'ChatList',
   mixins: [shortenTimeFilter],
   props: {
     initialChats: {
@@ -129,7 +129,6 @@ export default {
   methods: {
     enterRoom (id) {
       const data = this.chats.filter((chat) => chat.id === id)
-
       this.$emit('after-enter', data[0])
     }
   }

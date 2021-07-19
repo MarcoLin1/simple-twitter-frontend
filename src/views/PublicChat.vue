@@ -16,6 +16,7 @@
 import OnlineUser from './../components/OnlineUser.vue'
 import ChatRoom from './../components/ChatRoom.vue'
 import { mapState } from 'vuex'
+import chatAPI from './../apis/chat'
 export default {
   name: 'PublicChatViews',
   components: {
@@ -35,16 +36,31 @@ export default {
     this.$socket.connect()
   },
   created () {
-    // connect () {
-    this.$socket.connect()
     this.$socket.emit('currentUser', { ...this.currentUser })
   },
+  beforeDestroy () {
+    console.log('leave')
+    this.$socket.disconnect()
+  },
+  destroyed () {
+    console.log('請重新連接')
+    this.$socket.connect()
+  },
   mounted () {
-    this.sockets.subscribe('getMessages', data => {
-      data.forEach(item => {
-        this.messages.push(item)
-      })
-    })
+    this.historyMessage()
+  },
+  methods: {
+    async historyMessage () {
+      try {
+        const { data } = await chatAPI.messages({ isPrivate: false, id: this.currentUser.id, listenerId: 0 })
+        data.forEach(item => {
+          this.messages.push(item)
+        })
+        console.log('這是history', data)
+      } catch (e) {
+        console.log(e)
+      }
+    }
   },
   sockets: {
     connect () {
@@ -59,7 +75,7 @@ export default {
     },
     userConnected: function (data) {
       this.messages.push(data)
-      console.log('這是外面的user connected', data)
+      console.log('這是public chat的user connected', data)
     },
     userDisconnected: function (data) {
       this.messages.push(data)
@@ -70,22 +86,6 @@ export default {
       this.messages.push(data)
       console.log(this.messages)
     }
-    // getMessages: function (data) {
-    //   console.log('這是公開的歷史訊息', data)
-    //   data.forEach(item => {
-    //     this.messages.push(item)
-    //   })
-    // }
-  },
-  beforeDestroy () {
-    console.log('leave')
-    this.$socket.disconnect()
-  },
-  destroyed () {
-    console.log('請重新連接')
-    this.$socket.connect()
-  },
-  methods: {
   }
 }
 </script>
