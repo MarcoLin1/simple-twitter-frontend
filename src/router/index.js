@@ -194,7 +194,6 @@ router.beforeEach(async (to, from, next) => {
   let isAuthenticated = store.state.isAuthenticated
   const isAdmin = store.state.currentUser.isAdmin
   // 比較 localStorage 和 store 中的 token 是否一樣
-  console.log('isAdmin', isAdmin === false)
 
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInstore) {
     isAuthenticated = await store.dispatch('fetchCurrentUser')

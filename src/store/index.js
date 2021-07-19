@@ -69,7 +69,6 @@ export default new Vuex.Store({
       try {
         const { data } = await usersAPI.getCurrentUser()
         const { id, name, account, avatar, isAdmin } = data
-        console.log(data)
         commit('setCurrentUser', {
           id,
           name,

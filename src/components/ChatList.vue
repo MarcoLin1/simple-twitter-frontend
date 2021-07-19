@@ -102,11 +102,11 @@
 }
 </style>
 <script>
-import { shortenTimeFilter } from './../utils/mixins'
+import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 
 export default {
   name: 'OnlineUser',
-  mixins: [shortenTimeFilter],
+  mixins: [shortenTimeFilter, emptyImageFilter],
   props: {
     initialChats: {
       type: Array,

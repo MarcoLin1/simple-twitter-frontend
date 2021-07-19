@@ -21,7 +21,7 @@
 import ChatList from './../components/ChatList.vue'
 import PrivateChatRoom from './../components/PrivateChatRoom.vue'
 import { mapState } from 'vuex'
-
+import chatAPI from './../apis/chat'
 export default {
   name: 'PrivateChatViews',
   components: {
@@ -32,7 +32,8 @@ export default {
     return {
       listener: {},
       chats: [],
-      messages: []
+      messages: [],
+      isPrivate: true
     }
   },
   computed: {
@@ -53,16 +54,17 @@ export default {
   },
   created () {
     this.$socket.connect()
+    this.getPrivateUsersList()
     this.listener = this.privateChatUser
   },
   mounted () {
     // 傳給後端兩人的ＩＤ
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listener.id })
+
     console.log('this.listener.id', this.listener.id)
     // 進房間傳給後端，如果listener id === -1 則不傳送
     if (this.listener.id !== -1) {
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listener.id })
-      console.log('確定有人再傳')
     }
   },
   beforeRouteUpdate () {
@@ -77,24 +79,15 @@ export default {
     this.$sockets.disconnect()
   },
   destroyed () {
-    console.log('重新連接')
     this.$socket.connect()
   },
 
   sockets: {
     connect () {
-      console.log('socket connected in component')
+      console.log('socket connected in private chat')
     },
     disconnect () {
       console.log('socket disconnected')
-    },
-    users: function (data) {
-      this.users = data
-      console.log('users data', data)
-    },
-    chattedUsers: function (data) {
-      this.chats = data
-      console.log('chattedUser 有成功嗎？')
     },
     getMessages: function (data) {
       if (this.messages.length === 0) {
@@ -117,15 +110,17 @@ export default {
   methods: {
     // enter room事件傳送給後端
     handelAfterEnter (data) {
-      console.log('handelAfterEnter', data)
-
       // 避免重複抓取歷史訊息
       this.listener = data
       const length = this.messages.length
       this.messages.splice(0, length)
-
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
+    },
+    async getPrivateUsersList () {
+      const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
+      console.log('getPrivateUsers data', data)
+      this.chats = data
     }
   }
 }

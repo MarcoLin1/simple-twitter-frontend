@@ -58,8 +58,7 @@ export default {
   },
   sockets: {
     connect () {
-      console.log('socket connected in component')
-      this.socket.subscribe()
+      console.log('socket connected in mainpage')
     }
   },
   methods: {

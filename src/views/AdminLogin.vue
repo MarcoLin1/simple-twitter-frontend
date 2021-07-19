@@ -12,7 +12,6 @@ export default {
   },
   methods: {
     handelAfterSubmit (data) {
-      console.log(data)
       if (!data.user.isAdmin) {
         Toast.fire({
           icon: 'warning',
