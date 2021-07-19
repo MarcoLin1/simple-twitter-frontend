@@ -81,12 +81,17 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .main-container{
-  display: grid;
-  grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
-  grid-template-areas: " . left . middle . right .";
+  // display: grid;
+  // // grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
+  // // grid-template-areas: " . left . middle . right .";
+  // grid-template-columns: 1fr 30px 600px 30px  1fr;
+  // grid-template-areas: " left . middle . right";d
+  display: flex;
 }
 .left-content {
-  grid-area: left;
+  display: flex;
+  justify-content: flex-end;
+  width: 27%;
 }
 .middle-content{
   grid-area: middle;
@@ -95,7 +100,7 @@ export default {
   position: relative;
 }
 .right-content {
-  grid-area: right;
+  width: 33%;
 }
 
 </style>

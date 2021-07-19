@@ -26,12 +26,12 @@ export default {
   width: 100%;
 }
 .admin__left__wrapper {
-  width: 23%;
+  width: 27%;
   display: flex;
   justify-content: center;
 }
 .admin__right__wrapper {
-  width: 77%;
+  width: 73%;
   border-left: 1px solid $light-gray;
 }
 </style>

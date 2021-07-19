@@ -157,20 +157,18 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .main__container{
-  display: grid;
-  grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
-  grid-template-areas: " . left . middle . right .";
+  display: flex;
 }
 .left__container {
-  grid-area: left;
+  width: 27%;
+  display: flex;
+  justify-content: flex-end;
 }
 .middle__container{
-  grid-area: middle;
   width: 602px;
   border: 1px solid $light-gray;
-  position: relative;
 }
 .right__container {
-  grid-area: right;
+  width: 33%;
 }
 </style>
