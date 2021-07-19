@@ -13,6 +13,7 @@
       <PrivateChatRoom
         :initial-listener="listener"
         :initial-messages="messages"
+        @after-submit="handleAfterSubmit"
       />
     </div>
   </div>
@@ -100,18 +101,22 @@ export default {
   methods: {
     // enter room事件傳送給後端
     handelAfterEnter (data) {
+      console.log('handelAfterEnter', data)
       // 避免重複抓取歷史訊息
       this.listener = data
       const length = this.messages.length
       this.messages.splice(0, length)
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
+      this.historyMessage(data.id)
+    },
+    handleAfterSubmit () {
+      this.getPrivateUsersList()
     },
     async getPrivateUsersList () {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
       console.log('getPrivateUsers data', data)
       this.chats = data
-      this.historyMessage(data.id)
     },
     // 和私訊對象的歷史訊息
     async historyMessage (listener) {

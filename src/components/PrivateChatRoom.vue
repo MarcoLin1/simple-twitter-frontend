@@ -257,6 +257,7 @@ export default {
         avatar: this.currentUser.avatar
       })
       this.message = ''
+      this.$emit('after-submit')
     },
     // 捲軸到最底部
     scrollToEnd () {

@@ -115,13 +115,12 @@ export default {
   },
   data () {
     return {
-      chats: []
+      chats: this.initialChats
     }
   },
   watch: {
-    initialChats (newValue, oldValue) {
+    initialChats (newValue) {
       this.chats = [
-        ...this.chats,
         ...newValue
       ]
     }
