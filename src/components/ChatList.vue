@@ -105,7 +105,7 @@
 import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 
 export default {
-  name: 'OnlineUser',
+  name: 'ChatList',
   mixins: [shortenTimeFilter, emptyImageFilter],
   props: {
     initialChats: {
