@@ -106,12 +106,12 @@ export default {
       this.messages.splice(0, length)
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
+      this.historyMessage(data.id)
     },
     async getPrivateUsersList () {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
       console.log('getPrivateUsers data', data)
       this.chats = data
-      this.historyMessage(data.id)
     },
     // 和私訊對象的歷史訊息
     async historyMessage (listener) {
