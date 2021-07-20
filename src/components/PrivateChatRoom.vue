@@ -98,14 +98,8 @@
       flex-direction: column;
       max-height: fit-content;
       overflow-y: scroll;
-      justify-content: flex-end;
+      // justify-content: flex-end;
       margin-top: 20px;
-      .chat__room__main__wrapper {
-        max-height: fit-content;
-        overflow-y: scroll;
-        justify-content: center;
-        margin-top: 20px;
-      }
       .chat__room__message__wrapper {
         .chat__room__left__wrapper {
           .chat__room__user {
