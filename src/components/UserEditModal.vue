@@ -38,8 +38,8 @@
         </div>
         <div class="user__edit__modal__cover__wrapper">
           <img
-            :src="user.cover | emptyImage"
-            class="user__edit__modal__cover"
+            :src="user.cover | emptyCover"
+            class="user__edit__modal__cover cover-img"
             alt=""
           >
           <input

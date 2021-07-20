@@ -107,8 +107,8 @@ export default {
 }
 .top-navbar-wrapper {
   display: flex;
-  padding-bottom: 20px;
-  padding-top: 10px;
+  // padding-bottom: 10px;
+  // padding-top: 10px;
   .top-navbar-icon {
     display: flex;
     align-items: center;

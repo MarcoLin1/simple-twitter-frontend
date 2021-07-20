@@ -27,12 +27,13 @@ export default {
   .main__container {
     display: flex;
     .left__content{
-      width: 27%;
+      width: 25%;
       display: flex;
       justify-content: flex-end;
     }
     .right__content{
-      width: 63%;
+      flex-grow: 1;
+      width: 75%;
       border: 1px solid $light-gray;
       height: 100vh;
     }

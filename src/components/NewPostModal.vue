@@ -230,9 +230,6 @@ export default {
           title: '新增貼文失敗'
         })
       }
-      // if (!this.tweet) {
-      //   console.log('You can not submit blank value')
-      // }
     }
   }
 }

@@ -3,16 +3,18 @@
     <div class="left-content">
       <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
-    <div class="middle-content">
-      <TopNavbar
-        :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
-        :initial-name="name"
-        :initial-user-tweets-length="userTweetsLength"
-      />
-      <router-view :new-tweet="newTweet" />
-    </div>
-    <div class="right-content">
-      <TopUsersList :top-users="topUsers" />
+    <div class="right-wrapper">
+      <div class="middle-content">
+        <TopNavbar
+          :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+          :initial-name="name"
+          :initial-user-tweets-length="userTweetsLength"
+        />
+        <router-view :new-tweet="newTweet" />
+      </div>
+      <div class="right-content">
+        <TopUsersList :top-users="topUsers" />
+      </div>
     </div>
   </div>
 </template>
@@ -81,26 +83,23 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .main-container{
-  // display: grid;
-  // // grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
-  // // grid-template-areas: " . left . middle . right .";
-  // grid-template-columns: 1fr 30px 600px 30px  1fr;
-  // grid-template-areas: " left . middle . right";d
   display: flex;
-}
-.left-content {
+  .left-content {
   display: flex;
   justify-content: flex-end;
-  width: 27%;
-}
-.middle-content{
-  grid-area: middle;
-  width: 602px;
-  border: 1px solid $light-gray;
-  position: relative;
-}
-.right-content {
-  width: 33%;
+  width: 25%;
+  }
+  .right-wrapper{
+    width: 75%;
+    display: grid;
+    grid-template-columns: 602px 1fr;
+    .middle-content{
+    border: 1px solid $light-gray;
+    }
+    .right-content {
+    }
+  }
+
 }
 
 </style>

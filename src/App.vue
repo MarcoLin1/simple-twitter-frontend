@@ -14,3 +14,10 @@ export default {
 
 }
 </script>
+<style lang="scss" scoped>
+@import './assets/scss/main.scss';
+#app{
+  max-width: 1440px;
+  margin: 0 auto;
+}
+</style>

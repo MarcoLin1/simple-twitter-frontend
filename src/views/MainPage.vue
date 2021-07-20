@@ -56,11 +56,11 @@ export default {
   created () {
     this.fetchTweets()
   },
-  sockets: {
-    connect () {
-      console.log('socket connected in mainpage')
-    }
-  },
+  // sockets: {
+  //   connect () {
+  //     console.log('socket connected in mainpage')
+  //   }
+  // },
   methods: {
     async fetchTweets () {
       try {

@@ -3,28 +3,31 @@
     <div class="left__container">
       <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
-    <div
-      class="middle__container"
-    >
-      <Spinner v-if="isLoading" />
-      <template v-else>
-        <TopNavbar
-          :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
-          :initial-name="name"
-          :initial-user-tweets-length="userTweetsLength"
-        />
-        <UserProfile
-          :get-current-user="currentUser"
-          :initial-user="initialUser"
-          :initial-following="initialFollowing"
-          :user-id="userId"
-        />
-        <UserPostItem :user-id="userId" />
-        <router-view :new-tweet="newTweet" />
-      </template>
-    </div>
-    <div class="right__container">
-      <TopUsersList :top-users="topUsers" />
+    <div class="right-wrapper">
+      <div
+        class="middle___container"
+      >
+        <Spinner v-if="isLoading" />
+        <template v-else>
+          <TopNavbar
+            :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+            :initial-name="name"
+            :initial-user-tweets-length="userTweetsLength"
+            class="top"
+          />
+          <UserProfile
+            :get-current-user="currentUser"
+            :initial-user="initialUser"
+            :initial-following="initialFollowing"
+            :user-id="userId"
+          />
+          <UserPostItem :user-id="userId" />
+          <router-view :new-tweet="newTweet" />
+        </template>
+      </div>
+      <div class="right__container">
+        <TopUsersList :top-users="topUsers" />
+      </div>
     </div>
   </div>
 </template>
@@ -158,17 +161,22 @@ export default {
 @import '../assets/scss/main.scss';
 .main__container{
   display: flex;
-}
-.left__container {
-  width: 27%;
+  .left__container {
+  width: 25%;
   display: flex;
   justify-content: flex-end;
 }
-.middle__container{
-  width: 602px;
-  border: 1px solid $light-gray;
+  .right-wrapper{
+    width: 75%;
+    display: grid;
+    grid-template-columns: 602px 1fr;
+    .middle___container{
+      border: 1px solid $light-gray;
+      .top{
+        padding: 7px 0 8px 0;
+      }
+    }
+  }
 }
-.right__container {
-  width: 33%;
-}
+
 </style>

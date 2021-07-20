@@ -74,7 +74,6 @@ export default {
       try {
         const { data } = await adminAPI.tweet.get()
         this.tweets = data
-        console.log(data)
       } catch (error) {
         console.log('error', error)
         Toast.fire({

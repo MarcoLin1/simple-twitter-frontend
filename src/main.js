@@ -50,9 +50,8 @@ new Vue({
     },
     connect () {
       console.log('main.js socket connected in main.js')
-      this.sockets.subscribe('messageNotify', (data) => {
-        console.log('messageNotifydata in main.js', data)
-      })
+      const tokens = localStorage.getItem('token')
+      console.log('tokens', tokens)
     },
     messageNotify: function (data) {
       console.log('main.js messageNotifydata', data)

@@ -62,14 +62,12 @@ export default {
     // 傳給後端兩人的ＩＤ
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listener.id })
 
-    console.log('this.listener.id', this.listener.id)
-
     // 進房間傳給後端，如果listener id === -1 則不傳送
     if (this.listener.id !== -1) {
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listener.id })
     }
-    this.historyMessage()
-    this.chattedUser()
+    // this.historyMessage()
+    this.getPrivateUsersList()
   },
   beforeRouteUpdate () {
     this.$socket.connect()
@@ -95,7 +93,6 @@ export default {
     },
     privateMessage: function (data) {
       this.messages.push(data)
-      console.log('這是privateMessage:', data)
     }
   },
   methods: {
@@ -108,21 +105,22 @@ export default {
       this.messages.splice(0, length)
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
+
       this.historyMessage(data.id)
+      console.log(data.id)
     },
     handleAfterSubmit () {
       this.getPrivateUsersList()
     },
     async getPrivateUsersList () {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
-      console.log('getPrivateUsers data', data)
       this.chats = data
     },
     // 和私訊對象的歷史訊息
     async historyMessage (listener) {
       try {
         const { data } = await chatAPI.messages({ isPrivate: true, id: this.currentUser.id, listenerId: listener })
-        console.log(data)
+        console.log('historyMessage', data)
         if (this.messages.length === 0) {
           data.forEach(item => {
             if (item.id === this.chats[0].id) {
