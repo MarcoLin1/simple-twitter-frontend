@@ -126,8 +126,6 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(data)
-        // 還差取得currentUser的api判斷
         if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,

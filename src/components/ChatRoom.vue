@@ -153,6 +153,7 @@
               border-radius: 50%;
               margin-right: 10px;
               cursor: pointer;
+              object-fit: cover;
             }
             .chat__room__text__container {
               display: flex;

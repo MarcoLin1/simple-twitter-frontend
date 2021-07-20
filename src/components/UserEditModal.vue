@@ -38,8 +38,8 @@
         </div>
         <div class="user__edit__modal__cover__wrapper">
           <img
-            :src="user.cover | emptyImage"
-            class="user__edit__modal__cover"
+            :src="user.cover | emptyCover"
+            class="user__edit__modal__cover cover-img"
             alt=""
           >
           <input
@@ -335,7 +335,6 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
         this.user.avatar = imageURL
-        // this.avatar = imageURL
       }
     },
     // 處理cover預覽圖片
@@ -346,7 +345,6 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
         this.user.cover = imageURL
-        // this.cover = imageURL
       }
     },
     // 處理name, introducation, avatar, cover的資料轉成formData傳給後端

@@ -25,14 +25,15 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
   .main__container {
-    display: grid;
-    grid-template-columns: 1fr 3fr 30px 15fr ;
-    grid-template-areas: " . left . right";
+    display: flex;
     .left__content{
-      grid-area: left;
+      width: 25%;
+      display: flex;
+      justify-content: flex-end;
     }
     .right__content{
-      grid-area: right;
+      flex-grow: 1;
+      width: 75%;
       border: 1px solid $light-gray;
       height: 100vh;
     }

@@ -48,7 +48,6 @@ export default {
   },
   created () {
     const { id: tweetId } = this.$route.params
-    console.log(tweetId)
     this.fetchData(tweetId)
     this.fetchReplies(tweetId)
   },

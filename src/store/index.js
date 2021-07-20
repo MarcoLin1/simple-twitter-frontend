@@ -11,6 +11,7 @@ export default new Vuex.Store({
       name: '',
       account: '',
       avatar: '',
+      email: '',
       isAdmin: false
     },
     isAuthenticated: false,
@@ -34,6 +35,9 @@ export default new Vuex.Store({
       state.token = localStorage.getItem('token')
       // 將使用者的登入狀態改為 true
       state.isAuthenticated = true
+    },
+    SOCKET_connect (state) {
+      console.log('in store', state.currentUser)
     },
     SOCKET_messageNotify (state, data) {
       if (data.unreadCount > 0) {
@@ -68,12 +72,13 @@ export default new Vuex.Store({
     async fetchCurrentUser ({ commit }) {
       try {
         const { data } = await usersAPI.getCurrentUser()
-        const { id, name, account, avatar, isAdmin } = data
+        const { id, name, account, avatar, isAdmin, email } = data
         commit('setCurrentUser', {
           id,
           name,
           account,
           avatar,
+          email,
           isAdmin
         })
         return true

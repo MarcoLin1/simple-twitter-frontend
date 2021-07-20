@@ -168,9 +168,6 @@ export default {
       posts: ''
     }
   },
-  created () {
-    console.log(this.border)
-  },
   methods: {
     addLiked (id) {
       this.posts.filter((post) => {

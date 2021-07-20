@@ -3,28 +3,31 @@
     <div class="left__container">
       <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
-    <div
-      class="middle__container"
-    >
-      <Spinner v-if="isLoading" />
-      <template v-else>
-        <TopNavbar
-          :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
-          :initial-name="name"
-          :initial-user-tweets-length="userTweetsLength"
-        />
-        <UserProfile
-          :get-current-user="currentUser"
-          :initial-user="initialUser"
-          :initial-following="initialFollowing"
-          :user-id="userId"
-        />
-        <UserPostItem :user-id="userId" />
-        <router-view :new-tweet="newTweet" />
-      </template>
-    </div>
-    <div class="right__container">
-      <TopUsersList :top-users="topUsers" />
+    <div class="right-wrapper">
+      <div
+        class="middle___container"
+      >
+        <Spinner v-if="isLoading" />
+        <template v-else>
+          <TopNavbar
+            :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+            :initial-name="name"
+            :initial-user-tweets-length="userTweetsLength"
+            class="top"
+          />
+          <UserProfile
+            :get-current-user="currentUser"
+            :initial-user="initialUser"
+            :initial-following="initialFollowing"
+            :user-id="userId"
+          />
+          <UserPostItem :user-id="userId" />
+          <router-view :new-tweet="newTweet" />
+        </template>
+      </div>
+      <div class="right__container">
+        <TopUsersList :top-users="topUsers" />
+      </div>
     </div>
   </div>
 </template>
@@ -116,7 +119,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await userAPI.getUser({ userId })
-        console.log('initialUser', data)
         this.initialUser = data
         this.name = data.name
         this.isLoading = false
@@ -162,20 +164,23 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
 .main__container{
-  display: grid;
-  grid-template-columns: 1fr 2fr 30px 600px 30px 2fr 1fr;
-  grid-template-areas: " . left . middle . right .";
+  display: flex;
+  .left__container {
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
 }
-.left__container {
-  grid-area: left;
+  .right-wrapper{
+    width: 75%;
+    display: grid;
+    grid-template-columns: 602px 1fr;
+    .middle___container{
+      border: 1px solid $light-gray;
+      .top{
+        padding: 7px 0 8px 0;
+      }
+    }
+  }
 }
-.middle__container{
-  grid-area: middle;
-  width: 602px;
-  border: 1px solid $light-gray;
-  position: relative;
-}
-.right__container {
-  grid-area: right;
-}
+
 </style>

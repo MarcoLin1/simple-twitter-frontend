@@ -64,7 +64,6 @@ export default {
   }
   .setting__form__wrapper {
     width: 100%;
-    border-left: 1px solid $light-gray;
   }
   .setting__top__navbar__wrapper {
     border-bottom: 1px solid $light-gray;

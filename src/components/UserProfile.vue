@@ -13,8 +13,9 @@
     </template>
     <div class="profile__cover">
       <img
-        :src="user.cover | emptyImage"
+        :src="user.cover | emptyCover"
         alt=""
+        class="cover-img"
       >
     </div>
     <div class="profile__avatar">
