@@ -40,7 +40,7 @@
                         <span class="post__content__title__item">{{ tweet.User.account }}</span>
                         <span class="post__content__title__item">·</span>
                         <span class="post__content__title__item post__content__title__item__time">
-                          {{ tweet.createdAt }}
+                          {{ tweet.createdAt | fromNow }}
                         </span>
                       </div>
                       <div class="post__content__discription">
@@ -222,6 +222,7 @@
 .post {
   display: grid;
   grid-template-columns: 50px 1fr;
+  border-bottom:  none;
   max-width: 600px;
   padding: 15px;
   .avatar-img{
@@ -253,12 +254,12 @@
 <script>
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageFilter, fromNowFilter } from './../utils/mixins'
 import tweetAPI from './../apis/tweets'
 export default {
   name: 'ReplyPostModal',
   components: { },
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageFilter, fromNowFilter],
   props: {
     initialTweet: {
       type: Object,
