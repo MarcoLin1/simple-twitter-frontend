@@ -10,9 +10,6 @@ export default {
   components: {
     LoginForm
   },
-  created () {
-    console.log(this.$route.path)
-  },
   methods: {
     handelAfterSubmit (data) {
       if (data.user.isAdmin) {

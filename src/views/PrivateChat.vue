@@ -105,9 +105,7 @@ export default {
       this.messages.splice(0, length)
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
-
       this.historyMessage(data.id)
-      console.log(data.id)
     },
     handleAfterSubmit () {
       this.getPrivateUsersList()

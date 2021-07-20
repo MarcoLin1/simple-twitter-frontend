@@ -56,11 +56,6 @@ export default {
   created () {
     this.fetchTweets()
   },
-  // sockets: {
-  //   connect () {
-  //     console.log('socket connected in mainpage')
-  //   }
-  // },
   methods: {
     async fetchTweets () {
       try {
@@ -82,7 +77,6 @@ export default {
           throw new Error(data.message)
         }
         this.fetchTweets()
-        console.log(data)
       } catch (error) {
         console.log('error', error)
         Toast.fire({

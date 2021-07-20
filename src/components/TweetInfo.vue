@@ -121,7 +121,6 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        console.log(data)
         this.tweet.isLike = true
         this.tweet.likeCount = this.tweet.likeCount + 1
       } catch (e) {

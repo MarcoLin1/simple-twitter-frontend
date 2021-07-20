@@ -69,16 +69,13 @@ export default {
       console.log('socket disconnected!!!!!!!!!!!')
     },
     users: function (data) {
-      // console.log('這包是user data', data)
       this.users = data
     },
     userConnected: function (data) {
       this.messages.push(data)
-      // console.log('這是public chat的user connected', data)
     },
     userDisconnected: function (data) {
       this.messages.push(data)
-      // console.log('這是disconnect的人', data)
     },
     chatMessage: function (data) {
       this.messages.push(data)

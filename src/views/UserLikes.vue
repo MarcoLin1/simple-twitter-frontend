@@ -67,7 +67,6 @@ export default {
         const { data } = await userAPI.getUserLikes({ userId })
         this.userLikes = data
         this.isLoading = false
-        console.log(data)
         this.isLoading = false
       } catch (e) {
         console.log(e)

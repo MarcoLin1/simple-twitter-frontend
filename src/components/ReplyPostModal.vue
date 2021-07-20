@@ -282,7 +282,6 @@ export default {
         this.isProcessing = true
         if (!this.comment.trim()) {
           this.isProcessing = false
-          console.log('You can not submit blank value')
           Toast.fire({
             icon: 'warning',
             title: '請輸入回覆內容'

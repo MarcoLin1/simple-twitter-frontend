@@ -69,30 +69,8 @@ export default {
     initialUserTweetsLength (newValue) {
       this.userTweetsLength = newValue
     }
-  },
-  created () {
-    // const { id } = this.$route.params
-    // if (!id) {
-    //   console.log(id)
-    // } else {
-    //   this.fetchUserData(id)
-    // }
-  },
-  methods: {
-    // async fetchUserData (userId) {
-    //   try {
-    //     const { data } = await userAPI.getUserTweets({ userId })
-    //     this.name = data[0].User.name
-    //     this.userTweetsLength = data.length
-    //   } catch (e) {
-    //     console.log(e)
-    //     // Toast.fire({
-    //     //   icon: 'error',
-    //     //   title: 'user data讀取失敗'
-    //     // })
-    //   }
-    // }
   }
+
 }
 </script>
 
@@ -107,8 +85,6 @@ export default {
 }
 .top-navbar-wrapper {
   display: flex;
-  // padding-bottom: 10px;
-  // padding-top: 10px;
   .top-navbar-icon {
     display: flex;
     align-items: center;
