@@ -171,9 +171,6 @@ export default {
     grid-template-columns: 602px 1fr;
     .middle___container{
       border: 1px solid $light-gray;
-      .top{
-        padding: 7px 0 8px 0;
-      }
     }
   }
 }

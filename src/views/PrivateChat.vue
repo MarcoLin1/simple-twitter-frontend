@@ -66,7 +66,6 @@ export default {
     if (this.listener.id !== -1) {
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: this.listener.id })
     }
-    // this.historyMessage()
     this.getPrivateUsersList()
   },
   beforeRouteUpdate () {
@@ -78,12 +77,8 @@ export default {
     this.privateChatUser.id = -1
     this.privateChatUser.name = ''
     this.privateChatUser.account = ''
-    this.$sockets.disconnect()
+    this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: this.listener.id })
   },
-  destroyed () {
-    this.$socket.connect()
-  },
-
   sockets: {
     connect () {
       console.log('socket connected in private chat')
@@ -113,20 +108,17 @@ export default {
     async getPrivateUsersList () {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
       this.chats = data
+      console.log(data)
+      // 更新 isread
     },
     // 和私訊對象的歷史訊息
     async historyMessage (listener) {
       try {
         const { data } = await chatAPI.messages({ isPrivate: true, id: this.currentUser.id, listenerId: listener })
-        console.log('historyMessage', data)
         if (this.messages.length === 0) {
           data.forEach(item => {
-            if (item.id === this.chats[0].id) {
-              this.messages.push(item)
-            }
-            if (item.id === this.currentUser.id) {
-              this.messages.push(item)
-            }
+            item = JSON.parse(JSON.stringify(item))
+            this.messages.push(item)
           })
         }
       } catch (e) {

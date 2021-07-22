@@ -106,6 +106,7 @@
     padding: 10px 15px 10px 15px;
     border-top: 1px solid $light-gray;
     border-bottom: 1px solid $light-gray;
+    margin-bottom: -1px;
     .users__list__image__wrapper {
       display: flex;
       align-items: center;
