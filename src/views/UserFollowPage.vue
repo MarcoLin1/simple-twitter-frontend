@@ -14,11 +14,18 @@
           :initial-user-tweets-length="userTweetsLength"
         />
         <UserFollowItem />
-        <router-view />
+        <router-view
+          :initial-followings="followings"
+          @update-follow-data="followStatus"
+        />
       </template>
     </div>
     <div class="right__container">
-      <TopUsersList :top-users="topUsers" />
+      <TopUsersList
+        :top-users="topUsers"
+        @update-data="handleNewData"
+        @update-remove-data="handleRemoveData"
+      />
     </div>
   </div>
 </template>
@@ -46,7 +53,17 @@ export default {
       topUsers: [],
       name: '',
       userTweetsLength: '',
-      isLoading: true
+      isLoading: true,
+      followings: {
+        Followings: {
+          name: '',
+          account: '',
+          avatar: '',
+          id: -1,
+          isFollowing: false,
+          introduction: ''
+        }
+      }
     }
   },
   computed: {
@@ -56,6 +73,7 @@ export default {
     const { id } = to.params
     this.fetchUserData(id)
     this.fetchUser(id)
+    this.fetchFollowingUser(id)
     next()
   },
   created () {
@@ -63,8 +81,52 @@ export default {
     this.fetchTopUser()
     this.fetchUserData(id)
     this.fetchUser(id)
+    this.fetchFollowingUser(id)
   },
   methods: {
+    async handleNewData (userId) {
+      try {
+        const { data } = await userAPI.getUser({ userId })
+        this.followings.push({
+          Followings: {
+            id: data.id,
+            account: data.account,
+            name: data.name,
+            avatar: data.avatar,
+            introduction: data.introduction,
+            isFollowing: true
+          },
+          followingId: userId
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    handleRemoveData (userId) {
+      this.followings = this.followings.filter(item => {
+        return item.followingId !== userId
+      })
+    },
+    followStatus (userId) {
+      this.topUsers = this.topUsers.filter(user => {
+        if (user.id === userId) {
+          user.isFollowing = false
+        }
+      })
+      console.log('這是follow status', userId)
+    },
+    async fetchFollowingUser (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowing({ userId })
+        this.followings = data
+      } catch (e) {
+        console.log(e)
+        Toast.fire({
+          icon: 'error',
+          title: '資料讀取失敗，請稍候再試'
+        })
+      }
+    },
     async fetchTopUser () {
       try {
         const { data } = await userAPI.getTopUsers()
