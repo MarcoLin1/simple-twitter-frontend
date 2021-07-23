@@ -27,7 +27,7 @@
           required
         >
       </div>
-      <div class="login__form__group">
+      <div class="login__form__group login__form__group__password">
         <label
           for="password"
           class="login__form__group__title"
@@ -38,10 +38,14 @@
           id="password"
           v-model="password"
           name="password"
-          type="password"
+          :type="showType"
           class="login__password login__form__control"
           required
         >
+        <div
+          :class="{'password__icon--show':showType === 'text','password__icon--notshow':showType === 'password'}"
+          @click.stop.prevent="showPassword"
+        />
       </div>
       <div class="login__button">
         <button
@@ -90,10 +94,18 @@ export default {
     return {
       account: '',
       password: '',
-      isProcessing: false
+      isProcessing: false,
+      showType: 'password'
     }
   },
   methods: {
+    showPassword () {
+      if (this.showType === 'password') {
+        this.showType = 'text'
+      } else {
+        this.showType = 'password'
+      }
+    },
     async handleSubmit () {
       try {
         this.isProcessing = true
@@ -144,6 +156,28 @@ export default {
   input{
     padding-bottom: 10px;
   }
+  &__password{
+    position: relative;
+    .password__icon--show, .password__icon--notshow{
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      width: 25px;
+      height: 25px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      background: $orange;
+      @extend %icon-style;
+    }
+    .password__icon--show{
+      mask-image: url('./../assets/icon/icon_eye_visibility.svg');
+      -webkit-mask-image: url('./../assets/icon/icon_eye_visibility.svg');
+    }
+    .password__icon--notshow{
+      mask-image: url('./../assets/icon/icon_eye_invisible.svg');
+      -webkit-mask-image: url('./../assets/icon/icon_eye_invisible.svg');
+    }
+  }
 }
 .login__form__group__title {
   @extend %form-group-title-style;
@@ -167,4 +201,5 @@ export default {
   margin: 20px auto 0 auto;
   text-align: right;
 }
+
 </style>

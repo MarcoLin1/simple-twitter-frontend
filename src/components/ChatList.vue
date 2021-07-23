@@ -104,10 +104,12 @@
     .post-discription{
       width: 180px;
       color: $tx-gray;
-      white-space: normal;
+      // white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
       cursor: pointer;
+      overflow-wrap: normal;
+      height: 20px;
     }
     .post-title-item-time{
       position: absolute;
