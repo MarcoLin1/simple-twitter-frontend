@@ -17,7 +17,7 @@ const socketOptions = {
   pingTimeout: 30000
 }
 
-const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
+const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { transports: ['websocket', 'polling'], forceNew: true })
 socket.onAny((event, ...args) => {
   console.log('main.js收到的資訊', event, args)
 })

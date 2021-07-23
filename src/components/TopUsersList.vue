@@ -141,7 +141,8 @@ export default {
   data () {
     return {
       showAll: false,
-      users: this.topUsers
+      users: this.topUsers,
+      updateData: []
     }
   },
   computed: {
@@ -173,6 +174,7 @@ export default {
           throw new Error(data.message)
         }
         this.$store.commit('addFollowing')
+        this.$emit('update-data', userId)
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -193,6 +195,7 @@ export default {
           throw new Error(data.message)
         }
         this.$store.commit('minusFollowing')
+        this.$emit('update-remove-data', userId)
       } catch (e) {
         console.log(e)
         Toast.fire({

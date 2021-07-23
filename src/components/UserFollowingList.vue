@@ -138,30 +138,36 @@
 import { Toast } from '../utils/helper'
 import userAPI from '../apis/users'
 import { emptyImageFilter } from './../utils/mixins'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [emptyImageFilter],
+  props: {
+    initialFollowings: {
+      type: [Array, Object],
+      required: true
+    }
+  },
   data () {
     return {
-      followings: [],
+      followings: this.initialFollowings,
       userId: ''
     }
+  },
+  computed: {
+    ...mapState(['currentUser', 'isFollowing'])
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
     this.fetchUser(id)
     next()
   },
-  // watch: {
-  //   fetchUser (newValue) {
-  //     this.followings = [
-  //       ...this.followings,
-  //       newValue
-  //     ]
-  //   }
-  // },
-  updated () {
-    this.fetchUser(this.userId)
+  watch: {
+    initialFollowings (newValue) {
+      this.followings = [
+        ...newValue
+      ]
+    }
   },
   created () {
     const { id } = this.$route.params
@@ -182,35 +188,35 @@ export default {
         })
       }
     },
-    async addFollowing (userId) {
-      try {
-        const { data } = await userAPI.addFollowShip({ id: userId })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
-        }
-        this.followings.filter(user => {
-          if (user.Followings.id === userId) {
-            user.Followings.isFollowing = true
-          }
-        })
-      } catch (e) {
-        console.log(e)
-        Toast.fire({
-          icon: 'error',
-          title: '加入失敗'
-        })
-      }
-    },
+    // async addFollowing (userId) {
+    //   try {
+    //     const { data } = await userAPI.addFollowShip({ id: userId })
+    //     if (data.status !== 'success') {
+    //       throw new Error(data.message)
+    //     }
+    //     this.followings.filter(user => {
+    //       if (user.Followings.id === userId) {
+    //         user.Followings.isFollowing = true
+    //       }
+    //     })
+    //   } catch (e) {
+    //     console.log(e)
+    //     Toast.fire({
+    //       icon: 'error',
+    //       title: '加入失敗'
+    //     })
+    //   }
+    // },
     async removeFollowing (userId) {
       try {
         const { data } = await userAPI.removeFollowShip({ userId })
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.followings.filter(user => {
-          if (user.Followings.id === userId) {
-            user.Followings.isFollowing = false
-          }
+        // this.fetchUser(this.userId)
+        this.$emit('update-follow-data', userId)
+        this.followings = this.followings.filter(user => {
+          return user.Followings.id !== userId
         })
       } catch (e) {
         console.log(e)

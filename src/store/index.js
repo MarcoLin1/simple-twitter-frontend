@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isFollowing: false,
     currentUser: {
       id: -1,
       name: '',
