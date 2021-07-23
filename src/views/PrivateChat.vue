@@ -88,6 +88,10 @@ export default {
     },
     privateMessage: function (data) {
       this.messages.push(data)
+    },
+    messageNotify: function (data) {
+      console.log('component messageNotifydata', data)
+      this.getPrivateUsersList()
     }
   },
   methods: {
@@ -109,7 +113,6 @@ export default {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
       this.chats = data
       console.log(data)
-      // 更新 isread
     },
     // 和私訊對象的歷史訊息
     async historyMessage (listener) {

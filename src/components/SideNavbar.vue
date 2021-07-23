@@ -157,6 +157,7 @@ export default {
   methods: {
     logout () {
       this.$store.commit('revokeAuthentication')
+      this.$socket.disconnect()
       this.$router.push('/login')
     },
     handleAfterSubmit (data) {

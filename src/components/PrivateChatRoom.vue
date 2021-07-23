@@ -58,7 +58,10 @@
           </div>
         </div>
       </div>
-      <div class="chat__room__bottom__wrapper">
+      <div
+        v-if="initialListener.name"
+        class="chat__room__bottom__wrapper"
+      >
         <input
           v-model="message"
           type="text"
@@ -70,6 +73,12 @@
           class="chat__room__button"
         />
       </div>
+      <div
+        v-else
+        class="empty-message"
+      >
+        請先選擇訊息就可以開啟對話囉！
+      </div>
     </div>
   </form>
 </template>
@@ -77,6 +86,7 @@
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
   .chat__room__container {
+    position: relative;
     width: 100%;
     height: 100vh;
     display: grid;
@@ -190,6 +200,12 @@
         background: $orange;
       }
     }
+    .empty-message{
+      position: absolute;
+      top: 30%;
+      left: 40%;
+      transform: translateX(-40%);
+    }
   }
 </style>
 
@@ -216,6 +232,7 @@ export default {
       allData: this.initialMessages
     }
   },
+
   computed: {
     ...mapState(['currentUser'])
   },
