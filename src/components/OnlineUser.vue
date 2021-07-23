@@ -32,8 +32,8 @@
   min-height: 100vh;
   width: 100%;
   &__title{
-    height: 45px;
-    line-height: 45px;
+    height: 55px;
+    line-height: 55px;
     @include text-style(18px, 700, $black);
     padding: 0  15px;
     border-bottom: 1px solid $light-gray;

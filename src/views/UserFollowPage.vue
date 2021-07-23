@@ -13,7 +13,7 @@
           :initial-name="name"
           :initial-user-tweets-length="userTweetsLength"
         />
-        <UserFollowItem />
+        <UserFollowItem class="follow-wrapper" />
         <router-view
           :initial-followings="followings"
           @update-follow-data="followStatus"
@@ -178,6 +178,7 @@ export default {
 @import '../assets/scss/main.scss';
 .main__container{
   display: flex;
+  min-height: 100vh;
 }
 .left__container {
   width: 27%;
@@ -188,6 +189,9 @@ export default {
   grid-area: middle;
   width: 602px;
   border: 1px solid $light-gray;
+  .follow-wrapper{
+    margin-top: 25px;
+  }
 }
 .right__container {
   width: 33%;

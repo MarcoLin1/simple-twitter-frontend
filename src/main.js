@@ -11,7 +11,10 @@ const socketOptions = {
   autoConnect: true,
   reconnection: true,
   reconnectionAttempts: 5,
-  reconnectionDelay: 1000
+  reconnectionDelay: 1000,
+  forceNew: true,
+  allowUpgrades: false,
+  pingTimeout: 30000
 }
 
 const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { transports: ['websocket', 'polling'], forceNew: true })

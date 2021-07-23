@@ -96,8 +96,7 @@ export default {
     .middle-content{
     border: 1px solid $light-gray;
     }
-    .right-content {
-    }
+
   }
 
 }

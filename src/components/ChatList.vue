@@ -14,6 +14,7 @@
       v-for="chat in chats"
       :key="chat.id"
       class="post"
+      :class="{unread:!chat.isread}"
       @click.stop.prevent="enterRoom(chat.id)"
     >
       <div class=" post__avatar">
@@ -45,8 +46,8 @@
 .chat_container{
   min-height: 100vh;
   &__title{
-    height: 45px;
-    line-height: 45px;
+    height: 55px;
+    line-height: 55px;
     @include text-style(18px, 700, $black);
     padding: 0  15px;
     border-bottom: 1px solid $light-gray;
@@ -56,7 +57,7 @@
     position: relative;
     .plus{
         position: absolute;
-        top: 9px;
+        top: 13px;
         right: 16px;
         font-size: 1px;
         width: 10px;
@@ -80,25 +81,33 @@
     }
   }
   .post{
+    width: 100%;
     cursor: pointer;
     border-top: none;
     border-left: none;
     border-right: none;
-  }
-  .post-discription{
-    color: $tx-gray;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 300px;
-  }
-  .post-title{
     position: relative;
+    &.unread{
+      border-right: 2px solid $orange;
+      .post-discription{
+        color: $black;
+        font-weight: 500;
+      }
+
+    }
+    .post-discription{
+      width: 180px;
+      color: $tx-gray;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .post-title-item-time{
+      position: absolute;
+      right: 15px;
+    }
   }
-  .post-title-item-time{
-    position: absolute;
-    right: 0;
-  }
+
 }
 </style>
 <script>
