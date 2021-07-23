@@ -118,15 +118,10 @@ export default {
     async historyMessage (listener) {
       try {
         const { data } = await chatAPI.messages({ isPrivate: true, id: this.currentUser.id, listenerId: listener })
-        console.log('historyMessage', data)
         if (this.messages.length === 0) {
           data.forEach(item => {
-            if (item.id === this.chats[0].id) {
-              this.messages.push(item)
-            }
-            if (item.id === this.currentUser.id) {
-              this.messages.push(item)
-            }
+            item = JSON.parse(JSON.stringify(item))
+            this.messages.push(item)
           })
         }
       } catch (e) {
