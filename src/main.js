@@ -8,7 +8,6 @@ import { io } from 'socket.io-client'
 
 Vue.config.productionTip = false
 const socketOptions = {
-  transports: ['websocket', 'polling'],
   autoConnect: true,
   reconnection: true,
   reconnectionAttempts: 5,
@@ -18,8 +17,7 @@ const socketOptions = {
   pingTimeout: 30000
 }
 
-const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions)
-
+const socket = io('https://infinite-mountain-11239.herokuapp.com/', socketOptions, { forceNew: true })
 socket.onAny((event, ...args) => {
   console.log('main.js收到的資訊', event, args)
 })

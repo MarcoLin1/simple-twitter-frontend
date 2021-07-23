@@ -141,15 +141,10 @@ import { emptyImageFilter } from './../utils/mixins'
 
 export default {
   mixins: [emptyImageFilter],
-  // props: {
-  //   initialFollowings: {
-  //     type: [Object, Array],
-  //     required: true
-  //   }
-  // },
   data () {
     return {
-      followings: []
+      followings: [],
+      userId: ''
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -157,8 +152,20 @@ export default {
     this.fetchUser(id)
     next()
   },
+  // watch: {
+  //   fetchUser (newValue) {
+  //     this.followings = [
+  //       ...this.followings,
+  //       newValue
+  //     ]
+  //   }
+  // },
+  updated () {
+    this.fetchUser(this.userId)
+  },
   created () {
     const { id } = this.$route.params
+    this.userId = id
     this.fetchUser(id)
   },
   methods: {

@@ -173,19 +173,23 @@ export default {
   mixins: [emptyImageFilter],
   data () {
     return {
-      followers: []
+      followers: [],
+      userId: ''
     }
   },
   watch: {
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
-    console.log(id)
     this.fetchFollowers(id)
     next()
   },
+  updated () {
+    this.fetchFollowers(this.userId)
+  },
   created () {
     const { id } = this.$route.params
+    this.userId = id
     this.fetchFollowers(id)
   },
   methods: {

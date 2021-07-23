@@ -70,6 +70,8 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
+    console.log('這是to', to)
+    this.userId = to.params.id
     this.fetchUserData(id)
     this.fetchUser(id)
     this.fetUserFollowers(id)
@@ -82,6 +84,9 @@ export default {
     this.fetchUserData(id)
     this.fetchUser(id)
     this.fetUserFollowers(id)
+  },
+  updated () {
+    this.fetchTopUser()
   },
   methods: {
     async fetchTopUser () {
