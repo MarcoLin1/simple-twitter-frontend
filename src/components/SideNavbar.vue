@@ -157,6 +157,9 @@ export default {
   methods: {
     logout () {
       this.$store.commit('revokeAuthentication')
+      if (this.$route.path.includes('private')) {
+        this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: this.listener.id })
+      }
       this.$socket.disconnect()
       this.$router.push('/login')
     },

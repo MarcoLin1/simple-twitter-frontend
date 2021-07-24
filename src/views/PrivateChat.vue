@@ -78,6 +78,7 @@ export default {
     this.privateChatUser.name = ''
     this.privateChatUser.account = ''
     this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: this.listener.id })
+    console.log('leave room event', { id: this.currentUser.id, listenerId: this.listener.id })
   },
   sockets: {
     connect () {
