@@ -249,19 +249,56 @@ a{
       height: 20px;
       display: flex;
       align-items: center;
-
+      .heart{
+        position: relative;
+        &::before{
+          position: absolute;
+          top: -1px;
+          left: -2px;
+          content: '';
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background:  $heart-pink;
+          opacity: 0;
+        }
+      }
+      .message{
+        position: relative;
+        &::before{
+          position: absolute;
+          top: -1px;
+          left: -2px;
+          content: '';
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background:  $light-blue;
+          opacity: 0;
+        }
+      }
       .message:hover {
           color: $light-blue;
+          &::before{
+          opacity: 0.2;
+          transition: opacity 0.2s ease-in ;
+        }
           div{
             background: $light-blue;
           }
+      }
+      .heart:hover{
+        color: $heart-pink;
+        position: relative;
+
+        &::before{
+          opacity: 0.2;
+          transition: opacity 0.2s ease-in ;
         }
-        .heart:hover{
-          color: $heart-pink;
-          div{
-            background: $heart-pink;
-          }
+        div{
+          background: $heart-pink;
         }
+      }
       &__item {
         cursor: pointer;
         margin-right: 50px;
@@ -274,14 +311,14 @@ a{
           align-items: center;
         }
         &__text {
-          font-size: 13px;
-          line-height: 13px;
+          font-size: 14px;
+          line-height: 14px;
           margin-left: 12px;
           line-height: 20px;
         }
         &__message,&__heart, &__heart--liked{
-          width: 14px;
-          height: 14px;
+          width: 18px;
+          height: 18px;
           @extend %icon-style;
         }
         &__message{

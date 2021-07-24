@@ -14,22 +14,24 @@
       v-for="chat in chats"
       :key="chat.id"
       class="post"
-      :class="{unread:!chat.isread}"
+      :class="{unread:!chat.isRead}"
       @click.stop.prevent="enterRoom(chat.id)"
     >
-      <div class=" post__avatar">
-        <img
-          class="avatar-img"
-          :src="chat.avatar | emptyImage"
-          alt=""
-        >
-      </div>
+      <router-link :to="{name:'user-tweets', params:{id: chat.id}}">
+        <div class=" post__avatar">
+          <img
+            class="avatar-img"
+            :src="chat.avatar | emptyImage"
+            alt=""
+          >
+        </div>
+      </router-link>
       <div class="post-content">
         <div class="post-title mb-2">
           <span class="post-title-item user-name">
             {{ chat.name }}
           </span>
-          <span class="post-title-item post-title-item-account">{{ chat.account }}</span>
+          <span class="post-title-item post-title-item-account">@{{ chat.account }}</span>
           <span class="post-title-item post-title-item-time">
             {{ chat.createdAt | shortenTime }}
           </span>
@@ -87,20 +89,27 @@
     border-left: none;
     border-right: none;
     position: relative;
+    transition: background-color 0.15s ease-in;
+     &:hover{
+      background-color: $bg-gray;
+
+    }
     &.unread{
       border-right: 2px solid $orange;
       .post-discription{
         color: $black;
         font-weight: 500;
       }
-
     }
     .post-discription{
       width: 180px;
       color: $tx-gray;
-      white-space: normal;
+      // white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
+      cursor: pointer;
+      overflow-wrap: normal;
+      height: 20px;
     }
     .post-title-item-time{
       position: absolute;

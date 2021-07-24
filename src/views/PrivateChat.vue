@@ -78,6 +78,7 @@ export default {
     this.privateChatUser.name = ''
     this.privateChatUser.account = ''
     this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: this.listener.id })
+    console.log('leave room event', { id: this.currentUser.id, listenerId: this.listener.id })
   },
   sockets: {
     connect () {
@@ -88,6 +89,10 @@ export default {
     },
     privateMessage: function (data) {
       this.messages.push(data)
+    },
+    messageNotify: function (data) {
+      console.log('component messageNotifydata', data)
+      this.getPrivateUsersList()
     }
   },
   methods: {
@@ -109,7 +114,6 @@ export default {
       const { data } = await chatAPI.getPrivateUsers(this.currentUser.id)
       this.chats = data
       console.log(data)
-      // 更新 isread
     },
     // 和私訊對象的歷史訊息
     async historyMessage (listener) {

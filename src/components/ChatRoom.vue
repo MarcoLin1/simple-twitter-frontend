@@ -245,7 +245,8 @@ export default {
   mixins: [shortenTimeFilter, emptyImageFilter],
   props: {
     messages: {
-      type: Array
+      type: Array,
+      required: true
     }
   },
   data () {
