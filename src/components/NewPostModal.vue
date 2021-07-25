@@ -216,6 +216,9 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        // 傳送sockets發文事件
+        this.$socket.emit('subscribeNotify', { id: this.currentUser.id, content: this.tweet, avatar: this.currentUser.avatar, name: this.currentUser.name })
+
         const toggleControl = document.querySelector('.toggle__control')
         toggleControl.checked = false
         this.$emit('after-side-submit', { tweet: this.tweet, id: data.id })

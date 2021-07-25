@@ -50,6 +50,9 @@ new Vue({
     },
     messageNotify: function (data) {
       console.log('main.js messageNotifydata', data)
+    },
+    subscribeNotify: function (data) {
+      console.log('main.js subscribeNotify', data)
     }
 
   },

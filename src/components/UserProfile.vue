@@ -43,14 +43,14 @@
       <div
         v-if="(currentUser.id !== user.id) && (!isSubscribe)"
         class="profile__icon__wrapper"
-        @click="addSubscribe"
+        @click="addSubscribe(user.id)"
       >
         <div class="profile__icon profile__icon__subscribe" />
       </div>
       <div
         v-if="(currentUser.id !== user.id ) && (isSubscribe)"
         class="profile__icon__wrapper profile__icon__wrapper__checked"
-        @click="removeSubscribe"
+        @click="removeSubscribe(user.id)"
       >
         <div class="profile__icon profile__icon__subscribe__checked" />
       </div>
@@ -239,6 +239,7 @@ import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
 import { mapState } from 'vuex'
 import { emptyImageFilter } from './../utils/mixins'
+import subscribeAPI from './../apis/subscribe'
 export default {
   components: {
     UserEditModal
@@ -298,12 +299,22 @@ export default {
       console.log(this.user)
     },
     // 新增訂閱
-    addSubscribe () {
+    async addSubscribe (recipientId) {
       this.isSubscribe = true
+      const { data } = await subscribeAPI.add({ recipientId, subscriberId: this.currentUser.id })
+      console.log(data)
+      if (data.status !== 'success') {
+        throw new Error(data.message)
+      }
     },
     // 移除訂閱
-    removeSubscribe () {
+    async removeSubscribe (recipientId) {
       this.isSubscribe = false
+      const { data } = await subscribeAPI.cancel({ recipientId, subscriberId: this.currentUser.id })
+      console.log(data)
+      if (data.status !== 'success') {
+        throw new Error(data.message)
+      }
     },
     // 接收user edit後的資料，再render到頁面
     afterHandleSubmit (data) {
