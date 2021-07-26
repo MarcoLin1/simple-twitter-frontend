@@ -16,7 +16,9 @@
         <UserFollowItem class="follow-wrapper" />
         <router-view
           :initial-followings="followings"
+          :initial-followers="followers"
           @update-follow-data="followStatus"
+          @update-follower-data="addFollowStatus"
         />
       </template>
     </div>
@@ -63,6 +65,16 @@ export default {
           isFollowing: false,
           introduction: ''
         }
+      },
+      followers: {
+        Followers: {
+          name: '',
+          account: '',
+          avatar: '',
+          id: -1,
+          isFollowing: false,
+          introduction: ''
+        }
       }
     }
   },
@@ -74,6 +86,7 @@ export default {
     this.fetchUserData(id)
     this.fetchUser(id)
     this.fetchFollowingUser(id)
+    this.fetchFollowerUser(id)
     next()
   },
   created () {
@@ -82,6 +95,7 @@ export default {
     this.fetchUserData(id)
     this.fetchUser(id)
     this.fetchFollowingUser(id)
+    this.fetchFollowerUser(id)
   },
   methods: {
     async handleNewData (userId) {
@@ -98,6 +112,11 @@ export default {
           },
           followingId: userId
         })
+        this.followers.forEach(user => {
+          if (user.Followers.id === userId) {
+            return !user.Followers.isFollowing
+          }
+        })
       } catch (e) {
         console.log(e)
       }
@@ -105,6 +124,11 @@ export default {
     handleRemoveData (userId) {
       this.followings = this.followings.filter(item => {
         return item.followingId !== userId
+      })
+      this.followers = this.followers.filter(item => {
+        if (item.followerId === userId) {
+          item.Followers.isFollowing = false
+        }
       })
     },
     followStatus (userId) {
@@ -114,6 +138,17 @@ export default {
         }
       })
       console.log('這是follow status', userId)
+    },
+    addFollowStatus (userId) {
+      this.fetchTopUser()
+    },
+    removeFollowStatus (userId) {
+      console.log('這是userId', userId)
+      this.topUsers = this.topUsers.filter(user => {
+        if (user.id === userId) {
+          user.isFollowing = false
+        }
+      })
     },
     async fetchFollowingUser (userId) {
       try {
@@ -125,6 +160,14 @@ export default {
           icon: 'error',
           title: '資料讀取失敗，請稍候再試'
         })
+      }
+    },
+    async fetchFollowerUser (userId) {
+      try {
+        const { data } = await userAPI.getUserFollowers({ userId })
+        this.followers = data
+      } catch (e) {
+        console.log(e)
       }
     },
     async fetchTopUser () {

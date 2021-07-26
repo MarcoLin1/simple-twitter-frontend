@@ -169,15 +169,30 @@
 import { Toast } from '../utils/helper'
 import { emptyImageFilter } from './../utils/mixins'
 import userAPI from './../apis/users'
+import { mapState } from 'vuex'
 export default {
   mixins: [emptyImageFilter],
+  props: {
+    initialFollowers: {
+      type: [Array, Object],
+      required: true
+    }
+  },
   data () {
     return {
-      followers: [],
+      followers: this.initialFollowers,
       userId: ''
     }
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   watch: {
+    initialFollowers (newValue) {
+      this.followers = [
+        ...newValue
+      ]
+    }
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
@@ -208,6 +223,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        this.$emit('update-follower-data', userId)
         this.followers.filter(user => {
           if (user.Followers.id === userId) {
             user.Followers.isFollowing = true
@@ -227,6 +243,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        this.$emit('update-follow-data', userId)
         this.followers.filter(user => {
           if (user.Followers.id === userId) {
             user.Followers.isFollowing = false

@@ -57,6 +57,8 @@
 </style>
 
 <script>
+import subscribeAPI from './../apis/subscribe'
+import { mapState } from 'vuex'
 export default {
   name: 'Notifications',
   components: {
@@ -89,6 +91,22 @@ export default {
           description: 'There are a few things that make this Cigital landing page work. It has simple and relevant imagery. The headline is straightforward and the description of the ebook informs viewers of the specific value they will get by downloading it.'
         }
       ]
+    }
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  created () {
+    this.getHistoryNotifications()
+  },
+  methods: {
+    async getHistoryNotifications () {
+      try {
+        const { data } = await subscribeAPI.history({ id: this.currentUser.id })
+        console.log(data)
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
