@@ -118,8 +118,6 @@ export default {
         ...newValue
       }
     }
-  },
-  methods: {
   }
 }
 </script>

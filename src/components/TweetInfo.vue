@@ -41,18 +41,14 @@
         </div>
       </div>
       <div class="tweet__info__icon__wrapper">
-        <router-link :to="{name:'reply-post-modal', params:{id:tweet.id}}">
+        <div
+          class="tweet__info__icon__message__wrapper"
+          @click="showModal = true"
+        >
           <div
-            class="tweet__info__icon__message__wrapper"
-            @click="showModal = true"
-          >
-            <div
-              class="tweet__info__icon__message"
-              data-toggle="modal"
-              data-target="#reply__post__modal"
-            />
-          </div>
-        </router-link>
+            class="tweet__info__icon__message"
+          />
+        </div>
         <div class="tweet__info__icon__like__wrapper">
           <div
             v-if="!tweet.isLike"
@@ -79,7 +75,6 @@
   </div>
 </template>
 <script>
-// import ReplyPostModal from './../components/ReplyPostModal.vue'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
 import { localTimeFilter, emptyImageFilter } from './../utils/mixins'

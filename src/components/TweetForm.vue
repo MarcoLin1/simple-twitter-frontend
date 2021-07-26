@@ -1,6 +1,10 @@
 <template>
   <div class="tweet__form__container">
     <form class="tweet__form__wrapper">
+      <div class="tweet__form__emoji">
+        <EmojiPicker @add-emoji="addEmoji" />
+      </div>
+
       <div class="tweet__form__image__wrapper">
         <div class="tweet__form__image">
           <img
@@ -45,7 +49,10 @@
 import { Toast } from '../utils/helper'
 import { emptyImageFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
+import EmojiPicker from './../components/EmojiPicker.vue'
+
 export default {
+  components: { EmojiPicker },
   mixins: [emptyImageFilter],
   data () {
     return {
@@ -60,6 +67,9 @@ export default {
     }
   },
   methods: {
+    addEmoji (emoji) {
+      this.description += emoji
+    },
     handleSubmit () {
       this.isProcessing = true
       if (!this.description.trim()) {
@@ -91,12 +101,18 @@ export default {
 @import '../assets/scss/main.scss';
 
   .tweet__form__wrapper {
+    position: relative;
     width: 600px;
     height: auto;
     margin: 0 auto;
     border-top: 1px solid $light-gray;
     border-bottom: 10px solid $light-gray;
     padding: 10px 15px 10px 15px;
+    .tweet__form__emoji{
+      position: absolute;
+      bottom: 3.5rem;
+      right: 15px;
+    }
   }
   .tweet__form__image__wrapper {
     display: flex;

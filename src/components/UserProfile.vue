@@ -43,14 +43,14 @@
       <div
         v-if="(currentUser.id !== user.id) && (!isSubscribe)"
         class="profile__icon__wrapper"
-        @click="addSubscribe"
+        @click="addSubscribe(user.id)"
       >
         <div class="profile__icon profile__icon__subscribe" />
       </div>
       <div
         v-if="(currentUser.id !== user.id ) && (isSubscribe)"
         class="profile__icon__wrapper profile__icon__wrapper__checked"
-        @click="removeSubscribe()"
+        @click="removeSubscribe(user.id)"
       >
         <div class="profile__icon profile__icon__subscribe__checked" />
       </div>
@@ -93,7 +93,6 @@
       <div class="profile__detail__intro">
         {{ user.introduction }}
       </div>
-      <!-- 要記得改連結 -->
       <div class="profile__detail__follow">
         <div class="profile__detail__follow__item">
           <router-link :to="{name: 'user-followings', params: {id: userId }}">
@@ -299,25 +298,21 @@ export default {
       console.log(this.user)
     },
     // 新增訂閱
-    async addSubscribe () {
-      try {
-        const { data } = await subscribeAPI.add({ recipientId: this.user.id, subscriberId: this.currentUser.id })
-        console.log('這是新增訂閱', data)
-        this.isSubscribe = true
-      } catch (e) {
-        console.log(e)
+    async addSubscribe (recipientId) {
+      this.isSubscribe = true
+      const { data } = await subscribeAPI.add({ recipientId, subscriberId: this.currentUser.id })
+      console.log(data)
+      if (data.status !== 'success') {
+        throw new Error(data.message)
       }
     },
     // 移除訂閱
-    async removeSubscribe () {
-      try {
-        console.log('這是recipientId', this.user.id)
-        console.log('這是subscriberId', this.currentUser.id)
-        const { data } = await subscribeAPI.cancel({ recipientId: this.user.id, subscriberId: this.currentUser.id })
-        console.log('這是取消訂閱', data)
-        this.isSubscribe = false
-      } catch (e) {
-        console.log(e)
+    async removeSubscribe (recipientId) {
+      this.isSubscribe = false
+      const { data } = await subscribeAPI.cancel({ recipientId, subscriberId: this.currentUser.id })
+      console.log(data)
+      if (data.status !== 'success') {
+        throw new Error(data.message)
       }
     },
     // 接收user edit後的資料，再render到頁面

@@ -37,9 +37,6 @@ export default new Vuex.Store({
       // 將使用者的登入狀態改為 true
       state.isAuthenticated = true
     },
-    SOCKET_connect (state) {
-      console.log('in store', state.currentUser)
-    },
     SOCKET_messageNotify (state, data) {
       if (data.unreadCount > 0) {
         state.getPrivateNotify = true
