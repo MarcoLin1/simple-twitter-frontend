@@ -83,6 +83,7 @@ import { Toast } from '../utils/helper'
 import { fromNowFilter, emptyImageFilter } from './../utils/mixins'
 import ReplyPostModal from './../components/ReplyPostModal.vue'
 import userAPI from './../apis/users'
+import { mapState } from 'vuex'
 
 export default {
   name: 'UserPost',
@@ -96,12 +97,17 @@ export default {
       required: true
     }
   },
+
   data () {
     return {
       showModal: false,
       post: this.initialTweet,
       likeCount: this.initialTweet.likeCount
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
+
   },
   watch: {
     initialTweet (newValue) {
@@ -132,6 +138,8 @@ export default {
           }
         }
         this.likeCount += 1
+        // socket event
+        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: this.post.User.id, avatar: this.post.User.avatar, name: this.post.User.name, labelName: 'like' })
       } catch (e) {
         console.log(e)
         Toast.fire({

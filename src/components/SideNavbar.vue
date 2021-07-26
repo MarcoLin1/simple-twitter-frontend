@@ -345,7 +345,7 @@ a {
     }
   }
   .side-navbar-button {
-    width: 210px;
+    width: 100%;
     border-radius: 100px;
     background: $orange;
     color: #ffffff;

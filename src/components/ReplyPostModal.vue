@@ -317,14 +317,14 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-
         const replyData = {
           comment: this.comment.trim()
         }
         this.comment = ''
-        this.$router.back()
         this.$emit('close')
         this.$emit('after-submit', replyData)
+        // socket event
+        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: this.tweet.User.id, avatar: this.tweet.User.avatar, name: this.tweet.User.name, labelName: 'reply' })
       } catch (error) {
         this.isProcessing = false
         console.log('error', error)

@@ -184,9 +184,6 @@ export default {
     this.fetchFollowers(id)
     next()
   },
-  updated () {
-    this.fetchFollowers(this.userId)
-  },
   created () {
     const { id } = this.$route.params
     this.userId = id
