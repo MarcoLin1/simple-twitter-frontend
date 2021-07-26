@@ -15,11 +15,32 @@
           class="notifications__avatar"
         >
       </div>
-      <div class="notifications__title">
-        {{ notification.title }}
+      <div
+        v-if="notification.labelName === 'tweet'"
+        class="notifications__title"
+      >
+        {{ notification.name + '有新的推文通知' }}
+      </div>
+      <div
+        v-if="notification.labelName === 'follow'"
+        class="notifications__title"
+      >
+        {{ notification.name + '開始追蹤你' }}
+      </div>
+      <div
+        v-if="notification.labelName === 'reply'"
+        class="notifications__title"
+      >
+        {{ notification.name + '有新的回覆' }}
+      </div>
+      <div
+        v-if="notification.labelName === 'like'"
+        class="notifications__title"
+      >
+        {{ notification.name + '喜歡你的貼文' }}
       </div>
       <div class="notifications__text">
-        {{ notification.description }}
+        {{ notification.content }}
       </div>
     </div>
   </div>
@@ -65,36 +86,21 @@ export default {
   },
   data () {
     return {
-      notifications: [
-        {
-          id: 1,
-          avatar: 'https://www.holoface.photos/static/images/products/figurephotohalf01.jpg',
-          title: 'John 有新的推文通知',
-          description: 'There are a few things that make this Cigital landing page work. It has simple and relevant imagery. The headline is straightforward and the description of the ebook informs viewers of the specific value they will get by downloading it.'
-        },
-        {
-          id: 2,
-          avatar: 'https://www.holoface.photos/static/images/products/figurephotohalf01.jpg',
-          title: 'Mary 有新的回覆',
-          description: 'There are a few things that make this Cigital landing page work. It has simple and relevant imagery. The headline is straightforward and the description of the ebook informs viewers of the specific value they will get by downloading it.'
-        },
-        {
-          id: 3,
-          avatar: 'https://www.holoface.photos/static/images/products/figurephotohalf01.jpg',
-          title: 'Apple開始追蹤你',
-          description: ''
-        },
-        {
-          id: 4,
-          avatar: 'https://www.holoface.photos/static/images/products/figurephotohalf01.jpg',
-          title: '你的推文有新的回覆',
-          description: 'There are a few things that make this Cigital landing page work. It has simple and relevant imagery. The headline is straightforward and the description of the ebook informs viewers of the specific value they will get by downloading it.'
-        }
-      ]
+      notifications: []
     }
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser', 'subscribeNotifyData'])
+  },
+  watch: {
+    subscribeNotifyData: {
+      handler: function (newValue, oldValue) {
+        this.notifications.push(newValue)
+        console.log('這是notify的newValue', newValue)
+        console.log('這是notify的this.notifications', this.notifications)
+      },
+      deep: true
+    }
   },
   created () {
     this.getHistoryNotifications()
@@ -103,7 +109,8 @@ export default {
     async getHistoryNotifications () {
       try {
         const { data } = await subscribeAPI.history({ id: this.currentUser.id })
-        console.log(data)
+        this.notifications = data
+        console.log('這是歷史通知紀錄', data)
       } catch (e) {
         console.log(e)
       }
