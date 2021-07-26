@@ -66,7 +66,8 @@ a{
   margin: 15px 16px;
 }
 .user-list-wrapper{
-  width: 350px;
+  max-width: 350px;
+  min-width: 250px;
   border-radius: 14px;
   background-color: $bg-gray;
   padding: 12px 15px;

@@ -3,31 +3,31 @@
     <div class="left__container">
       <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
-    <div
-      class="middle__container"
-    >
-      <Spinner v-if="isLoading" />
-      <template v-else>
-        <TopNavbar
-          :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
-          :initial-name="name"
-          :initial-user-tweets-length="userTweetsLength"
-        />
-        <UserFollowItem class="follow-wrapper" />
-        <router-view
-          :initial-followings="followings"
-          :initial-followers="followers"
-          @update-follow-data="followStatus"
-          @update-follower-data="addFollowStatus"
-        />
-      </template>
-    </div>
     <div class="right__container">
-      <TopUsersList
-        :top-users="topUsers"
-        @update-data="handleNewData"
-        @update-remove-data="handleRemoveData"
-      />
+      <div class="middle__wrapper">
+        <Spinner v-if="isLoading" />
+        <template v-else>
+          <TopNavbar
+            :current-page="$route.path.slice(0, 9) === '/mainpage'? '首頁': '推文'"
+            :initial-name="name"
+            :initial-user-tweets-length="userTweetsLength"
+          />
+          <UserFollowItem class="follow-wrapper" />
+          <router-view
+            :initial-followings="followings"
+            :initial-followers="followers"
+            @update-follow-data="followStatus"
+            @update-follower-data="addFollowStatus"
+          />
+        </template>
+      </div>
+      <div class="right__wrapper">
+        <TopUsersList
+          :top-users="topUsers"
+          @update-data="handleNewData"
+          @update-remove-data="handleRemoveData"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -224,19 +224,46 @@ export default {
   min-height: 100vh;
 }
 .left__container {
-  width: 27%;
+  width: 25%;
   display: flex;
   justify-content: flex-end;
 }
-.middle__container{
-  grid-area: middle;
-  width: 602px;
-  border: 1px solid $light-gray;
-  .follow-wrapper{
-    margin-top: 25px;
+.right__container{
+  width: 75%;
+  display: grid;
+  grid-template-columns: 602px 1fr;
+  .middle__wrapper{
+    border: 1px solid $light-gray;
+    .follow-wrapper{
+      margin-top: 25px;
+    }
   }
 }
-.right__container {
-  width: 33%;
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  .main__container{
+    .left__container{
+      width: 10%;
+    }
+    .right__container{
+      width: 90%;
+   }
+  }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .main__container{
+    .left__container{
+      width: 20%;
+    }
+    .right__container{
+      width: 80%;
+      .right__wrapper{
+        display: none;
+      }
+   }
+
+  }
 }
 </style>

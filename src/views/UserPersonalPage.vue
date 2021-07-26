@@ -3,10 +3,8 @@
     <div class="left__container">
       <SideNavbar @after-side-submit="handleAfterSubmit" />
     </div>
-    <div class="right-wrapper">
-      <div
-        class="middle___container"
-      >
+    <div class="right__container">
+      <div class="middle___wrapper">
         <Spinner v-if="isLoading" />
         <template v-else>
           <TopNavbar
@@ -25,7 +23,7 @@
           <router-view :new-tweet="newTweet" />
         </template>
       </div>
-      <div class="right__container">
+      <div class="right__wrapper">
         <TopUsersList :top-users="topUsers" />
       </div>
     </div>
@@ -163,18 +161,46 @@ export default {
 .main__container{
   display: flex;
   .left__container {
-  width: 25%;
-  display: flex;
-  justify-content: flex-end;
-}
-  .right-wrapper{
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .right__container{
     width: 75%;
     display: grid;
     grid-template-columns: 602px 1fr;
-    .middle___container{
+    .middle___wrapper{
       border: 1px solid $light-gray;
     }
   }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  .main__container{
+    .left__container{
+      width: 10%;
+    }
+    .right__container{
+      width: 90%;
+   }
+  }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .main__container{
+    .left__container{
+      width: 20%;
+    }
+    .right__container{
+      width: 80%;
+      .right__wrapper{
+        display: none;
+      }
+   }
+
+  }
+
 }
 
 </style>

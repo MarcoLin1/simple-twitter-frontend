@@ -38,4 +38,17 @@ export default {
       height: 100vh;
     }
   }
+
+@media screen and (min-width: 768px) and (max-width: 1180px) {
+  .main__container{
+    .left__content{
+      width: 10%;
+    }
+    .right__content{
+      width: 90%;
+    }
+
+  }
+
+}
 </style>

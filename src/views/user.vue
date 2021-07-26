@@ -95,13 +95,37 @@ export default {
     display: grid;
     grid-template-columns: 602px 1fr;
     .middle-content{
-    border: 1px solid $light-gray;
+      border: 1px solid $light-gray;
     }
 
   }
 
 }
-@media screen and (max-width: 992px) {
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  .main-container{
+    .left-content{
+      width: 10%;
+    }
+    .right-wrapper{
+      width: 90%;
+   }
+  }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .main-container{
+    .left-content{
+      width: 20%;
+    }
+    .right-wrapper{
+      width: 80%;
+    .right-content{
+      display: none;
+    }
+   }
+
+  }
 
 }
 

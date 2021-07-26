@@ -32,7 +32,7 @@
           to="/publicchat"
           :class="{selected:this.$route.path.includes('publicchat')}"
         >
-          <div class="icon-wrapper icon-mail-wrapper" />
+          <div class="icon-wrapper icon-group-wrapper" />
           <div class="content">
             <!-- <div class="notify-point" /> -->
             公開聊天室
@@ -278,6 +278,13 @@ a {
     @extend %icon-style;
 
 }
+.icon-group-wrapper{
+  mask-image: url('./../assets/icon/icon_group.svg');
+  -webkit-mask-image: url('./../assets/icon/icon_group.svg');
+  cursor: pointer;
+  mask-size: 25px;
+  @extend %icon-style;
+}
 .content {
   display: none;
   cursor: pointer;
@@ -324,7 +331,7 @@ a {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1180px) {
   .side-navbar-container {
     align-items: none;
     max-width: 330px;
