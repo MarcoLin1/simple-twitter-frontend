@@ -50,7 +50,7 @@
       <div
         v-if="(currentUser.id !== user.id ) && (isSubscribe)"
         class="profile__icon__wrapper profile__icon__wrapper__checked"
-        @click="removeSubscribe"
+        @click="removeSubscribe()"
       >
         <div class="profile__icon profile__icon__subscribe__checked" />
       </div>
@@ -239,6 +239,7 @@ import userAPI from './../apis/users'
 import { Toast } from './../utils/helper'
 import { mapState } from 'vuex'
 import { emptyImageFilter } from './../utils/mixins'
+import subscribeAPI from './../apis/subscribe'
 export default {
   components: {
     UserEditModal
@@ -298,12 +299,26 @@ export default {
       console.log(this.user)
     },
     // 新增訂閱
-    addSubscribe () {
-      this.isSubscribe = true
+    async addSubscribe () {
+      try {
+        const { data } = await subscribeAPI.add({ recipientId: this.user.id, subscriberId: this.currentUser.id })
+        console.log('這是新增訂閱', data)
+        this.isSubscribe = true
+      } catch (e) {
+        console.log(e)
+      }
     },
     // 移除訂閱
-    removeSubscribe () {
-      this.isSubscribe = false
+    async removeSubscribe () {
+      try {
+        console.log('這是recipientId', this.user.id)
+        console.log('這是subscriberId', this.currentUser.id)
+        const { data } = await subscribeAPI.cancel({ recipientId: this.user.id, subscriberId: this.currentUser.id })
+        console.log('這是取消訂閱', data)
+        this.isSubscribe = false
+      } catch (e) {
+        console.log(e)
+      }
     },
     // 接收user edit後的資料，再render到頁面
     afterHandleSubmit (data) {
