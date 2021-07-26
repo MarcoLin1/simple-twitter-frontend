@@ -85,9 +85,9 @@ export default {
     this.fetchUser(id)
     this.fetUserFollowers(id)
   },
-  updated () {
-    this.fetchTopUser()
-  },
+  // updated () {
+  //   this.fetchTopUser()
+  // },
   methods: {
     async fetchTopUser () {
       try {
