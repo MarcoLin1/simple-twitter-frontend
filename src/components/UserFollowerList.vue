@@ -199,9 +199,6 @@ export default {
     this.fetchFollowers(id)
     next()
   },
-  // updated () {
-  //   this.fetchFollowers(this.userId)
-  // },
   created () {
     const { id } = this.$route.params
     this.userId = id
@@ -246,7 +243,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.$emit('update-follow-data', userId)
+        this.$emit('remove-follower-data', userId)
         this.followers.filter(user => {
           if (user.Followers.id === userId) {
             user.Followers.isFollowing = false
