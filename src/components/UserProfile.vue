@@ -41,14 +41,14 @@
         </div>
       </router-link>
       <div
-        v-if="(currentUser.id !== user.id) && (!isSubscribe)"
+        v-if="(currentUser.id !== user.id) && (!user.isSubscribe)"
         class="profile__icon__wrapper"
         @click="addSubscribe(user.id)"
       >
         <div class="profile__icon profile__icon__subscribe" />
       </div>
       <div
-        v-if="(currentUser.id !== user.id ) && (isSubscribe)"
+        v-if="(currentUser.id !== user.id ) && (user.isSubscribe)"
         class="profile__icon__wrapper profile__icon__wrapper__checked"
         @click="removeSubscribe(user.id)"
       >
@@ -265,8 +265,8 @@ export default {
     return {
       user: this.initialUser,
       currentUser: this.getCurrentUser,
-      isFollowing: this.initialFollowing,
-      isSubscribe: false
+      isFollowing: this.initialFollowing
+      // isSubscribe: false
     }
   },
   computed: {
@@ -299,21 +299,21 @@ export default {
     },
     // 新增訂閱
     async addSubscribe (recipientId) {
-      this.isSubscribe = true
+      // this.isSubscribe = true
       const { data } = await subscribeAPI.add({ recipientId, subscriberId: this.currentUser.id })
-      console.log(data)
       if (data.status !== 'success') {
         throw new Error(data.message)
       }
+      this.user.isSubscribe = true
     },
     // 移除訂閱
     async removeSubscribe (recipientId) {
-      this.isSubscribe = false
+      // this.isSubscribe = false
       const { data } = await subscribeAPI.cancel({ recipientId, subscriberId: this.currentUser.id })
-      console.log(data)
       if (data.status !== 'success') {
         throw new Error(data.message)
       }
+      this.user.isSubscribe = false
     },
     // 接收user edit後的資料，再render到頁面
     afterHandleSubmit (data) {
@@ -334,6 +334,8 @@ export default {
           throw new Error(data.message)
         }
         this.isFollowing = true
+        // 發送socket reactionNotify事件
+        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: userId, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'follow' })
       } catch (e) {
         console.log(e)
         Toast.fire({

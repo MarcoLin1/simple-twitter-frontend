@@ -24,6 +24,13 @@ export default new Vuex.Store({
       id: -1,
       name: '',
       account: ''
+    },
+    subscribeNotifyData: {
+      id: -1,
+      avatar: '',
+      name: '',
+      content: '',
+      labelName: ''
     }
   },
   mutations: {
@@ -45,6 +52,16 @@ export default new Vuex.Store({
       }
       state.getPrivateNotifyCount = data.unreadCount
       console.log('state.getPrivateNotify', data)
+    },
+    SOCKET_subscribeNotify (state, data) {
+      if (data) {
+        state.subscribeNotifyData = data
+      }
+    },
+    SOCKET_reactionNotify (state, data) {
+      if (data) {
+        state.subscribeNotifyData = data
+      }
     },
     // 登出狀態
     revokeAuthentication (state) {
