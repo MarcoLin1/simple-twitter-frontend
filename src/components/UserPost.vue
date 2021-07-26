@@ -29,15 +29,13 @@
         </div>
       </router-link>
       <div class="post__reaction d-flex ">
-        <router-link :to="{name:'main-reply-post-modal', params:{id:post.TweetId}}">
-          <div
-            class="post__reaction__item message "
-            @click="showModal = true"
-          >
-            <div class="post__reaction__item__message " />
-            <span class="post__reaction__item__text">{{ post.replyCount }}</span>
-          </div>
-        </router-link>
+        <div
+          class="post__reaction__item message "
+          @click="showModal = true"
+        >
+          <div class="post__reaction__item__message " />
+          <span class="post__reaction__item__text">{{ post.replyCount }}</span>
+        </div>
         <div class="post__reaction__item ">
           <div
             v-if="!post.isLike"
@@ -148,8 +146,6 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-
-        // 還差取得currentUser的api判斷
         if (this.post.TweetId === tweetId) {
           this.post = {
             ...this.post,

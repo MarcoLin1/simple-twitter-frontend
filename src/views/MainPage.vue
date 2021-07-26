@@ -77,7 +77,7 @@ export default {
           throw new Error(data.message)
         }
         // 傳送sockets發文事件
-        this.$socket.emit('subscribeNotify', { id: this.currentUser.id, content: description, avatar: this.currentUser.avatar, name: this.currentUser.name })
+        this.$socket.emit('subscribeNotify', { id: this.currentUser.id, content: description, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'tweet' })
         this.fetchTweets()
       } catch (error) {
         console.log('error', error)

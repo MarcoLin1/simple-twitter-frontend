@@ -13,7 +13,7 @@
             <div class="modal__header">
               <button
                 type="button"
-                @click="$emit('close')&$router.go(-1)"
+                @click="$emit('close')"
               >
                 <span
                   aria-hidden="true"
@@ -67,13 +67,23 @@
                     cols="40"
                     type="text"
                     maxlength="140"
-                    placeholder="有什麼新鮮事"
+                    placeholder="推你的回覆"
                     class="modal__body__input"
                   />
+                  <div class="modal__body__emoji">
+                    <EmojiPicker @add-emoji="addEmoji" />
+                  </div>
                 </div>
               </div>
             </div>
             <div class="modal__footer">
+              <div
+                v-show="comment"
+                class="alert-text"
+                :class="{hint:comment.length>130}"
+              >
+                {{ countNum }}
+              </div>
               <button
                 type="submit"
                 class="modal__footer__button"
@@ -182,6 +192,12 @@
         display: flex;
         margin-top: 23px;
         padding: 15px;
+        position: relative;
+        .modal__body__emoji{
+          position: absolute;
+          bottom: 1rem;
+          right: 15px;
+        }
       }
     }
     .modal__body__input {
@@ -256,9 +272,10 @@ import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
 import { emptyImageFilter, fromNowFilter } from './../utils/mixins'
 import tweetAPI from './../apis/tweets'
+import EmojiPicker from './../components/EmojiPicker.vue'
 export default {
   name: 'ReplyPostModal',
-  components: { },
+  components: { EmojiPicker },
   mixins: [emptyImageFilter, fromNowFilter],
   props: {
     initialTweet: {
@@ -275,9 +292,15 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser']),
+    countNum: function () {
+      return 140 - this.comment.length
+    }
   },
   methods: {
+    addEmoji (emoji) {
+      this.comment += emoji
+    },
     async handleSubmit () {
       try {
         this.isProcessing = true

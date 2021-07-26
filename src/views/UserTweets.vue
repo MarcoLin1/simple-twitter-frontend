@@ -50,6 +50,7 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     const { id } = to.params
+    console.log('to', to)
     this.fetchTweets(id)
     next()
   },

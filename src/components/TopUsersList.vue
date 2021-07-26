@@ -151,7 +151,6 @@ export default {
   watch: {
     topUsers (newValue) {
       this.users = [
-        ...this.users,
         ...newValue
       ]
     }

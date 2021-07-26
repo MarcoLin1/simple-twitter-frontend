@@ -4,6 +4,7 @@ export default {
     return apiHelper.post('/subscriptions', { recipientId, subscriberId })
   },
   cancel ({ recipientId, subscriberId }) {
-    return apiHelper.delete(`/subscriptions/${recipientId}`, { subscriberId })
+    return apiHelper.delete(`/subscriptions/${recipientId}`, { data: { subscriberId } })
   }
+
 }

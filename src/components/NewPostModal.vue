@@ -43,6 +43,9 @@
                   placeholder="有什麼新鮮事"
                   class="modal__body__input"
                 />
+                <div class="modal__body__emoji">
+                  <EmojiPicker @add-emoji="addEmoji" />
+                </div>
               </div>
             </div>
             <div class="modal__footer">
@@ -117,13 +120,20 @@
     .modal__body__wrapper {
       display: flex;
       margin: 19px 0 0 19px;
+      position: relative;
       .modal__body__img {
         width: 50px;
         height: 50px;
         border-radius: 50%;
       }
+      .modal__body__emoji{
+        position: absolute;
+        bottom: 1rem;
+        right: 15px;
+      }
     }
     .modal__body__input {
+      position: relative;
       border: none;
       margin-left: 10px;
       color: #9197A3;
@@ -176,8 +186,10 @@ import { mapState } from 'vuex'
 import { Toast } from '../utils/helper'
 import tweetAPI from './../apis/tweets'
 import { emptyImageFilter } from './../utils/mixins'
+import EmojiPicker from './../components/EmojiPicker.vue'
 
 export default {
+  components: { EmojiPicker },
   mixins: [emptyImageFilter],
   data () {
     return {
@@ -192,6 +204,9 @@ export default {
     }
   },
   methods: {
+    addEmoji (emoji) {
+      this.tweet += emoji
+    },
     async handleSubmit () {
       try {
         this.isProcessing = true
@@ -217,7 +232,7 @@ export default {
           throw new Error(data.message)
         }
         // 傳送sockets發文事件
-        this.$socket.emit('subscribeNotify', { id: this.currentUser.id, content: this.tweet, avatar: this.currentUser.avatar, name: this.currentUser.name })
+        this.$socket.emit('subscribeNotify', { id: this.currentUser.id, content: this.tweet, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'tweet' })
 
         const toggleControl = document.querySelector('.toggle__control')
         toggleControl.checked = false

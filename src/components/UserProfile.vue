@@ -93,7 +93,6 @@
       <div class="profile__detail__intro">
         {{ user.introduction }}
       </div>
-      <!-- 要記得改連結 -->
       <div class="profile__detail__follow">
         <div class="profile__detail__follow__item">
           <router-link :to="{name: 'user-followings', params: {id: userId }}">
