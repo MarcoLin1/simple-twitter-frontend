@@ -82,6 +82,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+
 .main-container{
   display: flex;
   .left-content {
@@ -98,6 +99,9 @@ export default {
     }
 
   }
+
+}
+@media screen and (max-width: 992px) {
 
 }
 
