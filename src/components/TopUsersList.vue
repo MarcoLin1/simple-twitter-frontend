@@ -70,28 +70,34 @@ a{
   min-width: 250px;
   border-radius: 14px;
   background-color: $bg-gray;
-  padding: 12px 15px;
+  padding: 12px 0;
 }
 .title{
   @include text-style(18px, 700, $black);
   margin-bottom: 10px;
   line-height: 26px;
+  padding: 0 15px;
 }
 .user__list{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 15px;
   position: relative;
+  transition: background-color 0.15s ease-in;
+  &:hover{
+    background-color: $light-gray;
+  }
   &::before{
     content: '';
     height: 1px;
-    width: calc(100% + 30px);
+    width: calc(100%);
     background: $light-gray;
     position: absolute;
     top: -1px;
-    right: -15px;
+    right: 0;
   }
+
   &__content{
     display: flex;
     align-items: center;
@@ -108,19 +114,19 @@ a{
     }
   }
 }
+
 .read-more{
   @include text-style(15px, normal, $orange, pointer);
-  margin: 2px 0;
   position: relative;
-  padding-top: 12px;
+  padding: 12px 15px 3px 15px;
   &::before{
     content: '';
     height: 1px;
-    width: calc(100% + 30px);
+    width: 100%;
     background: $light-gray;
     position: absolute;
     top: -1px;
-    right: -15px;
+    right: 0;
   }
 
 }

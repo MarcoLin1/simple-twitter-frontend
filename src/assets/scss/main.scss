@@ -97,7 +97,12 @@ $disabled-orange:#FFB685;
   border: 1px solid $orange;
   background-color: transparent;
   color: $orange;
+  transition: background-color 0.15s ease-in;
+  &:hover{
+    background-color: #FFDBC2;
+  }
 }
+
 button:disabled,button[disabled]{
   background-color: $disabled-orange !important
 }

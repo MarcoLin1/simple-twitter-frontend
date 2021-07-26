@@ -195,12 +195,15 @@ a {
   display: flex;
   align-items: center;
   margin: 14px 0;
+
   &:hover, &.selected{
     .icon-wrapper{
       background: $orange;
+      transition: background 0.15s ease-in;
     }
     .content{
-      color: $orange
+      color: $orange;
+      transition: color 0.15s ease-in;
     }
   }
 
@@ -214,6 +217,7 @@ a {
   .side-navbar-logout-wrapper{
     display: flex;
     align-items: center;
+
     &:hover{
       .icon-wrapper{
       background: $orange;
