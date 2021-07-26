@@ -98,25 +98,10 @@ export default {
     this.fetchFollowerUser(id)
   },
   methods: {
-    async handleNewData (userId) {
+    async handleNewData () {
       try {
-        const { data } = await userAPI.getUser({ userId })
-        this.followings.push({
-          Followings: {
-            id: data.id,
-            account: data.account,
-            name: data.name,
-            avatar: data.avatar,
-            introduction: data.introduction,
-            isFollowing: true
-          },
-          followingId: userId
-        })
-        this.followers.forEach(user => {
-          if (user.Followers.id === userId) {
-            return !user.Followers.isFollowing
-          }
-        })
+        const { data } = await userAPI.getUserFollowing({ userId: this.currentUser.id })
+        this.followings = data
       } catch (e) {
         console.log(e)
       }
@@ -131,8 +116,8 @@ export default {
         }
       })
     },
-    followStatus (userId) {
-      this.topUsers = this.topUsers.filter(user => {
+    removeFollowerStatus (userId) {
+      this.topUsers.filter(user => {
         if (user.id === userId) {
           user.isFollowing = false
         }
@@ -142,13 +127,8 @@ export default {
     addFollowStatus (userId) {
       this.fetchTopUser()
     },
-    removeFollowStatus (userId) {
-      console.log('這是userId', userId)
-      this.topUsers = this.topUsers.filter(user => {
-        if (user.id === userId) {
-          user.isFollowing = false
-        }
-      })
+    removeFollowingStatus (userId) {
+      this.fetchTopUser()
     },
     async fetchFollowingUser (userId) {
       try {
@@ -197,7 +177,6 @@ export default {
       try {
         this.isLoading = true
         const { data } = await userAPI.getUser({ userId })
-        // this.initialUser = data
         this.name = data.name
         this.isLoading = false
       } catch (e) {

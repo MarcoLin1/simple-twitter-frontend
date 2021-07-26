@@ -180,6 +180,9 @@ export default {
           throw new Error(data.message)
         }
         this.$store.commit('addFollowing')
+        // 發送socket reactionNotify事件
+        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: userId, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'follow' })
+
         this.$emit('update-data', userId)
       } catch (e) {
         console.log(e)
