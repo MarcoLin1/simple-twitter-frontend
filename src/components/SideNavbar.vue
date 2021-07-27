@@ -139,6 +139,7 @@
 <script>
 import Logo from './../assets/icon/logo.vue'
 import NewPostModal from './../components/NewPostModal.vue'
+import subscribeAPI from './../apis/subscribe'
 import { mapState } from 'vuex'
 
 export default {
@@ -154,6 +155,9 @@ export default {
   computed: {
     ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount'])
   },
+  created () {
+    this.getUnreadNotifications()
+  },
   methods: {
     logout () {
       this.$store.commit('revokeAuthentication')
@@ -163,6 +167,14 @@ export default {
     handleAfterSubmit (data) {
       this.newTweet = data
       this.$emit('after-side-submit', data)
+    },
+    async getUnreadNotifications () {
+      try {
+        const { data } = await subscribeAPI.getUnread({ id: this.currentUser.id })
+        console.log('這是拿到未讀通知訊息', data)
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
