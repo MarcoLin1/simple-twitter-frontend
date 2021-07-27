@@ -201,7 +201,7 @@ a {
     width: 10px;
     height: 10px;
     top: 6px;
-    left: 22px;
+    left: 19px;
     border-radius: 50%;
     border: 1px solid  white;
   }
