@@ -22,8 +22,9 @@
           :class="{selected:this.$route.path.includes('notifications')}"
         >
           <div class="icon-wrapper icon-notify-wrapper" />
+          <!-- 通知點點 -->
+          <div class="notify-color-point" />
           <div class="content">
-            <!-- <div class="notify-point" /> -->
             通知
           </div>
         </router-link>
@@ -34,7 +35,6 @@
         >
           <div class="icon-wrapper icon-group-wrapper" />
           <div class="content">
-            <!-- <div class="notify-point" /> -->
             公開聊天室
           </div>
         </router-link>
@@ -44,15 +44,14 @@
           :class="{selected:this.$route.path.includes('privatechat')}"
         >
           <div class="icon-wrapper icon-mail-wrapper" />
-
+          <div
+            v-show="getPrivateNotify"
+            class="notify-point"
+          >
+            {{ getPrivateNotifyCount }}
+          </div>
           <div class="content">
             私人訊息
-            <div
-              v-show="getPrivateNotify"
-              class="notify-point"
-            >
-              {{ getPrivateNotifyCount }}
-            </div>
           </div>
         </router-link>
         <router-link
@@ -195,7 +194,32 @@ a {
   display: flex;
   align-items: center;
   margin: 14px 0;
-
+  position: relative;
+  .notify-color-point{
+    position: absolute;
+    background-color: $orange;
+    width: 10px;
+    height: 10px;
+    top: 6px;
+    left: 22px;
+    border-radius: 50%;
+    border: 1px solid  white;
+  }
+  .notify-point{
+    position: absolute;
+    top: 1px;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid  white;
+    background-color: $orange;
+    font-size: 1px;
+    line-height: 15px;
+    color: white;
+    text-align: center;
+    font-weight: 400;
+  }
   &:hover, &.selected{
     .icon-wrapper{
       background: $orange;
@@ -295,21 +319,6 @@ a {
   color: $black;
   text-decoration: none;
   position: relative;
-  .notify-point{
-    position: absolute;
-    top: -8px;
-    left: -32px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid  white;
-    background-color: $orange;
-    font-size: 1px;
-    line-height: 15px;
-    color: white;
-    text-align: center;
-    font-weight: 400;
-  }
 
 }
 .side-navbar-button {
