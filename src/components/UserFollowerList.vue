@@ -225,7 +225,13 @@ export default {
         }
         this.$emit('update-follower-data', userId)
         // 發送socket reactionNotify事件
-        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: userId, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'follow' })
+        this.$socket.emit('reactionNotify', {
+          id: this.currentUser.id,
+          receiverId: userId,
+          avatar: this.currentUser.avatar,
+          name: this.currentUser.name,
+          labelName: 'follow'
+        })
         this.followers.filter(user => {
           if (user.Followers.id === userId) {
             user.Followers.isFollowing = true
