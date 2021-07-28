@@ -23,7 +23,10 @@
         >
           <div class="icon-wrapper icon-notify-wrapper" />
           <!-- 通知點點 -->
-          <div class="notify-color-point" />
+          <div
+            v-show="subscribeNotification"
+            class="notify-color-point"
+          />
           <div class="content">
             通知
           </div>
@@ -138,7 +141,6 @@
 <script>
 import Logo from './../assets/icon/logo.vue'
 import NewPostModal from './../components/NewPostModal.vue'
-import subscribeAPI from './../apis/subscribe'
 import { mapState } from 'vuex'
 
 export default {
@@ -152,10 +154,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount'])
-  },
-  created () {
-    this.getUnreadNotifications()
+    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount', 'subscribeNotification'])
   },
   methods: {
     logout () {
@@ -166,14 +165,6 @@ export default {
     handleAfterSubmit (data) {
       this.newTweet = data
       this.$emit('after-side-submit', data)
-    },
-    async getUnreadNotifications () {
-      try {
-        const { data } = await subscribeAPI.getUnread({ id: this.currentUser.id })
-        console.log('這是拿到未讀通知訊息', data)
-      } catch (e) {
-        console.log(e)
-      }
     }
   }
 }
