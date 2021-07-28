@@ -1,32 +1,93 @@
 <template>
-  <router-link
-    class="side-navbar-main-wrapper"
-    :to="{name:{name}, params:{params}}"
-  >
-    {{ name }} {{ params }}
+  <div>
     <div
-      class="icon-wrapper"
-      :class="initialNavItem.icon"
-    />
-    <div class="content">
-      {{ initialNavItem.title }}
+      v-for="userItem in userItems"
+      :key="userItem.itemId"
+    >
+      <router-link
+        class="side-navbar-item"
+        :class="{selected: path === userItem.link.name}"
+        :to="userItem.link"
+      >
+        <div
+          class="icon-wrapper "
+          :class="userItem.icon"
+        />
+        <div
+          v-if="userItem.link.name === 'notifications'"
+          class="notify-color-point"
+        />
+        <div
+          v-if="userItem.link.name === 'private-chat'"
+          class="notify-point"
+        >
+          {{ getPrivateNotifyCount }}
+        </div>
+        <div class="content">
+          {{ userItem.title }}
+        </div>
+      </router-link>
     </div>
-  </router-link>
+  </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
-    initialNavItem: {
-      type: Object,
+    initialId: {
+      type: [String, Number],
       required: true
     }
   },
   data () {
     return {
-      item: this.initialNavItem,
-      name: this.initialNavItem.link.name,
-      params: this.initialNavItem.link.params
+      path: '',
+      userItems: [
+        {
+          itemId: 1,
+          title: '首頁',
+          link: { name: 'main-page' },
+          icon: 'icon-main-wrapper'
+        },
+        {
+          itemId: 2,
+          title: '通知',
+          link: { name: 'notifications' },
+          icon: 'icon-notify-wrapper'
+        },
+        {
+          itemId: 3,
+          title: '公開聊天室',
+          link: { name: 'public-chat' },
+          icon: 'icon-group-wrapper'
+        },
+        {
+          itemId: 4,
+          title: '私人聊天室',
+          link: { name: 'private-chat' },
+          icon: 'icon-mail-wrapper'
+        },
+        {
+          itemId: 5,
+          title: '個人資料',
+          link: { name: 'user-tweets', params: { id: this.initialId } },
+          icon: 'icon-user-wrapper'
+        },
+        {
+          itemId: 6,
+          title: '設定',
+          link: { name: 'setting' },
+          icon: 'icon-setting-wrapper'
+        }
+      ]
     }
+  },
+  computed: {
+    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount'])
+  },
+  created () {
+    this.path = 'main-page'
+    console.log(this.path)
   }
 }
 </script>
@@ -34,34 +95,88 @@ export default {
 @import '../assets/scss/main.scss';
 a {
   cursor: inherit;
+  text-decoration: none;
 }
+
 .side-navbar-container {
   width: 100%;
-  max-width: 150px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 0 15px;
+  padding: 0 20px;
 }
 .nav-item-container {
-  height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
   width: 50px;
-  margin: 0 auto;
+  margin: 15px auto;
+}
+.side-navbar-item{
+  display: flex;
+  align-items: center;
+  margin: 14px 0;
+  position: relative;
+  .notify-color-point{
+    position: absolute;
+    background-color: $orange;
+    width: 10px;
+    height: 10px;
+    top: 6px;
+    left: 19px;
+    border-radius: 50%;
+    border: 1px solid  white;
+  }
+  .notify-point{
+    position: absolute;
+    top: 1px;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid  white;
+    background-color: $orange;
+    font-size: 1px;
+    line-height: 15px;
+    color: white;
+    text-align: center;
+    font-weight: 400;
+  }
+  &:hover, &.selected{
+    .icon-wrapper{
+      background: $orange;
+      transition: background 0.15s ease-in;
+    }
+    .content{
+      color: $orange;
+      transition: color 0.15s ease-in;
+    }
+  }
+
+}
+
+.logo-wrapper{
+  margin-bottom:30px;
 }
 .bottom-item-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  .side-navbar-logout-wrapper{
+    display: flex;
+    align-items: center;
+
+    &:hover{
+      .icon-wrapper{
+      background: $orange;
+    }
+      .content{
+      color: $orange
+    }
+    }
+  }
 }
-.side-navbar-setting-wrapper {
-  height: 40px;
-}
+
 .side-navbar-button {
   display: flex;
   align-items: center;
@@ -71,51 +186,64 @@ a {
 .icon-wrapper {
   width: 40px;
   height: 40px;
+
 }
-.icon-main-wrpper {
+.icon-main-wrapper {
   mask-image: url('./../assets/icon/icon_main.svg');
   -webkit-mask-image: url('./../assets/icon/icon_main.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
-  }
 }
-.icon-user-wrpper {
+.icon-user-wrapper {
   mask-image: url('./../assets/icon/icon_user.svg');
   -webkit-mask-image: url('./../assets/icon/icon_user.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
-  }
+
 }
-.icon-setting-wrpper {
+.icon-setting-wrapper {
   mask-image: url('./../assets/icon/icon_setting.svg');
   -webkit-mask-image: url('./../assets/icon/icon_setting.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
-  }
+
 }
 .icon-logout-wrapper {
   mask-image: url('./../assets/icon/icon_logout.svg');
   -webkit-mask-image: url('./../assets/icon/icon_logout.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
+
+}
+.icon-notify-wrapper{
+    mask-image: url('./../assets/icon/icon_ring.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_ring.svg');
+    cursor: pointer;
+    mask-size: 25px;
+    @extend %icon-style;
+
   }
+.icon-mail-wrapper{
+    mask-image: url('./../assets/icon/icon_email.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_email.svg');
+    cursor: pointer;
+    @extend %icon-style;
+
+}
+.icon-group-wrapper{
+  mask-image: url('./../assets/icon/icon_group.svg');
+  -webkit-mask-image: url('./../assets/icon/icon_group.svg');
+  cursor: pointer;
+  mask-size: 25px;
+  @extend %icon-style;
 }
 .content {
   display: none;
   cursor: pointer;
   color: $black;
   text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
+  position: relative;
+
 }
 .side-navbar-button {
   width: auto;
@@ -140,7 +268,7 @@ a {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1180px) {
   .side-navbar-container {
     align-items: none;
     max-width: 330px;
@@ -149,25 +277,7 @@ a {
     width: 210px;
     align-items: normal;
   }
-  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
-  .side-navbar-setting-wrapper, .side-navbar-logout-wrpper {
-    display: flex;
-    align-items: center;
-    width: auto;
-    text-decoration: none;
-  }
-  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
-  .side-navbar-setting-wrapper, .bottom-item-container {
-    &:hover {
-      .content {
-        color: $orange;
-      }
-      .icon-main-wrpper, .icon-user-wrpper,
-      .icon-setting-wrpper, .icon-logout-wrapper {
-        background: $orange;
-      }
-    }
-  }
+
   .content {
     display: block;
     width: 100%;
@@ -179,7 +289,7 @@ a {
     }
   }
   .side-navbar-button {
-    width: 210px;
+    width: 100%;
     border-radius: 100px;
     background: $orange;
     color: #ffffff;

@@ -5,57 +5,8 @@
         <Logo />
       </div>
       <SideNavBarItem
-        v-for="userItem in userItems"
-        :key="userItem.itemId"
-        :initial-nav-item="userItem"
+        :initial-id="userId"
       />
-      <!-- user 畫面 -->
-      <template>
-        <router-link
-          class="side-navbar-main-wrapper"
-          :to="$route.path.slice(0, 6) === '/admin' ?'/admin/tweets':'/mainpage'"
-        >
-          <div class="icon-wrapper icon-main-wrapper" />
-          <div class="content">
-            {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '推文清單': '首頁' }}
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-user-wrapper"
-          :to="{name: $route.path.slice(0, 6) === '/admin' ?'admin-users':'user-tweets', params: {id: currentUser.id}}"
-        >
-          <div class="icon-wrapper icon-user-wrapper" />
-          <div class="content">
-            {{ (currentUser.isAdmin && $route.path.slice(0, 6) === '/admin') ? '使用者列表': '個人資料' }}
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-setting-wrapper"
-          :to="{name: $route.path.slice(0, 6) !== '/admin' ? 'setting': ''}"
-        >
-          <div
-            v-if="$route.path.slice(0, 6) !== '/admin'"
-            class="icon-wrapper icon-setting-wrapper"
-          />
-          <div
-            v-if="$route.path.slice(0, 6) !== '/admin'"
-            class="content"
-          >
-            設定
-          </div>
-        </router-link>
-        <div
-          v-if="$route.path.slice(0, 6) !== '/admin'"
-          class="side-navbar-button-wrapper"
-        >
-          <label
-            class="side-navbar-button toggle__label"
-            for="toggle__control"
-          >
-            推文
-          </label>
-        </div>
-      </template>
     </div>
     <template>
       <input
@@ -96,27 +47,8 @@ export default {
   data () {
     return {
       newTweet: {},
-      userId: 0,
-      userItems: [
-        {
-          itemId: 1,
-          title: '首頁',
-          link: '/mainpage',
-          icon: 'icon-main-wrapper'
-        },
-        {
-          itemId: 2,
-          title: '個人資料',
-          link: { name: 'user-tweets', params: 0 },
-          icon: 'icon-user-wrapper'
-        },
-        {
-          itemId: 3,
-          title: '設定',
-          link: { name: 'setting' },
-          icon: 'icon-setting-wrapper'
-        }
-      ]
+      userId: 0
+
     }
   },
   computed: {
@@ -124,8 +56,6 @@ export default {
   },
   created () {
     this.userId = this.currentUser.id
-    console.log(this.userItems[1].link.params)
-    this.userItems[1].link.params = this.currentUser.id
   },
   methods: {
     logout () {
@@ -144,34 +74,88 @@ export default {
 @import '../assets/scss/main.scss';
 a {
   cursor: inherit;
+  text-decoration: none;
 }
+
 .side-navbar-container {
   width: 100%;
-  max-width: 150px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 0 15px;
+  padding: 0 20px;
 }
 .nav-item-container {
-  height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
   width: 50px;
-  margin: 0 auto;
+  margin: 15px auto;
+}
+.side-navbar-item{
+  display: flex;
+  align-items: center;
+  margin: 14px 0;
+  position: relative;
+  .notify-color-point{
+    position: absolute;
+    background-color: $orange;
+    width: 10px;
+    height: 10px;
+    top: 6px;
+    left: 19px;
+    border-radius: 50%;
+    border: 1px solid  white;
+  }
+  .notify-point{
+    position: absolute;
+    top: 1px;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid  white;
+    background-color: $orange;
+    font-size: 1px;
+    line-height: 15px;
+    color: white;
+    text-align: center;
+    font-weight: 400;
+  }
+  &:hover, &.selected{
+    .icon-wrapper{
+      background: $orange;
+      transition: background 0.15s ease-in;
+    }
+    .content{
+      color: $orange;
+      transition: color 0.15s ease-in;
+    }
+  }
+
+}
+
+.logo-wrapper{
+  margin-bottom:30px;
 }
 .bottom-item-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  .side-navbar-logout-wrapper{
+    display: flex;
+    align-items: center;
+
+    &:hover{
+      .icon-wrapper{
+      background: $orange;
+    }
+      .content{
+      color: $orange
+    }
+    }
+  }
 }
-.side-navbar-setting-wrapper {
-  height: 40px;
-}
+
 .side-navbar-button {
   display: flex;
   align-items: center;
@@ -181,51 +165,64 @@ a {
 .icon-wrapper {
   width: 40px;
   height: 40px;
+
 }
 .icon-main-wrapper {
   mask-image: url('./../assets/icon/icon_main.svg');
   -webkit-mask-image: url('./../assets/icon/icon_main.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
-  }
 }
 .icon-user-wrapper {
   mask-image: url('./../assets/icon/icon_user.svg');
   -webkit-mask-image: url('./../assets/icon/icon_user.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
-  }
+
 }
 .icon-setting-wrapper {
   mask-image: url('./../assets/icon/icon_setting.svg');
   -webkit-mask-image: url('./../assets/icon/icon_setting.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
-  }
+
 }
 .icon-logout-wrapper {
   mask-image: url('./../assets/icon/icon_logout.svg');
   -webkit-mask-image: url('./../assets/icon/icon_logout.svg');
   cursor: pointer;
   @extend %icon-style;
-  &:hover {
-    background: $orange;
+
+}
+.icon-notify-wrapper{
+    mask-image: url('./../assets/icon/icon_ring.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_ring.svg');
+    cursor: pointer;
+    mask-size: 25px;
+    @extend %icon-style;
+
   }
+.icon-mail-wrapper{
+    mask-image: url('./../assets/icon/icon_email.svg');
+    -webkit-mask-image: url('./../assets/icon/icon_email.svg');
+    cursor: pointer;
+    @extend %icon-style;
+
+}
+.icon-group-wrapper{
+  mask-image: url('./../assets/icon/icon_group.svg');
+  -webkit-mask-image: url('./../assets/icon/icon_group.svg');
+  cursor: pointer;
+  mask-size: 25px;
+  @extend %icon-style;
 }
 .content {
   display: none;
   cursor: pointer;
   color: $black;
   text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
+  position: relative;
+
 }
 .side-navbar-button {
   width: auto;
@@ -250,7 +247,7 @@ a {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1180px) {
   .side-navbar-container {
     align-items: none;
     max-width: 330px;
@@ -259,25 +256,7 @@ a {
     width: 210px;
     align-items: normal;
   }
-  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
-  .side-navbar-setting-wrapper, .side-navbar-logout-wrapper {
-    display: flex;
-    align-items: center;
-    width: auto;
-    text-decoration: none;
-  }
-  .side-navbar-main-wrapper, .side-navbar-user-wrapper,
-  .side-navbar-setting-wrapper, .bottom-item-container {
-    &:hover {
-      .content {
-        color: $orange;
-      }
-      .icon-main-wrapper, .icon-user-wrapper,
-      .icon-setting-wrapper, .icon-logout-wrapper {
-        background: $orange;
-      }
-    }
-  }
+
   .content {
     display: block;
     width: 100%;
@@ -289,7 +268,7 @@ a {
     }
   }
   .side-navbar-button {
-    width: 210px;
+    width: 100%;
     border-radius: 100px;
     background: $orange;
     color: #ffffff;

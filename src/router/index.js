@@ -19,7 +19,11 @@ const authorizeIsUser = (to, from, next) => {
 }
 
 const routes = [
-
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('./../components/SideNavbar_copy.vue')
+  },
   {
     path: '/admin/login',
     name: 'admin-login',
