@@ -139,7 +139,13 @@ export default {
         }
         this.likeCount += 1
         // socket event
-        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: this.post.User.id, avatar: this.post.User.avatar, name: this.post.User.name, labelName: 'like' })
+        this.$socket.emit('reactionNotify', {
+          id: this.currentUser.id,
+          receiverId: this.post.User.id,
+          avatar: this.currentUser.avatar,
+          name: this.currentUser.name,
+          labelName: 'like'
+        })
       } catch (e) {
         console.log(e)
         Toast.fire({

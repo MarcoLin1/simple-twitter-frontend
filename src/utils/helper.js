@@ -1,7 +1,6 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-// const baseURL = 'https://3adc67cac52e.ngrok.io/api'
 const baseURL = 'https://infinite-mountain-11239.herokuapp.com/api'
 
 const axiosInstance = axios.create({

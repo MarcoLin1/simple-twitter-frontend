@@ -16,25 +16,25 @@
         >
       </div>
       <div
-        v-if="notification.labelName === 'tweet'"
+        v-if="(notification.labelName === 'tweet') || (notification.title === '有新的推文通知')"
         class="notifications__title"
       >
         {{ notification.name + '有新的推文通知' }}
       </div>
       <div
-        v-if="notification.labelName === 'follow'"
+        v-if="(notification.labelName === 'follow') || (notification.title === '開始追蹤你')"
         class="notifications__title"
       >
         {{ notification.name + '開始追蹤你' }}
       </div>
       <div
-        v-if="notification.labelName === 'reply'"
+        v-if="(notification.labelName === 'reply') || (notification.title === '你的貼文有新的回覆')"
         class="notifications__title"
       >
         {{ notification.name + '有新的回覆' }}
       </div>
       <div
-        v-if="notification.labelName === 'like'"
+        v-if="(notification.labelName === 'like') || (notification.title === '喜歡你的推文')"
         class="notifications__title"
       >
         {{ notification.name + '喜歡你的貼文' }}
@@ -80,6 +80,7 @@
 <script>
 import subscribeAPI from './../apis/subscribe'
 import { mapState } from 'vuex'
+import store from './../store'
 export default {
   name: 'Notifications',
   components: {
@@ -90,27 +91,44 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'subscribeNotifyData'])
+    ...mapState(['currentUser', 'subscribeNotifyData', 'subscribeNotification'])
   },
   watch: {
     subscribeNotifyData: {
       handler: function (newValue, oldValue) {
         this.notifications.push(newValue)
-        console.log('這是notify的newValue', newValue)
-        console.log('這是notify的this.notifications', this.notifications)
       },
       deep: true
     }
   },
   created () {
+    // 取得歷史通知
     this.getHistoryNotifications()
+
+    // 清除已讀通知
+    this.cleanUnreadNotifications()
+
+    // 發送進入通知頁面的事件
+    this.$socket.emit('enterNotify', { id: this.currentUser.id })
+
+    // 更改通知狀態
+    store.dispatch('updateSubscribeNotification')
   },
   methods: {
     async getHistoryNotifications () {
       try {
         const { data } = await subscribeAPI.history({ id: this.currentUser.id })
         this.notifications = data
-        console.log('這是歷史通知紀錄', data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async cleanUnreadNotifications () {
+      try {
+        const { data } = await subscribeAPI.cleanUnread({ id: this.currentUser.id })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
       } catch (e) {
         console.log(e)
       }

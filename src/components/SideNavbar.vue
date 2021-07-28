@@ -23,7 +23,10 @@
         >
           <div class="icon-wrapper icon-notify-wrapper" />
           <!-- 通知點點 -->
-          <div class="notify-color-point" />
+          <div
+            v-show="subscribeNotification"
+            class="notify-color-point"
+          />
           <div class="content">
             通知
           </div>
@@ -151,7 +154,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount'])
+    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount', 'subscribeNotification'])
   },
   methods: {
     logout () {

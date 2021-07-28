@@ -324,7 +324,14 @@ export default {
         this.$emit('close')
         this.$emit('after-submit', replyData)
         // socket event
-        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: this.tweet.User.id, avatar: this.tweet.User.avatar, name: this.tweet.User.name, labelName: 'reply', content: this.comment.trim() })
+        this.$socket.emit('reactionNotify', {
+          id: this.currentUser.id,
+          receiverId: this.tweet.User.id,
+          avatar: this.currentUser.avatar,
+          name: this.currentUser.name,
+          labelName: 'reply',
+          content: this.comment.trim()
+        })
         this.comment = ''
       } catch (error) {
         this.isProcessing = false

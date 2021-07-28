@@ -266,7 +266,6 @@ export default {
       user: this.initialUser,
       currentUser: this.getCurrentUser,
       isFollowing: this.initialFollowing
-      // isSubscribe: false
     }
   },
   computed: {
@@ -299,7 +298,6 @@ export default {
     },
     // 新增訂閱
     async addSubscribe (recipientId) {
-      // this.isSubscribe = true
       const { data } = await subscribeAPI.add({ recipientId, subscriberId: this.currentUser.id })
       if (data.status !== 'success') {
         throw new Error(data.message)
@@ -308,7 +306,6 @@ export default {
     },
     // 移除訂閱
     async removeSubscribe (recipientId) {
-      // this.isSubscribe = false
       const { data } = await subscribeAPI.cancel({ recipientId, subscriberId: this.currentUser.id })
       if (data.status !== 'success') {
         throw new Error(data.message)
@@ -334,8 +331,15 @@ export default {
           throw new Error(data.message)
         }
         this.isFollowing = true
+        this.$emit('update-following', userId)
         // 發送socket reactionNotify事件
-        this.$socket.emit('reactionNotify', { id: this.currentUser.id, receiverId: userId, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'follow' })
+        this.$socket.emit('reactionNotify', {
+          id: this.currentUser.id,
+          receiverId: userId,
+          avatar: this.currentUser.avatar,
+          name: this.currentUser.name,
+          labelName: 'follow'
+        })
       } catch (e) {
         console.log(e)
         Toast.fire({
@@ -352,6 +356,7 @@ export default {
           throw new Error(data.message)
         }
         this.isFollowing = false
+        this.$emit('update-following', userId)
       } catch (e) {
         console.log(e)
         Toast.fire({
