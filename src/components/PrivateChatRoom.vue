@@ -5,6 +5,12 @@
   >
     <div class="chat__room__container">
       <div class="chat__room__top__wrapper">
+        <span
+          v-show="isSmallSize"
+          class="chat__room__back"
+          @click.stop.prevent="goBack"
+        >
+          &larr;</span>
         <div class="chat__room__title">
           {{ initialListener.name ? initialListener.name: '聊天室' }}
         </div>
@@ -102,6 +108,32 @@
       font-size: 18px;
       font-weight: 700;
       padding: 14px 0 14px 16px;
+      .chat__room__back{
+       margin: 0 20px 0 0 ;
+       cursor: pointer;
+       position: relative;
+       &::after{
+           content: 'back';
+           width: fit-content;
+           height: fit-content;
+           background:$black;
+           position: absolute;
+           color: white;
+           opacity: 0;
+           border-radius: 2px;
+           padding: 3px 4px;
+           bottom: -27px;
+           right: -16px;
+           font-size: 1px;
+           font-weight: 400;
+          transition: opacity 0.2s ease-in;
+      }
+       &:hover{
+        &::after{
+          opacity: 0.6;
+        }
+       }
+      }
     }
     .chat__room__main__wrapper {
       display: flex;
@@ -224,6 +256,14 @@ export default {
     initialMessages: {
       type: [Array, Object],
       required: true
+    },
+    isSmallSize: {
+      type: Boolean,
+      default: false
+    },
+    enterRoom: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -246,6 +286,9 @@ export default {
     this.scrollToEnd()
   },
   methods: {
+    goBack () {
+      this.$emit('previous-page', false)
+    },
     handleSubmit () {
       if (!this.message) {
         Toast.fire({

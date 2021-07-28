@@ -39,13 +39,24 @@ export default {
     }
   }
 
-@media screen and (min-width: 768px) and (max-width: 1180px) {
+@media screen and (min-width: 992px) and (max-width: 1180px) {
   .main__container{
     .left__content{
       width: 10%;
     }
     .right__content{
       width: 90%;
+   }
+  }
+
+}
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .main__container{
+    .left__content{
+      width: 20%;
+    }
+    .right__content{
+      width: 80%;
     }
 
   }

@@ -1,19 +1,26 @@
 <template>
   <div class="main_container">
-    <div class="middle__content">
+    <div
+      v-show="!isEnterRoom || !isSmallSize"
+      class="middle__content"
+    >
       <ChatList
         :initial-chats="chats"
         @after-enter="handelAfterEnter"
       />
     </div>
     <div
+      v-show="!isSmallSize || isEnterRoom"
       class="right__content"
     >
       <!-- 如果有id的話就在room標題顯示id ， -->
       <PrivateChatRoom
         :initial-listener="listener"
         :initial-messages="messages"
+        :is-small-size="isSmallSize"
+        :enter-room="isEnterRoom"
         @after-submit="handleAfterSubmit"
+        @previous-page="goPreviousPage"
       />
     </div>
   </div>
@@ -34,7 +41,9 @@ export default {
       listener: {},
       chats: [],
       messages: [],
-      isPrivate: true
+      isPrivate: true,
+      isSmallSize: false,
+      isEnterRoom: false
     }
   },
   computed: {
@@ -57,6 +66,7 @@ export default {
     this.$socket.connect()
     this.getPrivateUsersList()
     this.listener = this.privateChatUser
+    window.addEventListener('resize', this.myEventHandler)
   },
   mounted () {
     // 傳給後端兩人的ＩＤ
@@ -96,6 +106,17 @@ export default {
     }
   },
   methods: {
+    myEventHandler (e) {
+      const newWidth = window.innerWidth
+      if (newWidth <= 992) {
+        this.isSmallSize = true
+      } else {
+        this.isSmallSize = false
+      }
+    },
+    goPreviousPage (data) {
+      this.isEnterRoom = data
+    },
     // enter room事件傳送給後端
     handelAfterEnter (data) {
       console.log('handelAfterEnter', data)
@@ -106,6 +127,9 @@ export default {
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
       this.historyMessage(data.id)
+      if (this.isSmallSize) {
+        this.isEnterRoom = true
+      }
     },
     handleAfterSubmit () {
       this.getPrivateUsersList()
@@ -136,13 +160,28 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-  .main_container {
-    display: flex;
-    .right__content{
-      width: 65%;
-    }
+.main_container {
+  display: flex;
+  .right__content{
+    width: 65%;
+  }
+  .middle__content{
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .main__container{
+    border-left: none;
     .middle__content{
-      width: 35%;
+      width: 600px;
+      border-right: 1px solid $light-gray;
+    }
+    .right__content{
+      border-right: 1px solid $light-gray;
+      width: 600px;
     }
   }
+
+}
 </style>
