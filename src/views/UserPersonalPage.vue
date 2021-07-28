@@ -18,13 +18,18 @@
             :initial-user="initialUser"
             :initial-following="initialFollowing"
             :user-id="userId"
+            @update-following="changeFollowingStatus"
           />
           <UserPostItem :user-id="userId" />
           <router-view :new-tweet="newTweet" />
         </template>
       </div>
       <div class="right__wrapper">
-        <TopUsersList :top-users="topUsers" />
+        <TopUsersList
+          :top-users="topUsers"
+          @update-data="updateFollowing"
+          @update-remove-data="updateFollowing"
+        />
       </div>
     </div>
   </div>
@@ -151,6 +156,18 @@ export default {
     handleAfterSubmit (data) {
       this.newTweet = data
       this.$emit('after-side-submit', data)
+    },
+    // 改變profile的following狀態
+    updateFollowing () {
+      this.initialFollowing = !this.initialFollowing
+    },
+    // 改變topUserList的following狀態
+    changeFollowingStatus (userId) {
+      this.topUsers.forEach(user => {
+        if (user.id === userId) {
+          user.isFollowing = !user.isFollowing
+        }
+      })
     }
   }
 }
