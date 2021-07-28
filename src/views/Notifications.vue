@@ -80,6 +80,7 @@
 <script>
 import subscribeAPI from './../apis/subscribe'
 import { mapState } from 'vuex'
+import store from './../store'
 export default {
   name: 'Notifications',
   components: {
@@ -90,22 +91,28 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'subscribeNotifyData'])
+    ...mapState(['currentUser', 'subscribeNotifyData', 'subscribeNotification'])
   },
   watch: {
     subscribeNotifyData: {
       handler: function (newValue, oldValue) {
         this.notifications.push(newValue)
-        console.log('這是notify的newValue', newValue)
-        console.log('這是notify的this.notifications', this.notifications)
       },
       deep: true
     }
   },
   created () {
+    // 取得歷史通知
     this.getHistoryNotifications()
+
+    // 清除已讀通知
     this.cleanUnreadNotifications()
+
+    // 發送進入通知頁面的事件
     this.$socket.emit('enterNotify', { id: this.currentUser.id })
+
+    // 更改通知狀態
+    store.dispatch('updateSubscribeNotification')
   },
   methods: {
     async getHistoryNotifications () {

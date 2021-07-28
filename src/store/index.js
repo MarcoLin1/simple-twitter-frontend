@@ -31,7 +31,8 @@ export default new Vuex.Store({
       name: '',
       content: '',
       labelName: ''
-    }
+    },
+    subscribeNotification: false
   },
   mutations: {
     setCurrentUser (state, currentUser) {
@@ -54,14 +55,23 @@ export default new Vuex.Store({
       console.log('state.getPrivateNotify', data)
     },
     SOCKET_subscribeNotify (state, data) {
-      if (data) {
+      if (Object.keys(data).length > 0) {
         state.subscribeNotifyData = data
+        state.subscribeNotification = true
+      } else {
+        state.subscribeNotification = false
       }
     },
     SOCKET_reactionNotify (state, data) {
-      if (data) {
+      if (Object.keys(data).length > 0) {
         state.subscribeNotifyData = data
+        state.subscribeNotification = true
+      } else {
+        state.subscribeNotification = false
       }
+    },
+    changeSubscribeNotification (state) {
+      state.subscribeNotification = false
     },
     // 登出狀態
     revokeAuthentication (state) {
@@ -103,6 +113,9 @@ export default new Vuex.Store({
         commit('revokeAuthentication')
         return false
       }
+    },
+    updateSubscribeNotification ({ commit }) {
+      commit('changeSubscribeNotification')
     }
   },
   modules: {}
