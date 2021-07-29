@@ -44,24 +44,30 @@
   color: $heart-pink;
   }
 .post__item__container{
-  width: 600px;
+  // width: 600px;
+  width: 100%;
+  max-width: 600px;
   border-bottom: 1px solid $light-gray;
 }
 .post__itwm__wrapper {
   display: flex;
-  width: 390px;
+  // width: 390px;
+  width: 100%;
   justify-content: space-around;
   text-decoration: none;
   .post__item {
     text-decoration: none;
-    width: 130px;
+    // width: 130px;
+    width: 100%;
     text-align: center;
     .post__item__button {
       color: $tx-gray;
       text-decoration: none;
       padding: 16px 0 16px 0;
       font-weight: 700;
-      width: 120px;
+      // width: 120px;
+      width: 100%;
+      max-width: 120px;
       &:hover {
         color: $orange;
         border-bottom: 1px solid $orange;

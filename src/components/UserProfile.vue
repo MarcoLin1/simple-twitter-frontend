@@ -117,17 +117,22 @@ a:hover{
 
 }
 .middle-container{
-  width: 600px;
+  // width: 600px;
+  width: 100%;
+  max-width: 600px;
   position: relative;
 }
 .profile{
   &__cover{
     width: 100%;
+    max-width: 600px;
     height: 200px;
     background-color: #999999;
     img{
       object-fit: cover;
-      width: 600px;
+      max-width: 600px;
+      width: 100%;
+      // width: 600px;
       height: 200px;
     }
   }
@@ -150,7 +155,9 @@ a:hover{
   &__avatar{
     img{
       position: absolute;
-      width: 140px;
+      // width: 140px;
+      max-width: 140px;
+      width: 100%;
       height: 140px;
       border: 5px solid white;
       top:120px;

@@ -84,3 +84,26 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@media screen and (max-width: 768px) {
+  .online_container__title {
+    min-width: 150px;
+    font-size: 1rem;
+  }
+  .online_container__list {
+    display: block;
+    &__avatar {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .online_container__list__info {
+    text-align: center;
+    margin-top: 5px;
+    &__account {
+      display: none;
+    }
+  }
+}
+</style>

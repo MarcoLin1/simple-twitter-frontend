@@ -162,7 +162,9 @@ export default {
       if (userId !== this.initialUser.id) {
         return
       }
-      this.fetUserFollowers(userId)
+      if (userId === this.initialUser.id) {
+        this.initialFollowing = !this.initialFollowing
+      }
     },
     // 改變topUserList的following狀態
     changeFollowingStatus (userId) {
@@ -187,10 +189,14 @@ export default {
   }
   .right__container{
     width: 75%;
-    display: grid;
-    grid-template-columns: 602px 1fr;
+    // display: grid;
+    // grid-template-columns: auto 1fr;
+    display: flex;
     .middle___wrapper{
       border: 1px solid $light-gray;
+      width: 100%;
+      max-width: 602px;
+      margin-right: 50px;
     }
   }
 }
