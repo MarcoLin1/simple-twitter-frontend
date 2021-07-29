@@ -34,15 +34,13 @@
           &larr;</span>
       </div>
       <div class="top-navbar-title-text">
-        {{ currentPage }}
+        {{ $route.path.slice(0, 14) === '/notifications' ? '通知': currentPage }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapState } from 'vuex'
-// import userAPI from './../apis/users'
 export default {
   props: {
     currentPage: {

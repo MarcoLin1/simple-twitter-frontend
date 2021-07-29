@@ -232,7 +232,13 @@ export default {
           throw new Error(data.message)
         }
         // 傳送sockets發文事件
-        this.$socket.emit('subscribeNotify', { id: this.currentUser.id, content: this.tweet, avatar: this.currentUser.avatar, name: this.currentUser.name, labelName: 'tweet' })
+        this.$socket.emit('subscribeNotify', {
+          id: this.currentUser.id,
+          content: this.tweet,
+          avatar: this.currentUser.avatar,
+          name: this.currentUser.name,
+          labelName: 'tweet'
+        })
 
         const toggleControl = document.querySelector('.toggle__control')
         toggleControl.checked = false

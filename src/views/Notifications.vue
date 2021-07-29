@@ -31,7 +31,7 @@
         v-if="(notification.labelName === 'reply') || (notification.title === '你的貼文有新的回覆')"
         class="notifications__title"
       >
-        {{ notification.name + ' 有新的回覆' }}
+        {{ notification.name + '回覆你的推文' }}
       </div>
       <div
         v-if="(notification.labelName === 'like') || (notification.title === '喜歡你的推文')"
