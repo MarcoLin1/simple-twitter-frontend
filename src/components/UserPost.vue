@@ -352,4 +352,9 @@ a{
       }
     }
 }
+@media screen and (max-width: 768px) {
+  .post__container{
+    width: 100%;
+  }
+}
 </style>

@@ -153,4 +153,9 @@ export default {
   }
     }
   }
+  @media screen and (max-width: 768px) {
+  .tweet__form__wrapper{
+    width: 100%;
+  }
+}
 </style>

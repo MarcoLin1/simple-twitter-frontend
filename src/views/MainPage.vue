@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="top-wrapper">
     <Spinner
       v-if="isLoading"
       class="mt-5"
     />
-    <template v-else>
+    <template
+      v-else
+    >
       <TweetForm @after-submit="handleAfterSubmit" />
       <template v-if="tweets.length">
         <UserPost
