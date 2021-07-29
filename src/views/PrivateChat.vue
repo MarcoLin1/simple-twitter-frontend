@@ -66,7 +66,7 @@ export default {
     this.$socket.connect()
     this.getPrivateUsersList()
     this.listener = this.privateChatUser
-    window.addEventListener('resize', this.myEventHandler)
+    window.addEventListener('resize', this.resizeEvent)
   },
   mounted () {
     // 傳給後端兩人的ＩＤ
@@ -83,6 +83,7 @@ export default {
   },
   beforeDestroy () {
     console.log('leave')
+    window.removeEventListener('resize', this.resizeEvent)
     // state 清空
     this.privateChatUser.id = -1
     this.privateChatUser.name = ''
@@ -106,7 +107,7 @@ export default {
     }
   },
   methods: {
-    myEventHandler (e) {
+    resizeEvent (e) {
       const newWidth = window.innerWidth
       if (newWidth <= 992) {
         this.isSmallSize = true
@@ -127,6 +128,7 @@ export default {
       // 將資料存在listener中，傳遞給chatroom
       this.$socket.emit('enterRoom', { id: this.currentUser.id, listenerId: data.id })
       this.historyMessage(data.id)
+      // 如果是螢幕縮小才要更改屬性
       if (this.isSmallSize) {
         this.isEnterRoom = true
       }
