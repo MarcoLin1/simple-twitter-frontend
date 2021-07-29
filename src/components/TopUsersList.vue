@@ -63,7 +63,7 @@ a{
   text-decoration: none;
 }
 .user-list-container{
-  margin: 15px 16px;
+  margin: 15px 30px;
 }
 .user-list-wrapper{
   max-width: 350px;

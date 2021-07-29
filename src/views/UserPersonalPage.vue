@@ -189,14 +189,10 @@ export default {
   }
   .right__container{
     width: 75%;
-    // display: grid;
-    // grid-template-columns: auto 1fr;
-    display: flex;
+    display: grid;
+    grid-template-columns: 602px 1fr;
     .middle___wrapper{
       border: 1px solid $light-gray;
-      width: 100%;
-      max-width: 602px;
-      margin-right: 50px;
     }
   }
 }
@@ -213,7 +209,7 @@ export default {
 
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (max-width: 992px) {
   .main__container{
     .left__container{
       width: 20%;
@@ -224,9 +220,21 @@ export default {
         display: none;
       }
    }
-
   }
+}
 
+@media screen and (max-width: 768px) {
+  .main__container {
+    .left__container {
+      min-width: 85px;
+    }
+    .right__container{
+      display: flex;
+      .right__wrapper{
+        display: none;
+      }
+   }
+  }
 }
 
 </style>
