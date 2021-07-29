@@ -5,7 +5,7 @@
     </div> -->
     <div
       v-for="notification in notifications"
-      :key="notification.id"
+      :key="notification.notifyId"
       class="notifications__wrapper"
     >
       <div class="notifications__avatar__wrapper">
@@ -96,7 +96,7 @@ export default {
   watch: {
     subscribeNotifyData: {
       handler: function (newValue, oldValue) {
-        this.notifications.push(newValue)
+        this.notifications.unshift(newValue)
       },
       deep: true
     }

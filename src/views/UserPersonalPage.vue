@@ -158,8 +158,11 @@ export default {
       this.$emit('after-side-submit', data)
     },
     // 改變profile的following狀態
-    updateFollowing () {
-      this.initialFollowing = !this.initialFollowing
+    updateFollowing (userId) {
+      if (userId !== this.initialUser.id) {
+        return
+      }
+      this.fetUserFollowers(userId)
     },
     // 改變topUserList的following狀態
     changeFollowingStatus (userId) {
