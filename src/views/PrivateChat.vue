@@ -69,6 +69,12 @@ export default {
     window.addEventListener('resize', this.resizeEvent)
   },
   mounted () {
+    if (window.innerWidth < 992) {
+      this.isSmallSize = true
+      if (this.privateChatUser.id !== -1) {
+        this.isEnterRoom = true
+      }
+    }
     // 傳給後端兩人的ＩＤ
     this.$socket.emit('enterPrivateInterface', { id: this.currentUser.id, listenerId: this.listener.id })
 

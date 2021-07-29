@@ -10,7 +10,7 @@
     >
       <div class="notifications__avatar__wrapper">
         <img
-          :src="notification.avatar"
+          :src="notification.avatar | emptyImage"
           alt=""
           class="notifications__avatar"
         >
@@ -19,25 +19,25 @@
         v-if="(notification.labelName === 'tweet') || (notification.title === '有新的推文通知')"
         class="notifications__title"
       >
-        {{ notification.name + '有新的推文通知' }}
+        {{ notification.name + ' 有新的推文通知' }}
       </div>
       <div
         v-if="(notification.labelName === 'follow') || (notification.title === '開始追蹤你')"
         class="notifications__title"
       >
-        {{ notification.name + '開始追蹤你' }}
+        {{ notification.name + ' 開始追蹤你' }}
       </div>
       <div
         v-if="(notification.labelName === 'reply') || (notification.title === '你的貼文有新的回覆')"
         class="notifications__title"
       >
-        {{ notification.name + '有新的回覆' }}
+        {{ notification.name + ' 有新的回覆' }}
       </div>
       <div
         v-if="(notification.labelName === 'like') || (notification.title === '喜歡你的推文')"
         class="notifications__title"
       >
-        {{ notification.name + '喜歡你的貼文' }}
+        {{ notification.name + ' 喜歡你的貼文' }}
       </div>
       <div class="notifications__text">
         {{ notification.content }}
@@ -57,7 +57,9 @@
 .notifications__container {
   .notifications__wrapper {
     padding: 10px 0 10px 10px;
-    border-top: 1px solid $line-gray;
+    border-top: 1px solid $light-gray;
+    border-bottom: 1px solid $light-gray;
+    margin-bottom: -1px;
     .notifications__avatar {
       width: 50px;
       height: 50px;
@@ -81,10 +83,13 @@
 import subscribeAPI from './../apis/subscribe'
 import { mapState } from 'vuex'
 import store from './../store'
+import { emptyImageFilter } from './../utils/mixins'
+
 export default {
   name: 'Notifications',
   components: {
   },
+  mixins: [emptyImageFilter],
   data () {
     return {
       notifications: []
