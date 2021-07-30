@@ -193,9 +193,6 @@ export default {
     grid-template-columns: 602px 1fr;
     .middle___wrapper{
       border: 1px solid $light-gray;
-      width: 100%;
-      max-width: 602px;
-      margin-right: 50px;
     }
   }
 }
@@ -224,9 +221,21 @@ export default {
         display: none;
       }
    }
-
   }
+}
 
+@media screen and (max-width: 768px) {
+  .main__container {
+    .left__container {
+      min-width: 85px;
+    }
+    .right__container{
+      display: flex;
+      .right__wrapper{
+        display: none;
+      }
+   }
+  }
 }
 
 </style>

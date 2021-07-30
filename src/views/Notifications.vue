@@ -9,11 +9,13 @@
       class="notifications__wrapper"
     >
       <div class="notifications__avatar__wrapper">
-        <img
-          :src="notification.avatar | emptyImage"
-          alt=""
-          class="notifications__avatar"
-        >
+        <router-link :to="{name: 'user-tweets', params: {id: notification.id}}">
+          <img
+            :src="notification.avatar | emptyImage"
+            alt=""
+            class="notifications__avatar"
+          >
+        </router-link>
       </div>
       <div
         v-if="(notification.labelName === 'tweet') || (notification.title === '有新的推文通知')"
