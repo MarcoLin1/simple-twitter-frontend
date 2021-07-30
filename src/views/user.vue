@@ -86,10 +86,10 @@ export default {
 .main-container{
   display: flex;
   .left-content {
-  display: flex;
-  justify-content: flex-end;
-  width: 25%;
-  }
+    display: flex;
+    justify-content: flex-end;
+    width: 25%;
+    }
   .right-wrapper{
     width: 75%;
     display: grid;

@@ -189,9 +189,8 @@ export default {
   }
   .right__container{
     width: 75%;
-    // display: grid;
-    // grid-template-columns: auto 1fr;
-    display: flex;
+    display: grid;
+    grid-template-columns: 602px 1fr;
     .middle___wrapper{
       border: 1px solid $light-gray;
       width: 100%;
@@ -213,12 +212,13 @@ export default {
 
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (max-width: 992px) {
   .main__container{
     .left__container{
       width: 20%;
     }
     .right__container{
+      display: flex;
       width: 80%;
       .right__wrapper{
         display: none;
