@@ -13,16 +13,18 @@
       </router-link>
       <router-link :to="{name:'detail-tweet', params:{id: post.TweetId}}">
         <div class="post__content">
-          <div class="post__content__title mb-2">
-            <span class="post__content__title__item user-name">
-              {{ post.User.name }}
-            </span>
-            <span class="post__content__title__item">@{{ post.User.account }}</span>
-            <span class="post__content__title__item">·</span>
-            <span class="post__content__title__item post__content__title__item__time">
-              {{ post.createdAt | fromNow }}
-            </span>
-          </div>
+          <router-link :to="{name:'user-tweets', params:{id: post.User.id}}">
+            <div class="post__content__title mb-2">
+              <span class="post__content__title__item user-name">
+                {{ post.User.name }}
+              </span>
+              <span class="post__content__title__item">@{{ post.User.account }}</span>
+              <span class="post__content__title__item">·</span>
+              <span class="post__content__title__item post__content__title__item__time">
+                {{ post.createdAt | fromNow }}
+              </span>
+            </div>
+          </router-link>
           <div class="post__content__discription">
             {{ post.description }}
           </div>

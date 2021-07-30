@@ -99,7 +99,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-
+  .avatar-img{
+    cursor: default;
+  }
   .tweet__form__wrapper {
     position: relative;
     width: 600px;

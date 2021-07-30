@@ -70,7 +70,7 @@
         <div class="user__edit__modal__avatar__wrapper">
           <img
             :src="user.avatar | emptyImage"
-            class="user__edit__modal__avatar"
+            class="user__edit__modal__avatar avatar-img"
             alt=""
           >
           <input
@@ -168,7 +168,7 @@
   display: flex;
   justify-content: space-between;
   padding-top: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   .user__edit__modal__header__wrapper {
     display: flex;
     align-items: center;
@@ -186,14 +186,14 @@
       width: 100%;
       font-weight: 700;
       color: $black;
-      text-align: right;
+      margin-left: 20px;
     }
   }
     .user__edit__modal__button__wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 15px;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 15px;
     .user__edit__modal__button {
       width: 64px;
       height: 30px;
@@ -216,20 +216,42 @@
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
     @extend %user__edit__icon__style;
     position: absolute;
-    top: 20%;
-    left: 20%;
+    top: calc(54px - 12px + 100px);
+    left: 18%;
   }
   .user__edit__modal__cover__close {
     position: absolute;
-    top: 130px;
-    right: 40%;
+    cursor: pointer;
+    top: calc(54px - 12px + 100px);
+    left: 55%;
     color: #ffffff;
-    font-size: 1.2rem;
+    font-size: 24px;
+    line-height: 20px;
   }
 }
 .user__edit__modal__avatar__wrapper {
   width: 120px;
   height: 55px;
+  position: relative;
+  cursor: pointer;
+  &::after{
+    position: absolute;
+    content: '';
+    top: -80px;
+    left: 20px;
+    width: 120px;
+    height: 120px;
+    background: $black;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 0;
+  }
+  &:hover{
+    &::after{
+      opacity: 0.3;
+      transition: opacity 0.1s ease-out;
+    }
+  }
   .user__edit__modal__avatar {
     border-radius: 50%;
     width: 120px;
@@ -244,9 +266,10 @@
     mask-image: url('./../assets/icon/icon_photo.svg');
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
     @extend %user__edit__icon__style;
-    position: relative;
-    left: -65px;
-    bottom: 150px;
+    position: absolute;
+    left: -70px;
+    bottom: 60px;
+    z-index: 1;
   }
 }
 .user__edit__modal__form__group {

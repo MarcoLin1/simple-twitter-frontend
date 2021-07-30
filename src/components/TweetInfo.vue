@@ -11,13 +11,16 @@
             >
           </router-link>
         </div>
+
         <div class="tweet__info__title__wrapper">
-          <div class="tweet__info__name">
-            {{ tweet.User.name }}
-          </div>
-          <div class="tweet__info__account">
-            @{{ tweet.User.account }}
-          </div>
+          <router-link :to="{name:'user-tweets', params:{id: tweet.User.id}}">
+            <div class="tweet__info__name">
+              {{ tweet.User.name }}
+            </div>
+            <div class="tweet__info__account">
+              @{{ tweet.User.account }}
+            </div>
+          </router-link>
         </div>
       </div>
       <div class="tweet__info__text__wrapper">
@@ -162,6 +165,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+a{
+  text-decoration: none;
+}
   .tweet__info__container {
     width: 100%;
     max-width: 600px;
@@ -238,7 +244,8 @@ export default {
     max-width: 150px;
     margin-top: 5px;
     margin-bottom: 5px;
-    .tweet__info__icon__message__wrapper, .tweet__info__icon__like__wrapper {
+    .tweet__info__icon__message__wrapper,
+    .tweet__info__icon__like__wrapper {
       width: 25px;
       height: 25px;
       border-radius: 50%;
@@ -257,7 +264,8 @@ export default {
       -webkit-mask-image: url('./../assets/icon/icon_message.svg');
       cursor: pointer;
       &:hover {
-        background: #ffffff;
+        background: blue;
+        color: blue;
       }
     }
     .tweet__info__icon__like {
@@ -311,14 +319,14 @@ export default {
         mask-image: url('./../assets/icon/icon_reply.svg');
         -webkit-mask-image: url('./../assets/icon/icon_reply.svg');
         &:hover {
-          background: $orange;
+          background: $light-blue;
         }
       }
       .tweet__info__icon__like {
         mask-image: url('./../assets/icon/icon_like_tweet_info.svg');
         -webkit-mask-image: url('./../assets/icon/icon_like_tweet_info.svg');
         &:hover {
-          background: $orange;
+          background: $heart-pink;
         }
       }
     }
