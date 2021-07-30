@@ -32,6 +32,13 @@ Vue.use(new VueSocketIO({
   }
 }))
 
+Vue.directive('focus', {
+  inserted: function (el) {
+    el.focus()
+    console.log(el)
+  }
+})
+
 new Vue({
   router,
   store,

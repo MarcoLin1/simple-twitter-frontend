@@ -21,6 +21,7 @@
         <input
           id="account"
           v-model="account"
+          v-focus
           name="account"
           type="text"
           class="login__account"

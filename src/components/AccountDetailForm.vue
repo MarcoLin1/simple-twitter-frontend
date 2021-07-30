@@ -13,6 +13,7 @@
             v-if="$route.path.slice(0, 7) === '/signup'"
             id="account"
             v-model="newUser.account"
+            v-focus
             required
             type="text"
             class="account__detail__account account__detail__form__control"
