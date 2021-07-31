@@ -134,11 +134,11 @@ export default {
 @media screen and (max-width: 768px) {
   .main-container{
     .left-content{
-      width: 20%;
+      display: none;
       min-width: 85px;
     }
     .right-wrapper{
-      width: 80%;
+      width: 100%;
       display: flex;
 
       .middle-content{

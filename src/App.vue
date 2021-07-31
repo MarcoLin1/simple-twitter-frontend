@@ -9,9 +9,36 @@
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { mapState } from 'vuex'
 
 export default {
-
+  computed: {
+    ...mapState(['isSmallSize'])
+  },
+  created () {
+    window.addEventListener('resize', this.resizeEvent)
+  },
+  mounted () {
+    if (window.innerWidth <= 768) {
+      this.$store.commit('changeScreen', 'mobile')
+    } else if (window.innerWidth <= 992) {
+      this.$store.commit('changeScreen', 'smallScreen')
+    } else {
+      this.$store.commit('changeScreen', 'bigScreen')
+    }
+  },
+  methods: {
+    resizeEvent (e) {
+      const newWidth = window.innerWidth
+      if (newWidth <= 768) {
+        this.$store.commit('changeScreen', 'mobile')
+      } else if (newWidth <= 992) {
+        this.$store.commit('changeScreen', 'smallScreen')
+      } else {
+        this.$store.commit('changeScreen', 'bigScreen')
+      }
+    }
+  }
 }
 </script>
 

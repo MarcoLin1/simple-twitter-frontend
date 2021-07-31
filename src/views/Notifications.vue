@@ -1,8 +1,5 @@
 <template>
   <div class="notifications__container">
-    <!-- <div class="notifications__content">
-      即將上線
-    </div> -->
     <div
       v-for="notification in notifications"
       :key="notification.notifyId"

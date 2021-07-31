@@ -32,7 +32,8 @@ export default new Vuex.Store({
       content: '',
       labelName: ''
     },
-    subscribeNotification: false
+    subscribeNotification: false,
+    screenSize: 'bigScreen'
   },
   mutations: {
     setCurrentUser (state, currentUser) {
@@ -91,6 +92,9 @@ export default new Vuex.Store({
         ...state.privateChatUser,
         ...privateChatUser
       }
+    },
+    changeScreen (state, screenSize) {
+      state.screenSize = screenSize
     }
   },
   actions: {

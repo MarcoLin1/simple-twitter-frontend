@@ -2,7 +2,25 @@
   <div class="side-navbar-container">
     <div class="nav-item-container">
       <div class="logo-wrapper">
-        <Logo />
+        <router-link :to="{name:'user-tweets', params:{id: currentUser.id}}">
+          <div class="side-navbar__image">
+            <img
+              class="avatar-img"
+              :src="currentUser.avatar | emptyImage"
+              alt=""
+            >
+            <div class="side-navbar__name">
+              Hi {{ currentUser.name }}！
+            </div>
+          </div>
+        </router-link>
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          class="close-btn"
+          @click="$emit('close')"
+        ><g><path d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z" /></g></svg>
       </div>
       <!-- user 畫面 -->
       <template v-if="!$route.path.includes('admin')">
@@ -79,49 +97,8 @@
             設定
           </div>
         </router-link>
-        <div
-          class="side-navbar-item"
-        >
-          <label
-            class="side-navbar-button toggle__label"
-            for="toggle__control"
-          >
-            推文
-          </label>
-        </div>
-      </template>
-      <!-- admin畫面 -->
-      <template v-else>
-        <router-link
-          class="side-navbar-item"
-          to="/admin/tweets"
-          :class="{selected:this.$route.path.includes('/admin/tweets')}"
-        >
-          <div class="icon-wrapper icon-main-wrapper" />
-          <div class="content">
-            推文清單
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/admin/users"
-          :class="{selected:this.$route.path.includes('/admin/users')}"
-        >
-          <div class="icon-wrapper icon-user-wrapper" />
-          <div class="content">
-            使用者列表
-          </div>
-        </router-link>
       </template>
     </div>
-    <template>
-      <input
-        id="toggle__control"
-        type="checkbox"
-        class="toggle__control"
-      >
-      <NewPostModal @after-side-submit="handleAfterSubmit" />
-    </template>
     <div class="bottom-item-container">
       <div
         class="side-navbar-logout-wrapper"
@@ -139,14 +116,16 @@
 </template>
 
 <script>
-import Logo from './../assets/icon/logo.vue'
-import NewPostModal from './../components/NewPostModal.vue'
 import { mapState } from 'vuex'
+import { emptyImageFilter } from './../utils/mixins'
 
 export default {
-  components: {
-    Logo,
-    NewPostModal
+  mixins: [emptyImageFilter],
+  props: {
+    openMenu: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -178,20 +157,24 @@ a {
 }
 
 .side-navbar-container {
-  width: 100%;
+  box-shadow: 0px 2px 10px 3px rgba(29,26,26,0.5);
+  width: 200px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding: 0 20px;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 .nav-item-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 50px;
-  margin: 15px auto;
+  align-items: flex-start;
+  margin: 15px 0;
 }
 .side-navbar-item{
   display: flex;
@@ -237,7 +220,31 @@ a {
 }
 
 .logo-wrapper{
-  margin-bottom:30px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  border-bottom: 1px solid $light-gray;
+  padding-bottom: 8px;
+  svg{
+    display: block;
+    margin: auto 0;
+  }
+  .close-btn{
+    height: 30px;
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+  }
+  .side-navbar__image{
+    display: flex;
+  }
+  .side-navbar__name{
+    color: $black;
+    cursor: pointer;
+    font-weight: 500;
+    margin: auto 0 auto 6px;
+  }
 }
 .bottom-item-container {
   display: flex;
@@ -247,10 +254,10 @@ a {
 
     &:hover{
       .icon-wrapper{
-      background: $orange;
+        background: $orange;
     }
       .content{
-      color: $orange
+        color: $orange
     }
     }
   }
@@ -317,7 +324,6 @@ a {
   @extend %icon-style;
 }
 .content {
-  display: none;
   cursor: pointer;
   color: $black;
   text-decoration: none;
@@ -346,40 +352,38 @@ a {
     }
   }
 }
-@media screen and (min-width: 768px) {
 
-}
-@media screen and (min-width: 1180px) {
-  .side-navbar-container {
-    align-items: none;
-    max-width: 330px;
-  }
-  .nav-item-container {
-    width: 210px;
-    align-items: normal;
-  }
+// @media screen and (min-width: 1180px) {
+//   .side-navbar-container {
+//     align-items: none;
+//     max-width: 330px;
+//   }
+//   .nav-item-container {
+//     width: 210px;
+//     align-items: normal;
+//   }
 
-  .content {
-    display: block;
-    width: 100%;
-    margin-left: 20px;
-    font-weight: 700;
-    font-size: 18px;
-    &:hover {
-      color: $orange;
-    }
-  }
-  .side-navbar-button {
-    width: 100%;
-    border-radius: 100px;
-    background: $orange;
-    color: #ffffff;
-  }
-  .bottom-item-container {
-    width: 210px;
-    justify-content: flex-start;
-  }
+//   .content {
+//     display: block;
+//     width: 100%;
+//     margin-left: 20px;
+//     font-weight: 700;
+//     font-size: 18px;
+//     &:hover {
+//       color: $orange;
+//     }
+//   }
+//   .side-navbar-button {
+//     width: 100%;
+//     border-radius: 100px;
+//     background: $orange;
+//     color: #ffffff;
+//   }
+//   .bottom-item-container {
+//     width: 210px;
+//     justify-content: flex-start;
+//   }
 
-}
+// }
 
 </style>

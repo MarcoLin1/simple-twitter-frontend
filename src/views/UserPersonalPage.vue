@@ -228,9 +228,15 @@ export default {
   .main__container {
     .left__container {
       min-width: 85px;
+      display: none;
     }
     .right__container{
       display: flex;
+      width: 100%;
+      .middle___wrapper{
+        width: 100%;
+        flex-grow: 1;
+      }
       .right__wrapper{
         display: none;
       }
