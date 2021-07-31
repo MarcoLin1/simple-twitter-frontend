@@ -231,13 +231,52 @@ export default {
 
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 769px) and (max-width: 992px) {
   .main__container{
     .left__container{
       width: 20%;
     }
     .right__container{
       width: 80%;
+      .right__wrapper{
+        display: none;
+      }
+   }
+
+  }
+}
+@media screen and (min-width: 481px) and (max-width: 768px){
+   .main__container{
+    .left__container{
+      min-width: 85px;
+      width: 20%;
+    }
+    .right__container{
+      display: flex;
+      width: 80%;
+      .middle__wrapper{
+        width: 100%;
+        flex-grow: 1;
+      }
+      .right__wrapper{
+        display: none;
+      }
+   }
+  }
+}
+@media screen and(max-width:480px) {
+   .main__container{
+    .left__container{
+      width: 0%;
+    }
+    .right__container{
+      display: flex;
+      width: 100%;
+      margin-bottom: 25px;
+      .middle__wrapper{
+        width: 100%;
+        flex-grow: 1;
+      }
       .right__wrapper{
         display: none;
       }

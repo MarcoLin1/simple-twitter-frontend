@@ -159,7 +159,7 @@ export default {
     .right-wrapper{
       width: 100%;
       display: flex;
-
+      margin-bottom: 25px;
       .middle-content{
         width: 100%;
         flex-grow: 1;

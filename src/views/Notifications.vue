@@ -55,7 +55,7 @@
 }
 .notifications__container {
   .notifications__wrapper {
-    padding: 10px 0 10px 10px;
+    padding: 10px 15px;
     border-top: 1px solid $light-gray;
     border-bottom: 1px solid $light-gray;
     margin-bottom: -1px;

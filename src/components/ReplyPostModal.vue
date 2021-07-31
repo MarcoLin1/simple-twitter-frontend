@@ -266,6 +266,12 @@
     }
   }
   }
+  @media screen and (max-width: 768px) {
+    .reply__modal__container{
+      width: 90%;
+      max-width: 600px;
+    }
+  }
 </style>
 <script>
 import { mapState } from 'vuex'

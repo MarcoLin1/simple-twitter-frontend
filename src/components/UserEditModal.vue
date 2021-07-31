@@ -59,10 +59,10 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span
+              <!-- <span
                 aria-hidden="true"
                 data-bs-dismiss="modal"
-              >&times;</span>
+              >&times;</span> -->
             </div>
           </label>
           <div class="user__edit__modal__icon user__edit__modal__cover__delete" />
@@ -97,7 +97,7 @@
           >
         </div>
         <div class="user__edit__modal__number">
-          {{ user.name ? Number(user.name).length: '0' }} / 50
+          {{ user.name ? user.name.length : '0' }} / 50
         </div>
         <div class="user__edit__modal__intro__wrapper">
           <span class="user__edit__modal__intro__title">
@@ -115,7 +115,7 @@
           />
         </div>
         <div class="user__edit__modal__number">
-          {{ user.introduction ? Number(user.introducation).length: '0' }} / 160
+          {{ user.introduction ? user.introduction.length : '0' }} / 160
         </div>
       </form>
     </template>
@@ -206,9 +206,10 @@
 }
 .user__edit__modal__cover__wrapper {
   width: 100%;
+  position: relative;
   .user__edit__modal__cover {
     height: 200px;
-    width: 600px;
+    width: 100%;
     opacity: 0.6;
   }
   .user__edit__modal__cover__photo {
@@ -216,8 +217,10 @@
     -webkit-mask-image: url('./../assets/icon/icon_photo.svg');
     @extend %user__edit__icon__style;
     position: absolute;
-    top: calc(54px - 12px + 100px);
-    left: 18%;
+    top: 50%;
+    transform: translateY(-50%);
+    right:0;
+    width: 100%;
   }
   .user__edit__modal__cover__close {
     position: absolute;
@@ -276,11 +279,14 @@
   max-width: 540px;
   margin: 0 auto;
   position: relative;
+  padding: 0 5px;
   .user__edit__modal__title {
+    padding: 0 5px;
     @extend %form-group-title-style;
   }
   .user__edit__modal__input {
     position: relative;
+    padding-bottom: 6px;
     @extend %user__edit__input__style;
     border-bottom: 2px solid $tx-gray;
     height: 50px;
@@ -316,7 +322,17 @@
   margin: 0 auto;
   font-size: 15px;
   color: $tx-gray;
+  padding: 2px 5px;
 }
+@media screen and (max-width: 768px) {
+  .user__edit__modal__container{
+    .modal__content {
+      width: 90%;
+      max-width: 600px;
+    }
+  }
+}
+
 </style>
 
 <script>

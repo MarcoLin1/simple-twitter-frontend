@@ -29,6 +29,7 @@
             class="side-navbar-item"
             to="/mainpage"
             :class="{selected:this.$route.path.includes('mainpage')}"
+            @click.stop.prevent.native="$emit('close')"
           >
             <div class="icon-wrapper icon-main-wrapper" />
             <div class="content">
@@ -39,6 +40,7 @@
             class="side-navbar-item"
             to="/notifications"
             :class="{selected:this.$route.path.includes('notifications')}"
+            @click.stop.prevent.native="$emit('close')"
           >
             <div class="icon-wrapper icon-notify-wrapper" />
             <!-- 通知點點 -->
@@ -54,6 +56,7 @@
             class="side-navbar-item"
             to="/publicchat"
             :class="{selected:this.$route.path.includes('publicchat')}"
+            @click.stop.prevent.native="$emit('close')"
           >
             <div class="icon-wrapper icon-group-wrapper" />
             <div class="content">
@@ -64,6 +67,7 @@
             class="side-navbar-item"
             to="/privatechat"
             :class="{selected:this.$route.path.includes('privatechat')}"
+            @click.stop.prevent.native="$emit('close')"
           >
             <div class="icon-wrapper icon-mail-wrapper" />
             <div
@@ -80,6 +84,7 @@
             class="side-navbar-item"
             :to="{name: 'user-tweets', params: {id: currentUser.id}}"
             :class="{selected:this.$route.path.includes('/tweets')}"
+            @click.stop.prevent.native="$emit('close')"
           >
             <div class="icon-wrapper icon-user-wrapper" />
             <div class="content">
@@ -90,6 +95,7 @@
             class="side-navbar-item"
             to="/setting"
             :class="{selected:this.$route.path.includes('/setting')}"
+            @click.stop.prevent.native="$emit('close')"
           >
             <div
               class="icon-wrapper icon-setting-wrapper"
@@ -103,7 +109,7 @@
       <div class="bottom-item-container">
         <div
           class="side-navbar-logout-wrapper"
-          @click="logout"
+          @click="logout & $emit('close')"
         >
           <div
             class="icon-wrapper icon-logout-wrapper"

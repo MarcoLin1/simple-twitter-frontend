@@ -239,6 +239,11 @@
       transform: translateX(-40%);
     }
   }
+  @media screen and (max-width: 480px) {
+    .chat__room__container {
+      height: calc(100vh - 50px);
+    }
+  }
 </style>
 
 <script>

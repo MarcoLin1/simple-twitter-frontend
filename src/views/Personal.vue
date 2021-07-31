@@ -62,4 +62,16 @@ export default {
   }
 
 }
+@media screen and (max-width: 480px) {
+  .main__container{
+    .left__content{
+      width: 0%;
+    }
+    .right__content{
+      margin-bottom: 25px;
+      width: 100%;
+    }
+
+  }
+}
 </style>
