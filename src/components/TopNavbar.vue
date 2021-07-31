@@ -9,6 +9,7 @@
     </div>
     <MobileSideNavbar
       v-if="showMenu && !$route.path.includes('user') && !$route.path.includes('detail')"
+      class="side-bar"
       @close="showMenu=false"
     />
     <div
@@ -96,11 +97,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
+.side-bar{
+  z-index: 3
+}
 .top-navbar-container{
   height: 55px;
   display: flex;
+
   .menu__wrapper{
     cursor: pointer;
+
     .menu-btn{
       width: 24px;
       height: 2px;

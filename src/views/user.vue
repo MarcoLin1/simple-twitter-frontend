@@ -113,7 +113,7 @@ export default {
 
 }
 
-@media screen and (max-width: 992px) {
+@media screen and(min-width: 769px) and (max-width: 992px) {
   .main-container{
     .left-content{
       width: 20%;
@@ -131,11 +131,30 @@ export default {
   }
 
 }
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .main-container {
+    .left-container {
+      min-width: 85px;
+      width: 20%;
+    }
+    .right-wrapper{
+      display: flex;
+      width: 80%;
+      .middle-content{
+        width: 100%;
+        flex-grow: 1;
+      }
+      .right-content{
+        display: none;
+      }
+   }
+  }
+}
+
+@media screen and (max-width: 480px) {
   .main-container{
     .left-content{
-      display: none;
-      min-width: 85px;
+      width: 0%;
     }
     .right-wrapper{
       width: 100%;

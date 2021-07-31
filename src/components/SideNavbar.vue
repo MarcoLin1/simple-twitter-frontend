@@ -7,7 +7,7 @@
       <!-- user 畫面 -->
       <template v-if="!$route.path.includes('admin')">
         <router-link
-          class="side-navbar-item"
+          class="side-navbar-item main-icon"
           to="/mainpage"
           :class="{selected:this.$route.path.includes('mainpage')}"
         >
@@ -17,11 +17,11 @@
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
+          class="side-navbar-item notify-icon"
           to="/notifications"
           :class="{selected:this.$route.path.includes('notifications')}"
         >
-          <div class="icon-wrapper icon-notify-wrapper" />
+          <div class="icon-wrapper icon-notify-wrapper " />
           <!-- 通知點點 -->
           <div
             v-show="subscribeNotification"
@@ -32,7 +32,7 @@
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
+          class="side-navbar-item open-chat-icon"
           to="/publicchat"
           :class="{selected:this.$route.path.includes('publicchat')}"
         >
@@ -42,11 +42,11 @@
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
+          class="side-navbar-item mail-icon"
           to="/privatechat"
           :class="{selected:this.$route.path.includes('privatechat')}"
         >
-          <div class="icon-wrapper icon-mail-wrapper" />
+          <div class="icon-wrapper icon-mail-wrapper " />
           <div
             v-show="getPrivateNotify"
             class="notify-point"
@@ -58,7 +58,7 @@
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
+          class="side-navbar-item user-icon"
           :to="{name: 'user-tweets', params: {id: currentUser.id}}"
           :class="{selected:this.$route.path.includes('/tweets')}"
         >
@@ -68,7 +68,7 @@
           </div>
         </router-link>
         <router-link
-          class="side-navbar-item"
+          class="side-navbar-item setting-icon"
           to="/setting"
           :class="{selected:this.$route.path.includes('/setting')}"
         >
@@ -80,9 +80,19 @@
           </div>
         </router-link>
         <div
-          class="side-navbar-item"
+          class="side-navbar-item post-icon"
         >
           <label
+            v-if="screenSize === 'mobile'"
+            for="toggle__control"
+          >
+            <div
+
+              class="icon-wrapper icon-post-wrapper"
+            />
+          </label>
+          <label
+            v-else
             class="side-navbar-button toggle__label"
             for="toggle__control"
           >
@@ -154,7 +164,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount', 'subscribeNotification'])
+    ...mapState(['currentUser', 'getPrivateNotify', 'getPrivateNotifyCount', 'subscribeNotification', 'screenSize'])
   },
   methods: {
     logout () {
@@ -178,20 +188,42 @@ a {
 }
 
 .side-navbar-container {
+  z-index: 2;
   width: 100%;
-  height: 100vh;
+  height: 50px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   padding: 0 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: white;
+  border-top: 1px solid $light-gray;
 }
 .nav-item-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 50px;
+  width: 100%;
   margin: 15px auto;
+  justify-content: space-evenly;
+
+  .open-chat-icon, .user-icon, .setting-icon{
+    display: none;
+  }
+  .main-icon{
+    order: 1;
+  }
+  .post-icon{
+    order:2;
+  }
+  .notify-icon{
+    order: 3;
+  }
+  .mail-icon{
+    order: 4;
+  }
+
 }
 .side-navbar-item{
   display: flex;
@@ -237,23 +269,7 @@ a {
 }
 
 .logo-wrapper{
-  margin-bottom:30px;
-}
-.bottom-item-container {
-  display: flex;
-  .side-navbar-logout-wrapper{
-    display: flex;
-    align-items: center;
-
-    &:hover{
-      .icon-wrapper{
-      background: $orange;
-    }
-      .content{
-      color: $orange
-    }
-    }
-  }
+  display: none;
 }
 
 .side-navbar-button {
@@ -316,6 +332,13 @@ a {
   mask-size: 25px;
   @extend %icon-style;
 }
+.icon-post-wrapper{
+  mask-image: url('./../assets/icon/icon_post.svg');
+  -webkit-mask-image: url('./../assets/icon/icon_post.svg');
+  cursor: pointer;
+  mask-size: 25px;
+  @extend %icon-style;
+}
 .content {
   display: none;
   cursor: pointer;
@@ -338,6 +361,11 @@ a {
     border: none;
   }
 }
+
+.bottom-item-container {
+  display: none;;
+ }
+
 #toggle__control {
   display: none;
   &:checked {
@@ -346,9 +374,46 @@ a {
     }
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 481px) {
+  .side-navbar-container {
+    position: static;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: none;
 
+  }
+  .logo-wrapper{
+    display: block;
+    margin-bottom:30px;
+  }
+  .nav-item-container {
+    flex-direction: column;
+    width: 50px;
+    .open-chat-icon, .user-icon, .setting-icon{
+      display: flex;
+    }
+    .main-icon, .post-icon, .notify-icon, .mail-icon{
+      order: inherit;
+    }
+  }
+  .bottom-item-container {
+    display: block;
+    .side-navbar-logout-wrapper{
+      display: flex;
+      align-items: center;
+      &:hover{
+        .icon-wrapper{
+        background: $orange;
+        }
+        .content{
+        color: $orange
+        }
+      }
+    }
+  }
 }
+
 @media screen and (min-width: 1180px) {
   .side-navbar-container {
     align-items: none;
@@ -378,6 +443,10 @@ a {
   .bottom-item-container {
     width: 210px;
     justify-content: flex-start;
+    margin-bottom: 20px;
+    .icon-logout-wrapper{
+       display: flex;
+  }
   }
 
 }

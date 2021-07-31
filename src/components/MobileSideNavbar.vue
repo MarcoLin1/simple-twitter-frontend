@@ -1,114 +1,116 @@
 <template>
-  <div class="side-navbar-container">
-    <div class="nav-item-container">
-      <div class="logo-wrapper">
-        <router-link :to="{name:'user-tweets', params:{id: currentUser.id}}">
-          <div class="side-navbar__image">
-            <img
-              class="avatar-img"
-              :src="currentUser.avatar | emptyImage"
-              alt=""
-            >
-            <div class="side-navbar__name">
-              Hi {{ currentUser.name }}！
+  <div class="background">
+    <div class="side-navbar-container">
+      <div class="nav-item-container">
+        <div class="logo-wrapper">
+          <router-link :to="{name:'user-tweets', params:{id: currentUser.id}}">
+            <div class="side-navbar__image">
+              <img
+                class="avatar-img"
+                :src="currentUser.avatar | emptyImage"
+                alt=""
+              >
+              <div class="side-navbar__name">
+                Hi {{ currentUser.name }}！
+              </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
 
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          class="close-btn"
-          @click="$emit('close')"
-        ><g><path d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z" /></g></svg>
-      </div>
-      <!-- user 畫面 -->
-      <template v-if="!$route.path.includes('admin')">
-        <router-link
-          class="side-navbar-item"
-          to="/mainpage"
-          :class="{selected:this.$route.path.includes('mainpage')}"
-        >
-          <div class="icon-wrapper icon-main-wrapper" />
-          <div class="content">
-            首頁
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/notifications"
-          :class="{selected:this.$route.path.includes('notifications')}"
-        >
-          <div class="icon-wrapper icon-notify-wrapper" />
-          <!-- 通知點點 -->
-          <div
-            v-show="subscribeNotification"
-            class="notify-color-point"
-          />
-          <div class="content">
-            通知
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/publicchat"
-          :class="{selected:this.$route.path.includes('publicchat')}"
-        >
-          <div class="icon-wrapper icon-group-wrapper" />
-          <div class="content">
-            公開聊天室
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/privatechat"
-          :class="{selected:this.$route.path.includes('privatechat')}"
-        >
-          <div class="icon-wrapper icon-mail-wrapper" />
-          <div
-            v-show="getPrivateNotify"
-            class="notify-point"
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            class="close-btn"
+            @click="$emit('close')"
+          ><g><path d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z" /></g></svg>
+        </div>
+        <!-- user 畫面 -->
+        <template v-if="!$route.path.includes('admin')">
+          <router-link
+            class="side-navbar-item"
+            to="/mainpage"
+            :class="{selected:this.$route.path.includes('mainpage')}"
           >
-            {{ getPrivateNotifyCount }}
-          </div>
-          <div class="content">
-            私人訊息
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          :to="{name: 'user-tweets', params: {id: currentUser.id}}"
-          :class="{selected:this.$route.path.includes('/tweets')}"
-        >
-          <div class="icon-wrapper icon-user-wrapper" />
-          <div class="content">
-            個人資料
-          </div>
-        </router-link>
-        <router-link
-          class="side-navbar-item"
-          to="/setting"
-          :class="{selected:this.$route.path.includes('/setting')}"
+            <div class="icon-wrapper icon-main-wrapper" />
+            <div class="content">
+              首頁
+            </div>
+          </router-link>
+          <router-link
+            class="side-navbar-item"
+            to="/notifications"
+            :class="{selected:this.$route.path.includes('notifications')}"
+          >
+            <div class="icon-wrapper icon-notify-wrapper" />
+            <!-- 通知點點 -->
+            <div
+              v-show="subscribeNotification"
+              class="notify-color-point"
+            />
+            <div class="content">
+              通知
+            </div>
+          </router-link>
+          <router-link
+            class="side-navbar-item"
+            to="/publicchat"
+            :class="{selected:this.$route.path.includes('publicchat')}"
+          >
+            <div class="icon-wrapper icon-group-wrapper" />
+            <div class="content">
+              公開聊天室
+            </div>
+          </router-link>
+          <router-link
+            class="side-navbar-item"
+            to="/privatechat"
+            :class="{selected:this.$route.path.includes('privatechat')}"
+          >
+            <div class="icon-wrapper icon-mail-wrapper" />
+            <div
+              v-show="getPrivateNotify"
+              class="notify-point"
+            >
+              {{ getPrivateNotifyCount }}
+            </div>
+            <div class="content">
+              私人訊息
+            </div>
+          </router-link>
+          <router-link
+            class="side-navbar-item"
+            :to="{name: 'user-tweets', params: {id: currentUser.id}}"
+            :class="{selected:this.$route.path.includes('/tweets')}"
+          >
+            <div class="icon-wrapper icon-user-wrapper" />
+            <div class="content">
+              個人資料
+            </div>
+          </router-link>
+          <router-link
+            class="side-navbar-item"
+            to="/setting"
+            :class="{selected:this.$route.path.includes('/setting')}"
+          >
+            <div
+              class="icon-wrapper icon-setting-wrapper"
+            />
+            <div class="content">
+              設定
+            </div>
+          </router-link>
+        </template>
+      </div>
+      <div class="bottom-item-container">
+        <div
+          class="side-navbar-logout-wrapper"
+          @click="logout"
         >
           <div
-            class="icon-wrapper icon-setting-wrapper"
+            class="icon-wrapper icon-logout-wrapper"
           />
           <div class="content">
-            設定
+            登出
           </div>
-        </router-link>
-      </template>
-    </div>
-    <div class="bottom-item-container">
-      <div
-        class="side-navbar-logout-wrapper"
-        @click="logout"
-      >
-        <div
-          class="icon-wrapper icon-logout-wrapper"
-        />
-        <div class="content">
-          登出
         </div>
       </div>
     </div>
@@ -155,10 +157,17 @@ a {
   cursor: inherit;
   text-decoration: none;
 }
-
+.background{
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 .side-navbar-container {
   box-shadow: 0px 2px 10px 3px rgba(29,26,26,0.5);
-  width: 200px;
+  width: 240px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -168,7 +177,7 @@ a {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 4;
 }
 .nav-item-container {
   display: flex;
@@ -230,11 +239,11 @@ a {
     margin: auto 0;
   }
   .close-btn{
-    height: 30px;
+    height: 24px;
     cursor: pointer;
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 27px;
+    right: 15px;
   }
   .side-navbar__image{
     display: flex;

@@ -19,8 +19,10 @@ export default {
     window.addEventListener('resize', this.resizeEvent)
   },
   mounted () {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 480) {
       this.$store.commit('changeScreen', 'mobile')
+    } else if (window.innerWidth <= 768) {
+      this.$store.commit('changeScreen', 'tablet')
     } else if (window.innerWidth <= 992) {
       this.$store.commit('changeScreen', 'smallScreen')
     } else {
@@ -30,8 +32,10 @@ export default {
   methods: {
     resizeEvent (e) {
       const newWidth = window.innerWidth
-      if (newWidth <= 768) {
+      if (newWidth <= 480) {
         this.$store.commit('changeScreen', 'mobile')
+      } else if (newWidth <= 768) {
+        this.$store.commit('changeScreen', 'tablet')
       } else if (newWidth <= 992) {
         this.$store.commit('changeScreen', 'smallScreen')
       } else {

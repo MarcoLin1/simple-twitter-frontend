@@ -233,7 +233,7 @@ export default {
     .right__container{
       display: flex;
       width: 100%;
-      .middle___wrapper{
+      .middle-content{
         width: 100%;
         flex-grow: 1;
       }
