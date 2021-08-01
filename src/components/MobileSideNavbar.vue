@@ -106,10 +106,12 @@
           </router-link>
         </template>
       </div>
-      <div class="bottom-item-container">
+      <div
+        class="bottom-item-container"
+        @click="logout"
+      >
         <div
           class="side-navbar-logout-wrapper"
-          @click="logout & $emit('close')"
         >
           <div
             class="icon-wrapper icon-logout-wrapper"
@@ -145,6 +147,7 @@ export default {
   },
   methods: {
     logout () {
+      console.log('logout')
       this.$store.commit('revokeAuthentication')
       this.$socket.disconnect()
       this.$router.push('/login')

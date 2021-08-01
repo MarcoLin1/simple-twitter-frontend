@@ -250,6 +250,7 @@ export default {
     }
     .right__container{
       width: 100%;
+      display: flex;
       margin-bottom: 25px;
       .middle___wrapper{
         width: 100%;

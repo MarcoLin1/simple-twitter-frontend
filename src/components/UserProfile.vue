@@ -237,6 +237,17 @@ a:hover{
     }
   }
 }
+@media screen and (max-width: 480px) {
+  .profile__avatar{
+    img{
+      width: 120px;
+    height: 120px;
+    top:140px
+    }
+
+  }
+
+}
 </style>
 
 <script>

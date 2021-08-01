@@ -95,7 +95,7 @@
     .modal__dialog {
       margin: 3rem auto;
       .modal__content {
-        width: 100%;
+        width: 90%;
         height: 100%;
         max-width: 600px;
         max-height: 300px;

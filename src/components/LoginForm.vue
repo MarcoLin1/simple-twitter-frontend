@@ -180,6 +180,11 @@ export default {
     }
   }
 }
+.login__form__table{
+  width: 90%;
+  max-width: 540px;
+  margin: 0 auto;
+}
 .login__form__group__title {
   @extend %form-group-title-style;
 }
