@@ -103,9 +103,9 @@ $disabled-orange:#FFB685;
   }
 }
 
-button:disabled,button[disabled]{
-  background-color: $disabled-orange !important
-}
+// button:disabled,button[disabled]{
+//   background-color: $disabled-orange
+// }
 //大頭貼 class 可用
 .avatar-img {
   border-radius: 50%;

@@ -246,15 +246,12 @@ a{
     margin-bottom: 5px;
     .tweet__info__icon__message__wrapper,
     .tweet__info__icon__like__wrapper {
-      width: 25px;
-      height: 25px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      &:hover {
-        background: $orange;
-      }
     }
     .tweet__info__icon__message {
       width: 30px;
@@ -264,8 +261,8 @@ a{
       -webkit-mask-image: url('./../assets/icon/icon_message.svg');
       cursor: pointer;
       &:hover {
-        background: blue;
-        color: blue;
+        background-color: $light-blue;
+        color: $light-blue;
       }
     }
     .tweet__info__icon__like {
@@ -282,7 +279,6 @@ a{
     .tweet__info__icon__like--liked {
       width: 30px;
       height: 30px;
-      mask-size: 30px;
       background-color: $heart-pink;
       @extend %icon-style;
       mask-image: url('./../assets/icon/icon_isliked.svg');
@@ -311,9 +307,6 @@ a{
         width: auto;
         height: auto;
         border-radius: none;
-        &:hover {
-          background: inherit;
-        }
       }
       .tweet__info__icon__message {
         mask-image: url('./../assets/icon/icon_reply.svg');

@@ -54,6 +54,7 @@ export default {
       try {
         this.isLoading = true
         const { data } = await userAPI.getTopUsers()
+        console.log(data)
         this.topUsers = data
       } catch (e) {
         console.log(e)

@@ -53,7 +53,6 @@ export default new Vuex.Store({
         state.getPrivateNotify = false
       }
       state.getPrivateNotifyCount = data.unreadCount
-      console.log('state.getPrivateNotify', data)
     },
     SOCKET_subscribeNotify (state, data) {
       if (Object.keys(data).length > 0) {
@@ -87,14 +86,21 @@ export default new Vuex.Store({
     minusFollowing (state) {
       state.followingNum--
     },
-    getUserInfo (state, privateChatUser) {
+    getUserInfo (state, newPrivateChatUser) {
       state.privateChatUser = {
         ...state.privateChatUser,
-        ...privateChatUser
+        ...newPrivateChatUser
       }
     },
     changeScreen (state, screenSize) {
       state.screenSize = screenSize
+    },
+    cleanPrivateUser (state, privateChatUser) {
+      state.privateChatUser = {
+        id: -1,
+        name: '',
+        account: ''
+      }
     }
   },
   actions: {

@@ -308,11 +308,10 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.privateChatUser.id = this.user.id
-      this.privateChatUser.name = this.user.name
-      this.privateChatUser.account = this.user.account
-
-      console.log(this.user)
+      this.$store.commit('getUserInfo', { id: this.user.id, name: this.user.name, account: this.user.account })
+      // this.privateChatUser.id = this.user.id
+      // this.privateChatUser.name = this.user.name
+      // this.privateChatUser.account = this.user.account
     },
     // 新增訂閱
     async addSubscribe (recipientId) {

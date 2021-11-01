@@ -52,7 +52,7 @@
               <div
                 v-show="tweet"
                 class="alert-text"
-                :class="{hint:tweet.length>130}"
+                :class="{ hint: tweet.length > 130 }"
               >
                 {{ countNum }}
               </div>
@@ -67,7 +67,7 @@
                   class="modal__footer__button"
                   :disabled="isProcessing"
                 >
-                  {{ isProcessing? '處理中':'推文' }}
+                  {{ isProcessing ? '處理中' : '推文' }}
                 </button>
               </label>
             </div>

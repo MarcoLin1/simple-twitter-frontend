@@ -119,6 +119,7 @@
 
 }
 </style>
+
 <script>
 import { shortenTimeFilter, emptyImageFilter } from './../utils/mixins'
 

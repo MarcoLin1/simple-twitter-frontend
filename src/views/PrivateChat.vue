@@ -55,6 +55,9 @@ export default {
       if (newValue.id !== -1 && oldValue.id !== -1) {
         this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: oldValue.id })
       }
+    },
+    privateChatUser (newValue) {
+      this.listener = this.privateChatUser
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -91,9 +94,7 @@ export default {
     console.log('leave')
     window.removeEventListener('resize', this.resizeEvent)
     // state 清空
-    this.privateChatUser.id = -1
-    this.privateChatUser.name = ''
-    this.privateChatUser.account = ''
+    this.$store.commit('cleanPrivateUser')
     this.$socket.emit('leaveRoom', { id: this.currentUser.id, listenerId: this.listener.id })
     console.log('leave room event', { id: this.currentUser.id, listenerId: this.listener.id })
   },
